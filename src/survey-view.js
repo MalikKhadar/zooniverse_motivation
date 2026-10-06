@@ -22,21 +22,6 @@ export function runSurvey(container, survey, { clock = () => Date.now() } = {}) 
   intro.textContent = survey.intro;
   form.append(heading, intro);
 
-  // When every point has a label, show them once as a key.
-  const labelled = Object.keys(anchors).length;
-  if (labelled === max - min + 1) {
-    const key = document.createElement('ol');
-    key.className = 'survey-key';
-    for (let v = min; v <= max; v += 1) {
-      const li = document.createElement('li');
-      const number = document.createElement('strong');
-      number.textContent = String(v);
-      li.append(number, ` ${anchors[v]}`);
-      key.append(li);
-    }
-    form.append(key);
-  }
-
   const stem = document.createElement('p');
   stem.className = 'survey-stem';
   stem.textContent = survey.stem;
