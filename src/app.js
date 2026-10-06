@@ -3,6 +3,9 @@ import { parsePrediction, subjectImage } from './ai.js';
 import { ReviewTracker, buildClassification } from './classification.js';
 import { PanoptesClient, Auth } from './panoptes.js';
 import { DEMO_PROJECT, DEMO_WORKFLOW, DEMO_SUBJECTS } from './demo.js';
+import { Participant } from './participant.js';
+import { SKEPTICISM_SURVEY, SIMS_SURVEY } from './surveys.js';
+import { runSurvey } from './survey-view.js';
 
 const EXPLANATION_MODES = ['on-request', 'always', 'never'];
 const ADVANCE_DELAY_MS = 900;
@@ -16,7 +19,18 @@ const settings = {
   explanationMode: EXPLANATION_MODES.includes(params.get('xai')) ? params.get('xai') : CONFIG.explanationMode,
   demo: params.has('demo') || !projectId,
   debug: params.has('debug'),
+  surveys: params.get('surveys') !== 'off',
 };
+
+function localStore() {
+  try { return window.localStorage; } catch (_) { return null; }
+}
+
+const participant = new Participant({
+  storageKey: `${CONFIG.source}:participant:${settings.demo ? 'demo' : settings.projectId}`,
+  storage: localStore(),
+});
+if (params.has('reset')) participant.reset();
 
 const auth = new Auth({ storageKey: `${CONFIG.source}:token` });
 const client = new PanoptesClient({ environment: settings.environment, getToken: () => auth.token });
@@ -97,7 +111,7 @@ function prefetch() {
 /* ---------- Rendering ---------- */
 
 function show(stateId) {
-  for (const id of ['state-loading', 'state-error', 'state-finished', 'state-review']) {
+  for (const id of ['state-loading', 'state-error', 'state-finished', 'state-review', 'state-survey']) {
     $(id).hidden = id !== stateId;
   }
 }
@@ -281,13 +295,29 @@ async function advance() {
   }
 }
 
+function askSurvey(survey) {
+  show('state-survey');
+  window.scrollTo(0, 0);
+  return runSurvey($('state-survey'), survey);
+}
+
 async function decide(decision) {
   if (!state.current || state.busy) return;
   state.busy = true;
   setDecisionEnabled(false);
 
   const { subject, tracker } = state.current;
+  const finishedAt = Date.now();
   const review = tracker.finish(decision);
+
+  // Kept on the subject so a failed submission doesn't ask the SIMS twice.
+  if (settings.surveys && participant.simsDueOnNext(CONFIG.surveys.simsEvery) && !state.current.sims) {
+    const result = await askSurvey(SIMS_SURVEY);
+    state.current.sims = { ...result, block: participant.data.simsCount + 1 };
+    show('state-review');
+  }
+  const { sims } = state.current;
+
   const classification = buildClassification({
     project: state.project,
     workflow: state.workflow,
@@ -296,7 +326,7 @@ async function decide(decision) {
     decision,
     review,
     startedAt: tracker.startedAt,
-    finishedAt: Date.now(),
+    finishedAt,
     source: CONFIG.source,
     environment: {
       userAgent: navigator.userAgent,
@@ -304,10 +334,15 @@ async function decide(decision) {
       utcOffsetSeconds: new Date().getTimezoneOffset() * 60,
       viewport: { width: window.innerWidth, height: window.innerHeight },
     },
+    extraMetadata: {
+      participant: participant.metadata(),
+      ...(sims ? { sims } : {}),
+    },
   });
 
   try {
     await source.submit(classification);
+    participant.recordClassification({ withSims: Boolean(sims) });
     if (settings.demo || settings.debug) {
       $('payload-json').textContent = JSON.stringify(classification, null, 2);
       $('payload-preview').hidden = false;
@@ -418,10 +453,14 @@ async function init() {
     return;
   }
 
+  if (settings.surveys && CONFIG.surveys.skepticism && !participant.skepticism) {
+    participant.setSkepticism(await askSurvey(SKEPTICISM_SURVEY));
+  }
+
   await advance();
 }
 
 // Exposed for tests and for poking around in the console.
-window.__secondLook = { state, settings };
+window.__secondLook = { state, settings, participant };
 
 init();

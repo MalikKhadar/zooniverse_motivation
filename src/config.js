@@ -30,6 +30,13 @@ export const CONFIG = {
   //   'never'      – no explanation, accept/reject only (control condition)
   explanationMode: 'on-request',
 
+  // Questionnaires (definitions in src/surveys.js). Answers travel in
+  // classification metadata; `?surveys=off` disables both for a visit.
+  surveys: {
+    skepticism: true, // AI skepticism questions on a volunteer's first visit
+    simsEvery: 5,     // Situational Motivation Scale after every Nth classification; 0 = never
+  },
+
   // Subject metadata keys holding the model output. A leading '#' hides a
   // field from volunteers in the standard Zooniverse metadata viewer.
   metadataKeys: {

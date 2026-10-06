@@ -5,6 +5,8 @@ import { ReviewTracker, buildClassification, annotationValue } from '../src/clas
 import { Auth, PanoptesClient } from '../src/panoptes.js';
 import { CONFIG } from '../src/config.js';
 import { DEMO_SUBJECTS } from '../src/demo.js';
+import { SKEPTICISM_SURVEY, SIMS_SURVEY, scoreSurvey, isComplete } from '../src/surveys.js';
+import { Participant } from '../src/participant.js';
 
 const KEYS = CONFIG.metadataKeys;
 
@@ -200,4 +202,67 @@ test('PanoptesClient sends the bearer token and surfaces API errors', async () =
   assert.equal(calls[0].url, 'https://panoptes-staging.zooniverse.org/api/classifications');
   assert.equal(calls[0].init.headers.Authorization, 'Bearer tok');
   assert.match(client.authorizeUrl({ clientId: 'c', redirectUri: 'https://me/' }), /response_type=token/);
+});
+
+const answerAll = (survey, value) => Object.fromEntries(survey.items.map(i => [i.id, value]));
+
+test('skepticism score flips the reverse-keyed trust items', () => {
+  // Fully skeptical: strongly agree with distrust, strongly disagree with trust.
+  const responses = Object.fromEntries(SKEPTICISM_SURVEY.items.map(i => [i.id, i.reverse ? 1 : 7]));
+  assert.deepEqual(scoreSurvey(SKEPTICISM_SURVEY, responses), { skepticism: 7 });
+  assert.deepEqual(scoreSurvey(SKEPTICISM_SURVEY, answerAll(SKEPTICISM_SURVEY, 4)), { skepticism: 4 });
+});
+
+test('SIMS has 16 items, four per subscale, and a self-determination index', () => {
+  assert.equal(SIMS_SURVEY.items.length, 16);
+  const counts = {};
+  for (const item of SIMS_SURVEY.items) counts[item.subscale] = (counts[item.subscale] || 0) + 1;
+  assert.deepEqual(counts, { intrinsic_motivation: 4, identified_regulation: 4, external_regulation: 4, amotivation: 4 });
+
+  const responses = Object.fromEntries(SIMS_SURVEY.items.map(i => [i.id, {
+    intrinsic_motivation: 7, identified_regulation: 5, external_regulation: 2, amotivation: 1,
+  }[i.subscale]]));
+  assert.deepEqual(scoreSurvey(SIMS_SURVEY, responses), {
+    intrinsic_motivation: 7, identified_regulation: 5, external_regulation: 2, amotivation: 1,
+    self_determination_index: 2 * 7 + 5 - 2 - 2 * 1,
+  });
+});
+
+test('incomplete or out-of-range answers are rejected', () => {
+  const partial = answerAll(SIMS_SURVEY, 4);
+  delete partial.q16;
+  assert.equal(isComplete(SIMS_SURVEY, partial), false);
+  assert.throws(() => scoreSurvey(SIMS_SURVEY, partial), /q16/);
+  assert.throws(() => scoreSurvey(SIMS_SURVEY, { ...answerAll(SIMS_SURVEY, 4), q1: 9 }), /q1/);
+});
+
+test('participant persists and schedules the SIMS every Nth classification', () => {
+  const storage = memoryStorage();
+  const p = new Participant({ storageKey: 'p', storage });
+  assert.ok(p.id);
+  const due = [];
+  for (let n = 1; n <= 10; n += 1) {
+    due.push(p.simsDueOnNext(5));
+    p.recordClassification({ withSims: p.simsDueOnNext(5) });
+  }
+  assert.deepEqual(due, [false, false, false, false, true, false, false, false, false, true]);
+  assert.equal(p.data.simsCount, 2);
+  assert.equal(p.simsDueOnNext(0), false, '0 disables the SIMS');
+
+  p.setSkepticism({ scores: { skepticism: 5 } });
+  const again = new Participant({ storageKey: 'p', storage });
+  assert.equal(again.id, p.id);
+  assert.equal(again.classificationCount, 10);
+  assert.equal(again.metadata().classification_number, 11);
+  assert.deepEqual(again.metadata().skepticism, { scores: { skepticism: 5 } });
+
+  again.reset();
+  assert.notEqual(again.id, p.id);
+  assert.equal(again.skepticism, null);
+});
+
+test('participant works without storage', () => {
+  const p = new Participant({ storageKey: 'p', storage: null });
+  p.recordClassification();
+  assert.equal(p.classificationCount, 1);
 });

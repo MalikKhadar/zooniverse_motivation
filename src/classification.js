@@ -92,6 +92,7 @@ export function buildClassification({
   finishedAt,
   source,
   environment = {},
+  extraMetadata = {},
 }) {
   return {
     annotations: [{ task: task.key, value: annotationValue(decision, task) }],
@@ -105,6 +106,7 @@ export function buildClassification({
       viewport: environment.viewport || null,
       source,
       ai_review: review,
+      ...extraMetadata,
     },
     links: {
       project: String(project.id),
