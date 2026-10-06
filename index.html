@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Second Look — review an AI's classification of a Zooniverse subject, with an explanation on request." />
+  <title>Second Look</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <h1 id="app-title">Second Look</h1>
+      <span class="project-name" id="project-name"></span>
+    </div>
+    <div class="header-right">
+      <span class="stats" id="stats" aria-live="polite"></span>
+      <button class="link-button" id="auth-button" type="button" hidden>Sign in</button>
+    </div>
+  </header>
+
+  <div class="banner banner-info" id="demo-banner" hidden>
+    <strong>Demo mode.</strong> These are synthetic subjects and nothing is sent to Zooniverse.
+    Add <code>?project=ID&amp;workflow=ID</code> to the URL, or set them in <code>src/config.js</code>.
+  </div>
+  <div class="banner banner-warning" id="warning-banner" role="status" hidden></div>
+
+  <main class="app-main">
+    <div class="center-state" id="state-loading">
+      <p>Loading…</p>
+    </div>
+
+    <div class="center-state" id="state-error" hidden>
+      <h2>Something went wrong</h2>
+      <p class="error-text" id="error-message"></p>
+    </div>
+
+    <div class="center-state" id="state-finished" hidden>
+      <h2>All done</h2>
+      <p>There are no more subjects to review in this workflow right now. Thank you!</p>
+    </div>
+
+    <div class="review" id="state-review" hidden>
+      <section class="viewer" aria-label="Subject">
+        <div class="image-frame" id="image-frame">
+          <img id="subject-image" alt="Subject image" />
+          <img id="saliency-image" class="saliency" alt="" hidden />
+          <div class="image-error" id="image-error" hidden>
+            <p>This image could not be loaded.</p>
+            <button class="secondary-button" id="skip-button" type="button">Skip this subject</button>
+          </div>
+        </div>
+        <div class="heatmap-controls" id="heatmap-controls" hidden>
+          <label class="toggle">
+            <input type="checkbox" id="heatmap-toggle" checked />
+            Show where the AI looked
+          </label>
+          <label class="slider">
+            Opacity
+            <input type="range" id="heatmap-opacity" min="0" max="1" step="0.05" value="0.6" />
+          </label>
+        </div>
+        <p class="subject-meta">
+          <span>Subject <span id="subject-id"></span></span>
+          <a id="talk-link" target="_blank" rel="noopener noreferrer" hidden>Discuss on Talk</a>
+        </p>
+      </section>
+
+      <section class="panel" aria-label="AI suggestion">
+        <div class="suggestion">
+          <p class="eyebrow">The AI thinks this is</p>
+          <p class="ai-label" id="ai-label"></p>
+          <div class="confidence" id="confidence">
+            <div class="meter" role="meter" aria-label="AI confidence" aria-valuemin="0" aria-valuemax="100" id="confidence-meter">
+              <div class="meter-fill" id="confidence-fill"></div>
+            </div>
+            <span id="confidence-text"></span>
+          </div>
+          <p class="model-name" id="model-name" hidden></p>
+        </div>
+
+        <p class="prompt">Do you agree?</p>
+        <div class="decision">
+          <button class="decision-button accept" id="accept-button" type="button">
+            Accept <kbd>A</kbd>
+          </button>
+          <button class="decision-button reject" id="reject-button" type="button">
+            Reject <kbd>R</kbd>
+          </button>
+        </div>
+
+        <button class="explain-button" id="explain-button" type="button"
+          aria-expanded="false" aria-controls="explanation" hidden>
+          <span id="explain-button-text">Why does the AI think this?</span> <kbd>E</kbd>
+        </button>
+
+        <div class="feedback" id="feedback" role="status" aria-live="polite" hidden></div>
+
+        <section class="explanation" id="explanation" aria-label="Explanation" hidden>
+          <div class="explain-part" id="part-saliency" hidden>
+            <h3>Where the AI looked</h3>
+            <p class="hint">The highlighted areas of the image mattered most to the AI's decision.</p>
+          </div>
+
+          <div class="explain-part" id="part-probabilities" hidden>
+            <h3>How sure it was</h3>
+            <ul class="bars" id="probability-bars"></ul>
+          </div>
+
+          <div class="explain-part" id="part-features" hidden>
+            <h3>What pushed it towards this answer</h3>
+            <p class="hint">Bars to the right argued <em>for</em> this answer, bars to the left argued <em>against</em> it.</p>
+            <ul class="feature-bars" id="feature-bars"></ul>
+          </div>
+
+          <div class="explain-part" id="part-examples" hidden>
+            <h3>Examples it learned from</h3>
+            <ul class="examples" id="examples"></ul>
+          </div>
+
+          <div class="explain-part" id="part-rationale" hidden>
+            <h3>In words</h3>
+            <p id="rationale"></p>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <details class="payload-preview" id="payload-preview" hidden>
+      <summary>Last classification payload</summary>
+      <pre id="payload-json"></pre>
+    </details>
+  </main>
+
+  <footer class="app-footer">
+    Built on the <a href="https://www.zooniverse.org" target="_blank" rel="noopener noreferrer">Zooniverse</a> Panoptes API ·
+    <a id="privacy-link" target="_blank" rel="noopener noreferrer">Privacy</a>
+  </footer>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

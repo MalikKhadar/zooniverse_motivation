@@ -1,0 +1,4 @@
+image,saliency,label,confidence,probabilities,features,examples,rationale,model,object_id
+../demo/subject-spiral.jpg,../demo/subject-spiral-saliency.png,spiral,0.91,"{""spiral"": 0.91, ""elliptical"": 0.04, ""edge_on"": 0.03, ""merger"": 0.02}","[{""name"": ""Arm-like structure"", ""value"": 0.62}, {""name"": ""Smooth light profile"", ""value"": -0.21}]","[{""url"": ""https://example.org/training/spiral-1.jpg"", ""label"": ""spiral""}]",Curved bands of light wind out from a central bulge.,toy-cnn-v0.3,OBJ-001
+../demo/subject-edge-on.jpg,../demo/subject-edge-on-saliency.png,spiral,58%,"{""spiral"": 0.58, ""edge_on"": 0.33, ""elliptical"": 0.07, ""merger"": 0.02}",,,The model focused on the bright centre.,toy-cnn-v0.3,OBJ-002
+../demo/subject-elliptical.jpg,,elliptical,,,,,,,OBJ-003
