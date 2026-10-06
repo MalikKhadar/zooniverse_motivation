@@ -227,7 +227,7 @@ async function classifyDirect(page, times) {
   }
 }
 
-test('surveys: skepticism once on first visit, SIMS after every 5th classification', async () => {
+test('surveys: skepticism once on first visit, needs check-in after every 5th classification', async () => {
   const { page, errors } = await open('', null, { waitFor: '#state-survey:not([hidden])' });
   assert.equal(await page.isHidden('#state-review'), true);
   assert.equal(await page.locator('form.survey[data-survey="ai_skepticism"] .likert-item').count(), 6);
@@ -237,30 +237,27 @@ test('surveys: skepticism once on first visit, SIMS after every 5th classificati
   await page.waitForSelector('#state-review:not([hidden])');
 
   await classifyDirect(page, 4);
-  assert.equal(await page.isHidden('#state-survey'), true, 'no SIMS before the 5th');
+  assert.equal(await page.isHidden('#state-survey'), true, 'no check-in before the 5th');
   const fourth = await lastPayload(page);
   assert.equal(fourth.metadata.participant.classification_number, 4);
   assert.equal(fourth.metadata.participant.skepticism.scores.skepticism, 4);
-  assert.equal(fourth.metadata.sims, undefined);
+  assert.equal(fourth.metadata.needs, undefined);
 
-  // The 5th decision opens the SIMS before anything is submitted.
+  // The 5th decision opens the check-in before anything is submitted.
   await page.keyboard.press('r');
-  await page.waitForSelector('form.survey[data-survey="sims"]');
-  assert.equal(await page.locator('form.survey[data-survey="sims"] .likert-item').count(), 16);
+  await page.waitForSelector('form.survey[data-survey="needs"]');
+  assert.equal(await page.locator('form.survey[data-survey="needs"] .likert-item').count(), 3);
   assert.equal((await lastPayload(page)).metadata.participant.classification_number, 4);
 
-  await answerSurvey(page, 'sims', 3);
+  await answerSurvey(page, 'needs', 3);
   await page.waitForFunction(() => window.__secondLook.participant.classificationCount === 5);
   const fifth = await lastPayload(page);
   assert.equal(fifth.metadata.ai_review.decision, 'reject');
   assert.equal(fifth.metadata.participant.classification_number, 5);
-  assert.equal(fifth.metadata.sims.survey, 'sims');
-  assert.equal(fifth.metadata.sims.block, 1);
-  assert.equal(Object.keys(fifth.metadata.sims.responses).length, 16);
-  assert.deepEqual(fifth.metadata.sims.scores, {
-    intrinsic_motivation: 3, identified_regulation: 3, external_regulation: 3, amotivation: 3,
-    self_determination_index: 0,
-  });
+  assert.equal(fifth.metadata.needs.survey, 'needs');
+  assert.equal(fifth.metadata.needs.block, 1);
+  assert.deepEqual(fifth.metadata.needs.responses, { autonomy: 3, competence: 3, relatedness: 3 });
+  assert.deepEqual(fifth.metadata.needs.scores, { autonomy: 3, competence: 3, relatedness: 3 });
   assert.ok(fifth.metadata.participant.id);
 
   // A returning visitor is not asked again and keeps the same participant ID.
@@ -272,7 +269,7 @@ test('surveys: skepticism once on first visit, SIMS after every 5th classificati
   await page.close();
 });
 
-test('surveys: a failed submission after the SIMS does not ask it again', async () => {
+test('surveys: a failed submission after the check-in does not ask it again', async () => {
   const mock = mockPanoptes({ failClassification: true });
   const { page } = await open('?project=123', mock.setup, { waitFor: '#state-survey:not([hidden])' });
   await answerSurvey(page, 'ai_skepticism', 4);
@@ -281,14 +278,14 @@ test('surveys: a failed submission after the SIMS does not ask it again', async 
   // Pretend four classifications already happened so the next one is the 5th.
   await page.evaluate(() => { window.__secondLook.participant.data.classificationCount = 4; });
   await page.click('#accept-button');
-  await answerSurvey(page, 'sims', 5);
+  await answerSurvey(page, 'needs', 5);
   await page.waitForSelector('#feedback.error');
 
   await page.click('#accept-button');
   await page.waitForFunction(() => !window.__secondLook.state.busy);
   assert.equal(await page.isHidden('#state-survey'), true);
   assert.equal(mock.posted.length, 2);
-  assert.deepEqual(mock.posted[0].metadata.sims, mock.posted[1].metadata.sims);
+  assert.deepEqual(mock.posted[0].metadata.needs, mock.posted[1].metadata.needs);
   assert.equal(mock.posted[1].metadata.participant.classification_number, 5);
   await page.close();
 });

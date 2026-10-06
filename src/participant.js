@@ -15,14 +15,14 @@ export class Participant {
   constructor({ storageKey, storage }) {
     this.storageKey = storageKey;
     this.storage = storage;
-    this.data = this.load() || { id: randomId(), skepticism: null, classificationCount: 0, simsCount: 0 };
+    this.data = this.load() || { id: randomId(), skepticism: null, classificationCount: 0, checkInCount: 0 };
     this.save();
   }
 
   load() {
     try {
       const saved = JSON.parse(this.storage?.getItem(this.storageKey) || 'null');
-      return saved?.id ? saved : null;
+      return saved?.id ? { checkInCount: 0, ...saved } : null;
     } catch (_) {
       return null;
     }
@@ -34,7 +34,7 @@ export class Participant {
 
   reset() {
     try { this.storage?.removeItem(this.storageKey); } catch (_) {}
-    this.data = { id: randomId(), skepticism: null, classificationCount: 0, simsCount: 0 };
+    this.data = { id: randomId(), skepticism: null, classificationCount: 0, checkInCount: 0 };
     this.save();
   }
 
@@ -47,14 +47,14 @@ export class Participant {
     this.save();
   }
 
-  recordClassification({ withSims = false } = {}) {
+  recordClassification({ withCheckIn = false } = {}) {
     this.data.classificationCount += 1;
-    if (withSims) this.data.simsCount += 1;
+    if (withCheckIn) this.data.checkInCount += 1;
     this.save();
   }
 
   /** True when the classification about to be sent is the nth, 2nth, … one. */
-  simsDueOnNext(every) {
+  checkInDueOnNext(every) {
     return every > 0 && (this.data.classificationCount + 1) % every === 0;
   }
 

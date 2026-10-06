@@ -26,8 +26,8 @@ open, and how long they took to decide, so you can study how explanations
 change agreement with the AI.
 
 Volunteers also answer short questionnaires. A few questions on attitudes to
-AI come on their first visit, and the Situational Motivation Scale (SIMS) comes
-after every fifth classification. See [Questionnaires](#questionnaires).
+AI come on their first visit, and a three-item check-in on autonomy,
+competence and relatedness comes after every fifth classification. See [Questionnaires](#questionnaires).
 
 Like [cosmic-canvas](https://github.com/astrohayley/cosmic-canvas), it has no
 build step: static HTML, CSS and ES modules that you can host on GitHub Pages.
@@ -153,15 +153,11 @@ the branch). `.nojekyll` is already in place.
       "classification_number": 5,             // this volunteer's nth classification
       "skepticism": { "survey": "ai_skepticism", "responses": { … }, "scores": { "skepticism": 4.5 }, … }
     },
-    "sims": {                                 // only on every 5th classification
-      "survey": "sims", "version": "1", "block": 1,
-      "responses": { "q1": 6, "q2": 5, …, "q16": 1 },
-      "scores": {
-        "intrinsic_motivation": 6.25, "identified_regulation": 5,
-        "external_regulation": 2.5, "amotivation": 1.25,
-        "self_determination_index": 12.5
-      },
-      "started_at": "…", "completed_at": "…", "duration_ms": 61234
+    "needs": {                                // only on every 5th classification
+      "survey": "needs", "version": "1", "block": 1,
+      "responses": { "autonomy": 6, "competence": 5, "relatedness": 2 },
+      "scores": { "autonomy": 6, "competence": 5, "relatedness": 2 },
+      "started_at": "…", "completed_at": "…", "duration_ms": 9234
     }
   },
   "links": { "project": "123", "workflow": "456", "subjects": ["901"] },
@@ -186,21 +182,22 @@ Trust in Automated Systems scale (Jian, Bisantz & Drury, 2000) and reworded to
 refer to AI rather than a specific system. Replace them with another instrument
 if your study calls for one.
 
-**Situational Motivation Scale (every 5th classification).** The 16-item SIMS
-(Guay, Vallerand & Blanchard, 2000), stem "Why are you currently engaged in
-this activity?". It has four subscales: intrinsic motivation, identified
-regulation, external regulation and amotivation. Each subscale score is the
-mean of its four items. The self-determination index is
-2·IM + IR − ER − 2·AM. The SIMS opens after the volunteer decides on their
-5th, 10th, 15th… subject. The answers go in that classification, so they
-reach Panoptes together. `CONFIG.surveys.simsEvery` changes the interval.
+**Needs check-in (every 5th classification).** One item each for autonomy,
+competence and relatedness, adapted from the single-item basic psychological
+needs measures. The items are reworded in the past tense to refer to the
+classifications the volunteer has just done, following the Zooniverse
+adaptation of the BPNSFS items. Each item is scored on its own, from
+1 (very strongly disagree) to 7 (very strongly agree). The check-in opens after
+the volunteer decides on their 5th, 10th, 15th… subject. The answers go in
+that classification, so they reach Panoptes together.
+`CONFIG.surveys.checkInEvery` changes the interval.
 
 **Where the answers go.** A static page can only send data to Zooniverse as
 classifications, so answers travel in classification metadata (see above).
 Each browser gets a random participant ID that links a volunteer's
 classifications and answers. The ID is stored in `localStorage` with their
 skepticism answers and classification count. The count carries over between
-visits, so the SIMS stays on schedule. Clearing site data or switching
+visits, so the check-in stays on schedule. Clearing site data or switching
 browsers starts a new participant. Get informed consent and ethics approval as
 your institution requires before collecting survey data.
 

@@ -34,7 +34,7 @@ export const CONFIG = {
   // classification metadata; `?surveys=off` disables both for a visit.
   surveys: {
     skepticism: true, // AI skepticism questions on a volunteer's first visit
-    simsEvery: 5,     // Situational Motivation Scale after every Nth classification; 0 = never
+    checkInEvery: 5,  // needs check-in (autonomy, competence, relatedness) after every Nth classification; 0 = never
   },
 
   // Subject metadata keys holding the model output. A leading '#' hides a

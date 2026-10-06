@@ -41,52 +41,35 @@ export const SKEPTICISM_SURVEY = {
 };
 
 /**
- * Situational Motivation Scale (SIMS; Guay, Vallerand & Blanchard, 2000).
- * 16 items, four subscales, items in the published order.
+ * Basic psychological needs check-in, asked every few classifications.
+ * Adapted from the single-item measures of autonomy, competence and
+ * relatedness, reworded to refer to the classifications the volunteer has just
+ * done (past tense, as in the Zooniverse adaptation of the BPNSFS items).
  */
-export const SIMS_SURVEY = {
-  id: 'sims',
+export const NEEDS_SURVEY = {
+  id: 'needs',
   version: '1',
   title: 'Quick check-in',
-  intro: 'Please read each item and pick the answer that best describes why you are doing this activity right now.',
-  stem: 'Why are you currently engaged in this activity?',
+  intro: 'Thinking about the classifications you have just done, how much do you agree or disagree with each statement?',
+  stem: 'While classifying…',
   scale: {
     min: 1,
     max: 7,
     anchors: {
-      1: 'Corresponds not at all',
-      2: 'Corresponds very little',
-      3: 'Corresponds a little',
-      4: 'Corresponds moderately',
-      5: 'Corresponds enough',
-      6: 'Corresponds a lot',
-      7: 'Corresponds exactly',
+      1: 'Very strongly disagree',
+      2: 'Strongly disagree',
+      3: 'Disagree',
+      4: 'Neither disagree nor agree',
+      5: 'Agree',
+      6: 'Strongly agree',
+      7: 'Very strongly agree',
     },
   },
   items: [
-    { id: 'q1', text: 'Because I think that this activity is interesting', subscale: 'intrinsic_motivation' },
-    { id: 'q2', text: 'Because I am doing it for my own good', subscale: 'identified_regulation' },
-    { id: 'q3', text: 'Because I am supposed to do it', subscale: 'external_regulation' },
-    { id: 'q4', text: "There may be good reasons to do this activity, but personally I don't see any", subscale: 'amotivation' },
-    { id: 'q5', text: 'Because I think that this activity is pleasant', subscale: 'intrinsic_motivation' },
-    { id: 'q6', text: 'Because I think that this activity is good for me', subscale: 'identified_regulation' },
-    { id: 'q7', text: 'Because it is something that I have to do', subscale: 'external_regulation' },
-    { id: 'q8', text: 'I do this activity but I am not sure if it is worth it', subscale: 'amotivation' },
-    { id: 'q9', text: 'Because this activity is fun', subscale: 'intrinsic_motivation' },
-    { id: 'q10', text: 'By personal decision', subscale: 'identified_regulation' },
-    { id: 'q11', text: "Because I don't have any choice", subscale: 'external_regulation' },
-    { id: 'q12', text: "I don't know; I don't see what this activity brings me", subscale: 'amotivation' },
-    { id: 'q13', text: 'Because I feel good when doing this activity', subscale: 'intrinsic_motivation' },
-    { id: 'q14', text: 'Because I believe that this activity is important for me', subscale: 'identified_regulation' },
-    { id: 'q15', text: 'Because I feel that I have to do it', subscale: 'external_regulation' },
-    { id: 'q16', text: 'I do this activity, but I am not sure it is a good thing to pursue it', subscale: 'amotivation' },
+    { id: 'autonomy', text: 'I was able to do things that I really wanted and valued.', subscale: 'autonomy' },
+    { id: 'competence', text: 'I was able to do things well and achieve my goals.', subscale: 'competence' },
+    { id: 'relatedness', text: 'I felt close and connected with other people.', subscale: 'relatedness' },
   ],
-  // Self-determination index: weights run from autonomous to amotivated.
-  derive: s => ({
-    self_determination_index: round(
-      2 * s.intrinsic_motivation + s.identified_regulation - s.external_regulation - 2 * s.amotivation,
-    ),
-  }),
 };
 
 function round(n) {

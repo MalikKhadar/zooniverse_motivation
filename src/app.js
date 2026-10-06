@@ -4,7 +4,7 @@ import { ReviewTracker, buildClassification } from './classification.js';
 import { PanoptesClient, Auth } from './panoptes.js';
 import { DEMO_PROJECT, DEMO_WORKFLOW, DEMO_SUBJECTS } from './demo.js';
 import { Participant } from './participant.js';
-import { SKEPTICISM_SURVEY, SIMS_SURVEY } from './surveys.js';
+import { SKEPTICISM_SURVEY, NEEDS_SURVEY } from './surveys.js';
 import { runSurvey } from './survey-view.js';
 
 const EXPLANATION_MODES = ['on-request', 'always', 'never'];
@@ -310,13 +310,13 @@ async function decide(decision) {
   const finishedAt = Date.now();
   const review = tracker.finish(decision);
 
-  // Kept on the subject so a failed submission doesn't ask the SIMS twice.
-  if (settings.surveys && participant.simsDueOnNext(CONFIG.surveys.simsEvery) && !state.current.sims) {
-    const result = await askSurvey(SIMS_SURVEY);
-    state.current.sims = { ...result, block: participant.data.simsCount + 1 };
+  // Kept on the subject so a failed submission doesn't ask the check-in twice.
+  if (settings.surveys && participant.checkInDueOnNext(CONFIG.surveys.checkInEvery) && !state.current.needs) {
+    const result = await askSurvey(NEEDS_SURVEY);
+    state.current.needs = { ...result, block: participant.data.checkInCount + 1 };
     show('state-review');
   }
-  const { sims } = state.current;
+  const { needs } = state.current;
 
   const classification = buildClassification({
     project: state.project,
@@ -336,13 +336,13 @@ async function decide(decision) {
     },
     extraMetadata: {
       participant: participant.metadata(),
-      ...(sims ? { sims } : {}),
+      ...(needs ? { needs } : {}),
     },
   });
 
   try {
     await source.submit(classification);
-    participant.recordClassification({ withSims: Boolean(sims) });
+    participant.recordClassification({ withCheckIn: Boolean(needs) });
     if (settings.demo || settings.debug) {
       $('payload-json').textContent = JSON.stringify(classification, null, 2);
       $('payload-preview').hidden = false;
