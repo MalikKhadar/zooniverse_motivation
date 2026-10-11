@@ -16,12 +16,11 @@ export const CONFIG = {
   // redirect URI and paste its client ID here. Empty = anonymous only.
   oauthClientId: '',
 
-  // The workflow needs one single-answer question task. Its answer order
-  // decides the annotation value: accept → acceptAnswer, reject → rejectAnswer.
+  // The workflow needs one single-answer question task whose answers are the
+  // classes below, in the same order. The annotation value is the index of the
+  // class the volunteer submits.
   task: {
     key: 'T0',
-    acceptAnswer: 0,
-    rejectAnswer: 1,
   },
 
   // How explanations are offered:
@@ -50,16 +49,17 @@ export const CONFIG = {
     model: '#ai_model',
   },
 
-  // The classes the model chooses between, keyed by the raw model label: a
-  // display name and a silhouette (any single-colour SVG or transparent PNG,
-  // tinted to match the theme). Unlisted labels are shown as-is.
+  // The classes the model chooses between, keyed by the raw model label, in
+  // the order of the workflow's answers: a display name and a silhouette (any
+  // single-colour SVG or transparent PNG, tinted to match the theme). Subjects
+  // whose AI label is not listed here are skipped.
   classes: {
-    longtail: { name: 'Long tail', icon: 'assets/classes/longtail.svg' },
-    onearm: { name: 'One arm', icon: 'assets/classes/onearm.svg' },
-    twoarm: { name: 'Two arms', icon: 'assets/classes/twoarm.svg' },
-    ring: { name: 'Ring', icon: 'assets/classes/ring.svg' },
-    shell: { name: 'Shell', icon: 'assets/classes/shell.svg' },
-    stream: { name: 'Stream', icon: 'assets/classes/stream.svg' },
+    longtail: { name: 'Long tail', icon: 'assets/classes/longtail.png' },
+    onearm: { name: 'One arm', icon: 'assets/classes/onearm.png' },
+    twoarm: { name: 'Two arms', icon: 'assets/classes/twoarm.png' },
+    ring: { name: 'Ring', icon: 'assets/classes/ring.png' },
+    shell: { name: 'Shell', icon: 'assets/classes/shell.png' },
+    stream: { name: 'Stream', icon: 'assets/classes/stream.png' },
   },
 
   // Written to classification metadata so exports can tell this front end apart.
@@ -73,3 +73,5 @@ export const CONFIG = {
 export const LABEL_NAMES = Object.fromEntries(
   Object.entries(CONFIG.classes).map(([label, { name }]) => [label, name]),
 );
+
+export const CLASS_LABELS = Object.keys(CONFIG.classes);

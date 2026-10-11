@@ -1,6 +1,6 @@
-import { CONFIG, LABEL_NAMES } from './config.js';
+import { CONFIG, LABEL_NAMES, CLASS_LABELS } from './config.js';
 import { parsePrediction, subjectImage } from './ai.js';
-import { ReviewTracker, buildClassification } from './classification.js';
+import { ReviewTracker, buildClassification, answerIndex } from './classification.js';
 import { PanoptesClient, Auth } from './panoptes.js';
 import { DEMO_PROJECT, DEMO_WORKFLOW, DEMO_SUBJECTS } from './demo.js';
 import { Participant } from './participant.js';
@@ -89,9 +89,11 @@ async function nextReviewable() {
     while (state.queue.length) {
       const subject = state.queue.shift();
       const prediction = parsePrediction(subject, CONFIG.metadataKeys, LABEL_NAMES);
-      if (prediction) return { subject, prediction };
+      if (prediction && CONFIG.classes[prediction.label]) return { subject, prediction };
       state.seen.add(String(subject.id));
-      console.warn(`Subject ${subject.id} has no ${CONFIG.metadataKeys.label} metadata; skipped.`);
+      console.warn(prediction
+        ? `Subject ${subject.id}: AI label "${prediction.label}" is not in CONFIG.classes; skipped.`
+        : `Subject ${subject.id} has no ${CONFIG.metadataKeys.label} metadata; skipped.`);
     }
     const batch = await source.nextBatch();
     if (!batch.length) return null;
@@ -196,21 +198,26 @@ function renderExamples(examples) {
   }
 }
 
-/** The model's classes as silhouettes, with its choice highlighted. */
-function renderClassStrip(prediction) {
-  const classes = Object.entries(CONFIG.classes);
-  $('class-strip').hidden = classes.length === 0;
+/**
+ * The classes as clickable silhouettes. The AI's pick is preselected and
+ * outlined green; every other class is outlined red, so choosing one reads as
+ * disagreeing with the AI.
+ */
+function renderChoices() {
+  const { prediction } = state.current;
   const list = $('class-options');
   list.replaceChildren();
-  for (const [label, { name, icon }] of classes) {
-    const li = document.createElement('li');
-    li.className = 'class-option';
-    li.dataset.label = label;
-    const chosen = label === prediction.label;
-    if (chosen) {
-      li.classList.add('is-prediction');
-      li.setAttribute('aria-current', 'true');
-    }
+  CLASS_LABELS.forEach((label, index) => {
+    const { name, icon } = CONFIG.classes[label];
+    const option = document.createElement('button');
+    option.type = 'button';
+    option.className = 'class-option';
+    option.dataset.label = label;
+    option.setAttribute('role', 'radio');
+    if (label === prediction.label) option.classList.add('is-ai');
+
+    const key = document.createElement('kbd');
+    key.textContent = String(index + 1);
     const silhouette = document.createElement('span');
     silhouette.className = 'class-icon';
     silhouette.setAttribute('aria-hidden', 'true');
@@ -218,9 +225,41 @@ function renderClassStrip(prediction) {
     const caption = document.createElement('span');
     caption.className = 'class-name';
     caption.textContent = name;
-    li.append(silhouette, caption);
-    list.append(li);
+    option.append(key, silhouette, caption);
+
+    if (label === prediction.label) {
+      const tag = document.createElement('span');
+      tag.className = 'ai-tag';
+      tag.textContent = "AI's pick";
+      option.append(tag);
+    }
+    option.addEventListener('click', () => select(label));
+    list.append(option);
+  });
+  renderSelection();
+}
+
+function renderSelection() {
+  const { prediction, selected } = state.current;
+  for (const option of $('class-options').children) {
+    const isSelected = option.dataset.label === selected;
+    option.classList.toggle('is-selected', isSelected);
+    option.setAttribute('aria-checked', String(isSelected));
+    option.tabIndex = isSelected ? 0 : -1;
   }
+  const agree = selected === prediction.label;
+  $('submit-button').classList.toggle('agree', agree);
+  $('submit-button').classList.toggle('disagree', !agree);
+  $('submit-button-text').textContent = agree
+    ? 'Agree with the AI'
+    : `Disagree: it's ${LABEL_NAMES[selected] || selected}`;
+}
+
+function select(label) {
+  if (!state.current || state.busy || label === state.current.selected) return;
+  state.current.selected = label;
+  state.current.tracker.record('select', label);
+  renderSelection();
 }
 
 function renderExplanation(prediction) {
@@ -259,7 +298,7 @@ function renderSubject() {
   $('model-name').hidden = !prediction.model;
   $('model-name').textContent = prediction.model ? `Model: ${prediction.model}` : '';
 
-  renderClassStrip(prediction);
+  renderChoices();
   $('saliency-image').src = prediction.saliencyUrl || '';
   renderExplanation(prediction);
 
@@ -290,8 +329,8 @@ function setExplanationOpen(open) {
 }
 
 function setDecisionEnabled(enabled) {
-  $('accept-button').disabled = !enabled;
-  $('reject-button').disabled = !enabled;
+  $('submit-button').disabled = !enabled;
+  for (const option of $('class-options').children) option.disabled = !enabled;
 }
 
 function showFeedback(kind, message) {
@@ -314,6 +353,7 @@ async function advance() {
     state.seen.add(String(next.subject.id));
     state.current = {
       ...next,
+      selected: next.prediction.label,
       tracker: new ReviewTracker({ prediction: next.prediction, explanationMode: settings.explanationMode }),
     };
     renderSubject();
@@ -329,14 +369,15 @@ function askSurvey(survey) {
   return runSurvey($('state-survey'), survey);
 }
 
-async function decide(decision) {
+async function submit() {
   if (!state.current || state.busy) return;
   state.busy = true;
   setDecisionEnabled(false);
 
-  const { subject, tracker } = state.current;
+  const { subject, tracker, selected } = state.current;
   const finishedAt = Date.now();
-  const review = tracker.finish(decision);
+  const review = tracker.finish(selected);
+  const { decision } = review;
 
   // Kept on the subject so a failed submission doesn't ask the check-in twice.
   if (settings.surveys && participant.checkInDueOnNext(CONFIG.surveys.checkInEvery) && !state.current.needs) {
@@ -351,7 +392,7 @@ async function decide(decision) {
     workflow: state.workflow,
     subject,
     task: CONFIG.task,
-    decision,
+    answer: answerIndex(selected, CLASS_LABELS),
     review,
     startedAt: tracker.startedAt,
     finishedAt,
@@ -379,7 +420,7 @@ async function decide(decision) {
     renderHeader();
     showFeedback('success', decision === 'accept'
       ? 'Thanks! You agreed with the AI.'
-      : 'Thanks! You disagreed with the AI.');
+      : `Thanks! You said it's ${LABEL_NAMES[selected] || selected}.`);
     setTimeout(async () => {
       await advance();
       state.busy = false;
@@ -401,14 +442,27 @@ function onKeydown(event) {
   if (event.target.closest?.('input, textarea, select')) return;
   if ($('state-review').hidden) return;
   const key = event.key.toLowerCase();
-  if (key === 'a') decide('accept');
-  else if (key === 'r') decide('reject');
-  else if (key === 'e') toggleExplanation();
+  const number = Number(event.key);
+  if (Number.isInteger(number) && number >= 1 && number <= CLASS_LABELS.length) {
+    select(CLASS_LABELS[number - 1]);
+  } else if (key === 'enter' && (event.target.closest?.('.class-option') || !event.target.closest?.('button, a'))) {
+    event.preventDefault();
+    submit();
+  } else if (key === 'e') {
+    toggleExplanation();
+  }
 }
 
 function bindEvents() {
-  $('accept-button').addEventListener('click', () => decide('accept'));
-  $('reject-button').addEventListener('click', () => decide('reject'));
+  $('submit-button').addEventListener('click', submit);
+  $('class-options').addEventListener('keydown', (event) => {
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+    if (!step || !state.current) return;
+    event.preventDefault();
+    const index = CLASS_LABELS.indexOf(state.current.selected);
+    select(CLASS_LABELS[(index + step + CLASS_LABELS.length) % CLASS_LABELS.length]);
+    $('class-options').querySelector('.is-selected')?.focus();
+  });
   $('explain-button').addEventListener('click', toggleExplanation);
   $('skip-button').addEventListener('click', () => advance());
   document.addEventListener('keydown', onKeydown);
@@ -446,8 +500,9 @@ function checkWorkflow(workflow) {
   if (!task) {
     showWarning(`Workflow ${workflow.id} has no task "${CONFIG.task.key}". ` +
       'Classifications will still be sent, but will not match the workflow in exports.');
-  } else if ((task.answers?.length || 0) < 2) {
-    showWarning(`Task "${CONFIG.task.key}" should be a question with Accept and Reject answers.`);
+  } else if ((task.answers?.length || 0) !== CLASS_LABELS.length) {
+    showWarning(`Task "${CONFIG.task.key}" should be a question with one answer per class ` +
+      `(${CLASS_LABELS.length}), in the same order as CONFIG.classes.`);
   }
 }
 

@@ -2,358 +2,6 @@
 // The AI predictions are made up for the demo.
 export const DEMO_SUBJECTS = [
   {
-    "id": "demo-shell1",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/shell1.jpg"
-      },
-      {
-        "image/png": "demo/morphology/shell1-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "shell",
-      "#ai_confidence": "0.7",
-      "#ai_probabilities": "{\"shell\": 0.7, \"ring\": 0.19, \"onearm\": 0.04, \"stream\": 0.04, \"twoarm\": 0.03, \"longtail\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.43}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.08}, {\"name\": \"Single curved arm\", \"value\": 0.06}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found sharp-edged arcs of faint light on the galaxy's outskirts, like nested shells.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "shell"
-    }
-  },
-  {
-    "id": "demo-onearm3",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/onearm3.jpg"
-      },
-      {
-        "image/png": "demo/morphology/onearm3-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "onearm",
-      "#ai_confidence": "0.73",
-      "#ai_probabilities": "{\"onearm\": 0.73, \"longtail\": 0.19, \"stream\": 0.03, \"twoarm\": 0.02, \"ring\": 0.01, \"shell\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Single curved arm\", \"value\": 0.45}, {\"name\": \"Long tail extending away\", \"value\": -0.19}, {\"name\": \"Narrow band of light\", \"value\": -0.08}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found one curved arm of light wrapping partway around the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "onearm"
-    }
-  },
-  {
-    "id": "demo-shell5",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/shell5.jpg"
-      },
-      {
-        "image/png": "demo/morphology/shell5-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "shell",
-      "#ai_confidence": "0.82",
-      "#ai_probabilities": "{\"shell\": 0.82, \"ring\": 0.1, \"longtail\": 0.03, \"onearm\": 0.02, \"stream\": 0.02, \"twoarm\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.37}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.07}, {\"name\": \"Single curved arm\", \"value\": -0.09}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found sharp-edged arcs of faint light on the galaxy's outskirts, like nested shells.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "shell"
-    }
-  },
-  {
-    "id": "demo-longtail1",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/longtail1.jpg"
-      },
-      {
-        "image/png": "demo/morphology/longtail1-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "longtail",
-      "#ai_confidence": "0.72",
-      "#ai_probabilities": "{\"longtail\": 0.72, \"onearm\": 0.16, \"twoarm\": 0.05, \"shell\": 0.04, \"stream\": 0.03, \"ring\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.36}, {\"name\": \"Single curved arm\", \"value\": -0.13}, {\"name\": \"Arms on opposite sides\", \"value\": -0.08}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "longtail"
-    }
-  },
-  {
-    "id": "demo-shell2",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/shell2.jpg"
-      },
-      {
-        "image/png": "demo/morphology/shell2-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "ring",
-      "#ai_confidence": "0.57",
-      "#ai_probabilities": "{\"ring\": 0.57, \"shell\": 0.32, \"onearm\": 0.05, \"twoarm\": 0.03, \"longtail\": 0.02, \"stream\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.36}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.26}, {\"name\": \"Bright central core\", \"value\": 0.19}, {\"name\": \"Arms on opposite sides\", \"value\": -0.01}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy. It was not very sure, and leaned heavily on the bright core of the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "shell"
-    }
-  },
-  {
-    "id": "demo-ring7",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/ring7.jpg"
-      },
-      {
-        "image/png": "demo/morphology/ring7-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "ring",
-      "#ai_confidence": "0.69",
-      "#ai_probabilities": "{\"ring\": 0.69, \"shell\": 0.24, \"onearm\": 0.02, \"twoarm\": 0.02, \"stream\": 0.02, \"longtail\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.42}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.15}, {\"name\": \"Long tail extending away\", \"value\": 0.04}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "ring"
-    }
-  },
-  {
-    "id": "demo-longtail2",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/longtail2.jpg"
-      },
-      {
-        "image/png": "demo/morphology/longtail2-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "longtail",
-      "#ai_confidence": "0.75",
-      "#ai_probabilities": "{\"longtail\": 0.75, \"onearm\": 0.15, \"stream\": 0.04, \"twoarm\": 0.03, \"shell\": 0.03, \"ring\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.51}, {\"name\": \"Single curved arm\", \"value\": -0.14}, {\"name\": \"Arms on opposite sides\", \"value\": 0.02}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "longtail"
-    }
-  },
-  {
-    "id": "demo-twoarm2",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/twoarm2.jpg"
-      },
-      {
-        "image/png": "demo/morphology/twoarm2-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "twoarm",
-      "#ai_confidence": "0.76",
-      "#ai_probabilities": "{\"twoarm\": 0.76, \"onearm\": 0.16, \"ring\": 0.03, \"shell\": 0.02, \"stream\": 0.02, \"longtail\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Arms on opposite sides\", \"value\": 0.59}, {\"name\": \"Single curved arm\", \"value\": -0.09}, {\"name\": \"Closed loop around the galaxy\", \"value\": 0.07}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found curved features on opposite sides of the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "twoarm"
-    }
-  },
-  {
-    "id": "demo-shell4",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/shell4.jpg"
-      },
-      {
-        "image/png": "demo/morphology/shell4-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "shell",
-      "#ai_confidence": "0.83",
-      "#ai_probabilities": "{\"shell\": 0.83, \"ring\": 0.13, \"onearm\": 0.01, \"twoarm\": 0.01, \"stream\": 0.01, \"longtail\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.54}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.12}, {\"name\": \"Single curved arm\", \"value\": -0.01}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found sharp-edged arcs of faint light on the galaxy's outskirts, like nested shells.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "shell"
-    }
-  },
-  {
-    "id": "demo-longtail6",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/longtail6.jpg"
-      },
-      {
-        "image/png": "demo/morphology/longtail6-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "longtail",
-      "#ai_confidence": "0.71",
-      "#ai_probabilities": "{\"longtail\": 0.71, \"onearm\": 0.23, \"shell\": 0.03, \"ring\": 0.02, \"stream\": 0.01, \"twoarm\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.47}, {\"name\": \"Single curved arm\", \"value\": -0.06}, {\"name\": \"Arms on opposite sides\", \"value\": 0.05}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "longtail"
-    }
-  },
-  {
-    "id": "demo-stream2",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/stream2.jpg"
-      },
-      {
-        "image/png": "demo/morphology/stream2-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "longtail",
-      "#ai_confidence": "0.56",
-      "#ai_probabilities": "{\"longtail\": 0.56, \"stream\": 0.32, \"shell\": 0.06, \"twoarm\": 0.05, \"onearm\": 0.01, \"ring\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.4}, {\"name\": \"Narrow band of light\", \"value\": -0.37}, {\"name\": \"Bright central core\", \"value\": 0.15}, {\"name\": \"Arms on opposite sides\", \"value\": -0.04}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy. It was not very sure, and leaned heavily on the bright core of the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "stream"
-    }
-  },
-  {
-    "id": "demo-ring3",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/ring3.jpg"
-      },
-      {
-        "image/png": "demo/morphology/ring3-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "ring",
-      "#ai_confidence": "0.82",
-      "#ai_probabilities": "{\"ring\": 0.82, \"shell\": 0.11, \"twoarm\": 0.03, \"onearm\": 0.02, \"stream\": 0.02, \"longtail\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.53}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.12}, {\"name\": \"Narrow band of light\", \"value\": -0.02}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "ring"
-    }
-  },
-  {
-    "id": "demo-shell3",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/shell3.jpg"
-      },
-      {
-        "image/png": "demo/morphology/shell3-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "shell",
-      "#ai_confidence": "0.92",
-      "#ai_probabilities": "{\"shell\": 0.92, \"ring\": 0.06, \"longtail\": 0.01, \"onearm\": 0.0, \"twoarm\": 0.0, \"stream\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.4}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.08}, {\"name\": \"Long tail extending away\", \"value\": -0.0}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found sharp-edged arcs of faint light on the galaxy's outskirts, like nested shells.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "shell"
-    }
-  },
-  {
-    "id": "demo-stream4",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/stream4.jpg"
-      },
-      {
-        "image/png": "demo/morphology/stream4-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "stream",
-      "#ai_confidence": "0.9",
-      "#ai_probabilities": "{\"stream\": 0.9, \"longtail\": 0.06, \"ring\": 0.02, \"twoarm\": 0.01, \"shell\": 0.01, \"onearm\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Narrow band of light\", \"value\": 0.5}, {\"name\": \"Long tail extending away\", \"value\": -0.17}, {\"name\": \"Arms on opposite sides\", \"value\": -0.07}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a narrow band of light running alongside or away from the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "stream"
-    }
-  },
-  {
-    "id": "demo-stream3",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/stream3.jpg"
-      },
-      {
-        "image/png": "demo/morphology/stream3-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "stream",
-      "#ai_confidence": "0.7",
-      "#ai_probabilities": "{\"stream\": 0.7, \"longtail\": 0.21, \"shell\": 0.05, \"twoarm\": 0.02, \"onearm\": 0.01, \"ring\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Narrow band of light\", \"value\": 0.44}, {\"name\": \"Long tail extending away\", \"value\": -0.12}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.07}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a narrow band of light running alongside or away from the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "stream"
-    }
-  },
-  {
-    "id": "demo-stream5",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/stream5.jpg"
-      },
-      {
-        "image/png": "demo/morphology/stream5-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "stream",
-      "#ai_confidence": "0.77",
-      "#ai_probabilities": "{\"stream\": 0.77, \"longtail\": 0.17, \"onearm\": 0.02, \"ring\": 0.02, \"shell\": 0.02, \"twoarm\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Narrow band of light\", \"value\": 0.55}, {\"name\": \"Long tail extending away\", \"value\": -0.07}, {\"name\": \"Single curved arm\", \"value\": -0.05}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a narrow band of light running alongside or away from the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "stream"
-    }
-  },
-  {
     "id": "demo-ring1",
     "locations": [
       {
@@ -365,10 +13,10 @@ export const DEMO_SUBJECTS = [
     ],
     "metadata": {
       "#ai_label": "ring",
-      "#ai_confidence": "0.76",
-      "#ai_probabilities": "{\"ring\": 0.76, \"shell\": 0.16, \"longtail\": 0.02, \"onearm\": 0.02, \"twoarm\": 0.02, \"stream\": 0.01}",
+      "#ai_confidence": "0.64",
+      "#ai_probabilities": "{\"ring\": 0.64, \"shell\": 0.26, \"onearm\": 0.03, \"twoarm\": 0.03, \"longtail\": 0.02, \"stream\": 0.02}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.45}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.1}, {\"name\": \"Narrow band of light\", \"value\": 0.09}]",
+      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.53}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.18}, {\"name\": \"Arms on opposite sides\", \"value\": -0.1}]",
       "#ai_examples": "[{\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
       "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
@@ -387,58 +35,146 @@ export const DEMO_SUBJECTS = [
     ],
     "metadata": {
       "#ai_label": "onearm",
-      "#ai_confidence": "0.8",
-      "#ai_probabilities": "{\"onearm\": 0.8, \"longtail\": 0.15, \"ring\": 0.02, \"twoarm\": 0.01, \"shell\": 0.01, \"stream\": 0.01}",
+      "#ai_confidence": "0.71",
+      "#ai_probabilities": "{\"onearm\": 0.71, \"longtail\": 0.23, \"shell\": 0.03, \"ring\": 0.02, \"stream\": 0.01, \"twoarm\": 0.0}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Single curved arm\", \"value\": 0.46}, {\"name\": \"Long tail extending away\", \"value\": -0.18}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.01}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
+      "#ai_features": "[{\"name\": \"Single curved arm\", \"value\": 0.47}, {\"name\": \"Long tail extending away\", \"value\": -0.06}, {\"name\": \"Arms on opposite sides\", \"value\": 0.05}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
       "#ai_rationale": "The model found one curved arm of light wrapping partway around the galaxy.",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "onearm"
     }
   },
   {
-    "id": "demo-stream1",
+    "id": "demo-stream2",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/stream1.jpg"
+        "image/jpeg": "demo/morphology/stream2.jpg"
       },
       {
-        "image/png": "demo/morphology/stream1-saliency.png"
+        "image/png": "demo/morphology/stream2-saliency.png"
       }
     ],
     "metadata": {
-      "#ai_label": "stream",
-      "#ai_confidence": "0.81",
-      "#ai_probabilities": "{\"stream\": 0.81, \"longtail\": 0.13, \"onearm\": 0.02, \"twoarm\": 0.02, \"ring\": 0.02, \"shell\": 0.01}",
+      "#ai_label": "longtail",
+      "#ai_confidence": "0.53",
+      "#ai_probabilities": "{\"longtail\": 0.53, \"stream\": 0.3, \"shell\": 0.06, \"onearm\": 0.05, \"twoarm\": 0.04, \"ring\": 0.02}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Narrow band of light\", \"value\": 0.58}, {\"name\": \"Long tail extending away\", \"value\": -0.07}, {\"name\": \"Arms on opposite sides\", \"value\": -0.1}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a narrow band of light running alongside or away from the galaxy.",
+      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.37}, {\"name\": \"Narrow band of light\", \"value\": -0.22}, {\"name\": \"Bright central core\", \"value\": 0.22}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.06}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy. It was not very sure, and leaned heavily on the bright core of the galaxy.",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "stream"
     }
   },
   {
-    "id": "demo-twoarm1",
+    "id": "demo-ring3",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/twoarm1.jpg"
+        "image/jpeg": "demo/morphology/ring3.jpg"
       },
       {
-        "image/png": "demo/morphology/twoarm1-saliency.png"
+        "image/png": "demo/morphology/ring3-saliency.png"
       }
     ],
     "metadata": {
-      "#ai_label": "twoarm",
-      "#ai_confidence": "0.71",
-      "#ai_probabilities": "{\"twoarm\": 0.71, \"onearm\": 0.22, \"shell\": 0.02, \"stream\": 0.02, \"longtail\": 0.01, \"ring\": 0.01}",
+      "#ai_label": "ring",
+      "#ai_confidence": "0.76",
+      "#ai_probabilities": "{\"ring\": 0.76, \"shell\": 0.16, \"longtail\": 0.02, \"onearm\": 0.02, \"twoarm\": 0.02, \"stream\": 0.01}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Arms on opposite sides\", \"value\": 0.46}, {\"name\": \"Single curved arm\", \"value\": -0.14}, {\"name\": \"Closed loop around the galaxy\", \"value\": 0.04}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found curved features on opposite sides of the galaxy.",
+      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.45}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.1}, {\"name\": \"Narrow band of light\", \"value\": 0.09}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "twoarm"
+      "#demo_true_label": "ring"
+    }
+  },
+  {
+    "id": "demo-shell3",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/shell3.jpg"
+      },
+      {
+        "image/png": "demo/morphology/shell3-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "shell",
+      "#ai_confidence": "0.67",
+      "#ai_probabilities": "{\"shell\": 0.67, \"ring\": 0.18, \"longtail\": 0.07, \"onearm\": 0.04, \"stream\": 0.04, \"twoarm\": 0.01}",
+      "#ai_saliency": "1",
+      "#ai_features": "[{\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.36}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.13}, {\"name\": \"Long tail extending away\", \"value\": 0.04}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found sharp-edged arcs of faint light on the galaxy's outskirts, like nested shells.",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "shell"
+    }
+  },
+  {
+    "id": "demo-shell1",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/shell1.jpg"
+      },
+      {
+        "image/png": "demo/morphology/shell1-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "shell",
+      "#ai_confidence": "0.67",
+      "#ai_probabilities": "{\"shell\": 0.67, \"ring\": 0.19, \"twoarm\": 0.07, \"stream\": 0.05, \"longtail\": 0.03, \"onearm\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_features": "[{\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.39}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.09}, {\"name\": \"Arms on opposite sides\", \"value\": 0.02}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found sharp-edged arcs of faint light on the galaxy's outskirts, like nested shells.",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "shell"
+    }
+  },
+  {
+    "id": "demo-shell2",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/shell2.jpg"
+      },
+      {
+        "image/png": "demo/morphology/shell2-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "ring",
+      "#ai_confidence": "0.51",
+      "#ai_probabilities": "{\"ring\": 0.51, \"shell\": 0.28, \"onearm\": 0.09, \"longtail\": 0.05, \"twoarm\": 0.04, \"stream\": 0.03}",
+      "#ai_saliency": "1",
+      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.39}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.35}, {\"name\": \"Bright central core\", \"value\": 0.26}, {\"name\": \"Narrow band of light\", \"value\": 0.07}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy. It was not very sure, and leaned heavily on the bright core of the galaxy.",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "shell"
+    }
+  },
+  {
+    "id": "demo-longtail4",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/longtail4.jpg"
+      },
+      {
+        "image/png": "demo/morphology/longtail4-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "longtail",
+      "#ai_confidence": "0.8",
+      "#ai_probabilities": "{\"longtail\": 0.8, \"onearm\": 0.12, \"ring\": 0.03, \"shell\": 0.02, \"stream\": 0.02, \"twoarm\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.47}, {\"name\": \"Single curved arm\", \"value\": -0.13}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.01}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy.",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "longtail"
     }
   },
   {
@@ -453,10 +189,10 @@ export const DEMO_SUBJECTS = [
     ],
     "metadata": {
       "#ai_label": "longtail",
-      "#ai_confidence": "0.54",
-      "#ai_probabilities": "{\"longtail\": 0.54, \"onearm\": 0.26, \"shell\": 0.06, \"stream\": 0.05, \"twoarm\": 0.04, \"ring\": 0.04}",
+      "#ai_confidence": "0.52",
+      "#ai_probabilities": "{\"longtail\": 0.52, \"onearm\": 0.37, \"ring\": 0.04, \"shell\": 0.03, \"stream\": 0.03, \"twoarm\": 0.02}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.42}, {\"name\": \"Single curved arm\", \"value\": -0.28}, {\"name\": \"Bright central core\", \"value\": 0.25}, {\"name\": \"Arms on opposite sides\", \"value\": 0.09}]",
+      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.46}, {\"name\": \"Single curved arm\", \"value\": -0.37}, {\"name\": \"Bright central core\", \"value\": 0.29}, {\"name\": \"Narrow band of light\", \"value\": 0.04}]",
       "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
       "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy. It was not very sure, and leaned heavily on the bright core of the galaxy.",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
@@ -497,10 +233,10 @@ export const DEMO_SUBJECTS = [
     ],
     "metadata": {
       "#ai_label": "ring",
-      "#ai_confidence": "0.67",
-      "#ai_probabilities": "{\"ring\": 0.67, \"shell\": 0.2, \"stream\": 0.05, \"twoarm\": 0.04, \"longtail\": 0.02, \"onearm\": 0.02}",
+      "#ai_confidence": "0.77",
+      "#ai_probabilities": "{\"ring\": 0.77, \"shell\": 0.14, \"twoarm\": 0.06, \"longtail\": 0.01, \"stream\": 0.01, \"onearm\": 0.0}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.42}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.05}, {\"name\": \"Narrow band of light\", \"value\": 0.01}]",
+      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.41}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.11}, {\"name\": \"Narrow band of light\", \"value\": -0.08}]",
       "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
       "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
@@ -508,25 +244,25 @@ export const DEMO_SUBJECTS = [
     }
   },
   {
-    "id": "demo-ring6",
+    "id": "demo-longtail2",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/ring6.jpg"
+        "image/jpeg": "demo/morphology/longtail2.jpg"
       },
       {
-        "image/png": "demo/morphology/ring6-saliency.png"
+        "image/png": "demo/morphology/longtail2-saliency.png"
       }
     ],
     "metadata": {
-      "#ai_label": "ring",
-      "#ai_confidence": "0.89",
-      "#ai_probabilities": "{\"ring\": 0.89, \"shell\": 0.09, \"longtail\": 0.01, \"onearm\": 0.01, \"twoarm\": 0.0, \"stream\": 0.0}",
+      "#ai_label": "longtail",
+      "#ai_confidence": "0.75",
+      "#ai_probabilities": "{\"longtail\": 0.75, \"onearm\": 0.15, \"stream\": 0.04, \"twoarm\": 0.03, \"shell\": 0.03, \"ring\": 0.0}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.44}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.09}, {\"name\": \"Single curved arm\", \"value\": 0.0}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
+      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.51}, {\"name\": \"Single curved arm\", \"value\": -0.14}, {\"name\": \"Arms on opposite sides\", \"value\": 0.02}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy.",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "ring"
+      "#demo_true_label": "longtail"
     }
   },
   {
@@ -541,10 +277,10 @@ export const DEMO_SUBJECTS = [
     ],
     "metadata": {
       "#ai_label": "shell",
-      "#ai_confidence": "0.49",
-      "#ai_probabilities": "{\"shell\": 0.49, \"ring\": 0.34, \"twoarm\": 0.08, \"stream\": 0.04, \"longtail\": 0.03, \"onearm\": 0.02}",
+      "#ai_confidence": "0.45",
+      "#ai_probabilities": "{\"shell\": 0.45, \"ring\": 0.33, \"stream\": 0.08, \"twoarm\": 0.07, \"longtail\": 0.03, \"onearm\": 0.03}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.38}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.32}, {\"name\": \"Bright central core\", \"value\": 0.17}, {\"name\": \"Single curved arm\", \"value\": 0.01}]",
+      "#ai_features": "[{\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.42}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.2}, {\"name\": \"Bright central core\", \"value\": 0.21}, {\"name\": \"Arms on opposite sides\", \"value\": 0.02}]",
       "#ai_examples": "[{\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}]",
       "#ai_rationale": "The model found sharp-edged arcs of faint light on the galaxy's outskirts, like nested shells. It was not very sure, and leaned heavily on the bright core of the galaxy.",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
@@ -552,47 +288,157 @@ export const DEMO_SUBJECTS = [
     }
   },
   {
-    "id": "demo-longtail4",
+    "id": "demo-twoarm1",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/longtail4.jpg"
+        "image/jpeg": "demo/morphology/twoarm1.jpg"
       },
       {
-        "image/png": "demo/morphology/longtail4-saliency.png"
+        "image/png": "demo/morphology/twoarm1-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "twoarm",
+      "#ai_confidence": "0.65",
+      "#ai_probabilities": "{\"twoarm\": 0.65, \"onearm\": 0.21, \"longtail\": 0.07, \"shell\": 0.04, \"stream\": 0.03, \"ring\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_features": "[{\"name\": \"Arms on opposite sides\", \"value\": 0.51}, {\"name\": \"Single curved arm\", \"value\": -0.14}, {\"name\": \"Narrow band of light\", \"value\": 0.03}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found curved features on opposite sides of the galaxy.",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "twoarm"
+    }
+  },
+  {
+    "id": "demo-ring6",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/ring6.jpg"
+      },
+      {
+        "image/png": "demo/morphology/ring6-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "ring",
+      "#ai_confidence": "0.75",
+      "#ai_probabilities": "{\"ring\": 0.75, \"shell\": 0.17, \"twoarm\": 0.04, \"longtail\": 0.02, \"stream\": 0.02, \"onearm\": 0.01}",
+      "#ai_saliency": "1",
+      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.38}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.14}, {\"name\": \"Long tail extending away\", \"value\": -0.1}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "ring"
+    }
+  },
+  {
+    "id": "demo-shell5",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/shell5.jpg"
+      },
+      {
+        "image/png": "demo/morphology/shell5-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "shell",
+      "#ai_confidence": "0.7",
+      "#ai_probabilities": "{\"shell\": 0.7, \"ring\": 0.19, \"onearm\": 0.04, \"stream\": 0.04, \"twoarm\": 0.03, \"longtail\": 0.01}",
+      "#ai_saliency": "1",
+      "#ai_features": "[{\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.43}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.08}, {\"name\": \"Single curved arm\", \"value\": 0.06}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found sharp-edged arcs of faint light on the galaxy's outskirts, like nested shells.",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "shell"
+    }
+  },
+  {
+    "id": "demo-longtail1",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/longtail1.jpg"
+      },
+      {
+        "image/png": "demo/morphology/longtail1-saliency.png"
       }
     ],
     "metadata": {
       "#ai_label": "longtail",
-      "#ai_confidence": "0.8",
-      "#ai_probabilities": "{\"longtail\": 0.8, \"onearm\": 0.12, \"ring\": 0.03, \"shell\": 0.02, \"stream\": 0.02, \"twoarm\": 0.0}",
+      "#ai_confidence": "0.72",
+      "#ai_probabilities": "{\"longtail\": 0.72, \"onearm\": 0.16, \"twoarm\": 0.05, \"shell\": 0.04, \"stream\": 0.03, \"ring\": 0.01}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.47}, {\"name\": \"Single curved arm\", \"value\": -0.13}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.01}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
+      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.36}, {\"name\": \"Single curved arm\", \"value\": -0.13}, {\"name\": \"Arms on opposite sides\", \"value\": -0.08}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
       "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy.",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "longtail"
     }
   },
   {
-    "id": "demo-ring5",
+    "id": "demo-stream4",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/ring5.jpg"
+        "image/jpeg": "demo/morphology/stream4.jpg"
       },
       {
-        "image/png": "demo/morphology/ring5-saliency.png"
+        "image/png": "demo/morphology/stream4-saliency.png"
       }
     ],
     "metadata": {
-      "#ai_label": "ring",
-      "#ai_confidence": "0.92",
-      "#ai_probabilities": "{\"ring\": 0.92, \"shell\": 0.06, \"twoarm\": 0.01, \"stream\": 0.01, \"longtail\": 0.0, \"onearm\": 0.0}",
+      "#ai_label": "stream",
+      "#ai_confidence": "0.86",
+      "#ai_probabilities": "{\"stream\": 0.86, \"longtail\": 0.09, \"twoarm\": 0.02, \"shell\": 0.02, \"ring\": 0.01, \"onearm\": 0.0}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.59}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.14}, {\"name\": \"Narrow band of light\", \"value\": -0.08}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
+      "#ai_features": "[{\"name\": \"Narrow band of light\", \"value\": 0.59}, {\"name\": \"Long tail extending away\", \"value\": -0.11}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.05}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found a narrow band of light running alongside or away from the galaxy.",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "ring"
+      "#demo_true_label": "stream"
+    }
+  },
+  {
+    "id": "demo-stream3",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/stream3.jpg"
+      },
+      {
+        "image/png": "demo/morphology/stream3-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "stream",
+      "#ai_confidence": "0.82",
+      "#ai_probabilities": "{\"stream\": 0.82, \"longtail\": 0.14, \"onearm\": 0.01, \"twoarm\": 0.01, \"ring\": 0.01, \"shell\": 0.01}",
+      "#ai_saliency": "1",
+      "#ai_features": "[{\"name\": \"Narrow band of light\", \"value\": 0.37}, {\"name\": \"Long tail extending away\", \"value\": -0.15}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.06}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found a narrow band of light running alongside or away from the galaxy.",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "stream"
+    }
+  },
+  {
+    "id": "demo-stream1",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/stream1.jpg"
+      },
+      {
+        "image/png": "demo/morphology/stream1-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "stream",
+      "#ai_confidence": "0.88",
+      "#ai_probabilities": "{\"stream\": 0.88, \"longtail\": 0.09, \"onearm\": 0.01, \"twoarm\": 0.01, \"ring\": 0.01, \"shell\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_features": "[{\"name\": \"Narrow band of light\", \"value\": 0.36}, {\"name\": \"Long tail extending away\", \"value\": -0.09}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.06}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found a narrow band of light running alongside or away from the galaxy.",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "stream"
     }
   },
   {
@@ -615,6 +461,28 @@ export const DEMO_SUBJECTS = [
       "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy.",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "longtail"
+    }
+  },
+  {
+    "id": "demo-ring5",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/ring5.jpg"
+      },
+      {
+        "image/png": "demo/morphology/ring5-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "ring",
+      "#ai_confidence": "0.72",
+      "#ai_probabilities": "{\"ring\": 0.72, \"shell\": 0.16, \"onearm\": 0.04, \"longtail\": 0.03, \"stream\": 0.03, \"twoarm\": 0.02}",
+      "#ai_saliency": "1",
+      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.46}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.18}, {\"name\": \"Narrow band of light\", \"value\": -0.02}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
+      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "ring"
     }
   }
 ];

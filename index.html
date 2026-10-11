@@ -80,21 +80,13 @@
             <span id="confidence-text"></span>
           </div>
           <p class="model-name" id="model-name" hidden></p>
-          <div class="class-strip" id="class-strip" hidden>
-            <p class="class-strip-label" id="class-strip-label">The AI chose from these classes</p>
-            <ul class="class-options" id="class-options" aria-labelledby="class-strip-label"></ul>
-          </div>
         </div>
 
-        <p class="prompt">Do you agree?</p>
-        <div class="decision">
-          <button class="decision-button accept" id="accept-button" type="button">
-            Accept <kbd>A</kbd>
-          </button>
-          <button class="decision-button reject" id="reject-button" type="button">
-            Reject <kbd>R</kbd>
-          </button>
-        </div>
+        <p class="prompt" id="choice-prompt">Keep the AI's choice, or pick the class you see.</p>
+        <div class="class-options" id="class-options" role="radiogroup" aria-labelledby="choice-prompt"></div>
+        <button class="submit-button agree" id="submit-button" type="button">
+          <span id="submit-button-text">Agree with the AI</span> <kbd>Enter</kbd>
+        </button>
 
         <button class="explain-button" id="explain-button" type="button"
           aria-expanded="false" aria-controls="explanation" hidden>

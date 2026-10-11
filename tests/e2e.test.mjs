@@ -10,10 +10,12 @@ import { join, extname, normalize, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { DEMO_SUBJECTS } from '../src/demo-data.js';
-import { LABEL_NAMES } from '../src/config.js';
+import { LABEL_NAMES, CLASS_LABELS } from '../src/config.js';
 
 const [FIRST, SECOND] = DEMO_SUBJECTS;
 const FIRST_LABEL = FIRST.metadata['#ai_label'];
+// A class other than the AI's, for disagreeing with it.
+const OTHER_LABEL = CLASS_LABELS.find(label => label !== FIRST_LABEL);
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const MIME = {
@@ -58,15 +60,15 @@ async function open(query = '', setup, { waitFor = '#state-review:not([hidden]),
 
 const lastPayload = async page => JSON.parse(await page.textContent('#payload-json'));
 
-test('demo: accept after viewing the explanation', async () => {
+test('demo: agree with the AI after viewing the explanation', async () => {
   const { page, errors } = await open('?surveys=off');
   assert.equal(await page.isVisible('#demo-banner'), true);
   assert.equal(await page.textContent('#ai-label'), LABEL_NAMES[FIRST_LABEL]);
-  assert.equal(await page.locator('#class-options li').count(), Object.keys(LABEL_NAMES).length);
-  assert.deepEqual(
-    await page.$$eval('#class-options li.is-prediction', els => els.map(e => e.dataset.label)),
-    [FIRST_LABEL],
-  );
+  assert.equal(await page.locator('#class-options .class-option').count(), CLASS_LABELS.length);
+  // The AI's class is outlined as the AI's pick and preselected.
+  assert.deepEqual(await page.$$eval('#class-options .is-ai', els => els.map(e => e.dataset.label)), [FIRST_LABEL]);
+  assert.deepEqual(await page.$$eval('#class-options .is-selected', els => els.map(e => e.dataset.label)), [FIRST_LABEL]);
+  assert.match(await page.textContent('#submit-button'), /Agree with the AI/);
   assert.equal(await page.isVisible('#explanation'), false);
   assert.equal(await page.isVisible('#saliency-image'), false);
 
@@ -79,15 +81,17 @@ test('demo: accept after viewing the explanation', async () => {
   await page.uncheck('#heatmap-toggle');
   assert.equal(await page.isVisible('#saliency-image'), false);
 
-  await page.click('#accept-button');
+  await page.click('#submit-button');
   await page.waitForFunction(id => document.getElementById('subject-id').textContent === id, SECOND.id);
 
   const payload = await lastPayload(page);
-  assert.deepEqual(payload.annotations, [{ task: 'T0', value: 0 }]);
+  assert.deepEqual(payload.annotations, [{ task: 'T0', value: CLASS_LABELS.indexOf(FIRST_LABEL) }]);
   assert.deepEqual(payload.links.subjects, [FIRST.id]);
   const review = payload.metadata.ai_review;
   assert.equal(review.decision, 'accept');
   assert.equal(review.ai_label, FIRST_LABEL);
+  assert.equal(review.chosen_label, FIRST_LABEL);
+  assert.equal(review.selection_changes, 0);
   assert.equal(review.decision_path, 'after_explanation');
   assert.ok(review.events.some(e => e.type === 'heatmap_toggle' && e.detail === false));
   assert.match(await page.textContent('#stats'), /1 reviewed · 1 accepted · 0 rejected/);
@@ -98,14 +102,26 @@ test('demo: accept after viewing the explanation', async () => {
   await page.close();
 });
 
-test('demo: keyboard reject without explanation', async () => {
+test('demo: picking another class with the keyboard is a rejection', async () => {
   const { page } = await open('?surveys=off');
-  await page.keyboard.press('r');
+  const otherKey = String(CLASS_LABELS.indexOf(OTHER_LABEL) + 1);
+  await page.keyboard.press(otherKey);
+  assert.deepEqual(await page.$$eval('#class-options .is-selected', els => els.map(e => e.dataset.label)), [OTHER_LABEL]);
+  assert.match(await page.textContent('#submit-button'), new RegExp(`Disagree: it's ${LABEL_NAMES[OTHER_LABEL]}`));
+
+  // Changing back and forth is recorded; only the final choice counts.
+  await page.click(`.class-option[data-label="${FIRST_LABEL}"]`);
+  await page.keyboard.press(otherKey);
+  await page.keyboard.press('Enter');
   await page.waitForFunction(id => document.getElementById('subject-id').textContent === id, SECOND.id);
-  const review = (await lastPayload(page)).metadata.ai_review;
+  const payload = await lastPayload(page);
+  const review = payload.metadata.ai_review;
   assert.equal(review.decision, 'reject');
+  assert.equal(review.chosen_label, OTHER_LABEL);
+  assert.equal(review.selection_changes, 3);
   assert.equal(review.decision_path, 'direct');
-  assert.equal((await lastPayload(page)).annotations[0].value, 1);
+  assert.equal(payload.annotations[0].value, CLASS_LABELS.indexOf(OTHER_LABEL));
+  assert.match(await page.textContent('#stats'), /1 reviewed · 0 accepted · 1 rejected/);
   await page.close();
 });
 
@@ -114,7 +130,7 @@ test("?xai=never hides explanations entirely", async () => {
   assert.equal(await page.isVisible('#explain-button'), false);
   await page.keyboard.press('e');
   assert.equal(await page.isVisible('#explanation'), false);
-  await page.click('#accept-button');
+  await page.click('#submit-button');
   await page.waitForSelector('#payload-preview:not([hidden])');
   const review = (await lastPayload(page)).metadata.ai_review;
   assert.equal(review.explanation_mode, 'never');
@@ -147,7 +163,7 @@ function mockPanoptes({ failClassification = false } = {}) {
         return json(route, { projects: [{ id: '123', slug: 'someone/galaxies', display_name: 'Galaxy Check', links: { active_workflows: ['456'] } }] });
       }
       if (url.pathname === '/api/workflows/456') {
-        return json(route, { workflows: [{ id: '456', version: '7.2', tasks: { T0: { type: 'single', answers: [{ label: 'Accept' }, { label: 'Reject' }] } } }] });
+        return json(route, { workflows: [{ id: '456', version: '7.2', tasks: { T0: { type: 'single', answers: CLASS_LABELS.map(label => ({ label })) } } }] });
       }
       if (url.pathname === '/api/subjects/queued') {
         return json(route, { subjects: [
@@ -188,11 +204,14 @@ test('live: skips unlabelled subjects and posts a reject classification', async 
   assert.equal(await page.isVisible('#saliency-image'), true);
   assert.equal(await page.isVisible('#part-probabilities'), false, 'only the saliency map was provided');
 
-  await page.click('#reject-button');
+  assert.equal(await page.isHidden('#warning-banner'), true, 'workflow answers match the classes');
+  await page.click('.class-option[data-label="shell"]');
+  await page.click('#submit-button');
   await page.waitForSelector('#state-finished:not([hidden]), #state-review #feedback.success');
   assert.equal(mock.posted.length, 1);
   const c = mock.posted[0];
-  assert.deepEqual(c.annotations, [{ task: 'T0', value: 1 }]);
+  assert.deepEqual(c.annotations, [{ task: 'T0', value: CLASS_LABELS.indexOf('shell') }]);
+  assert.equal(c.metadata.ai_review.decision, 'reject');
   assert.deepEqual(c.links, { project: '123', workflow: '456', subjects: ['901'] });
   assert.equal(c.metadata.workflow_version, '7.2');
   assert.equal(c.metadata.source, 'second-look');
@@ -205,11 +224,12 @@ test('live: skips unlabelled subjects and posts a reject classification', async 
 test('live: a failed submission keeps the subject and lets the volunteer retry', async () => {
   const mock = mockPanoptes({ failClassification: true });
   const { page } = await open('?project=123&workflow=456&surveys=off', mock.setup);
-  await page.click('#accept-button');
+  await page.click('#submit-button');
   await page.waitForSelector('#feedback.error');
   assert.match(await page.textContent('#feedback'), /Server unavailable/);
   assert.equal(await page.textContent('#subject-id'), '901');
-  assert.equal(await page.isEnabled('#accept-button'), true);
+  assert.equal(await page.isEnabled('#submit-button'), true);
+  assert.equal(await page.isEnabled('.class-option[data-label="ring"]'), true);
   await page.close();
 });
 
@@ -229,7 +249,7 @@ async function answerSurvey(page, id, value) {
 async function classifyDirect(page, times) {
   for (let i = 0; i < times; i += 1) {
     const before = await page.evaluate(() => window.__secondLook.participant.classificationCount);
-    await page.keyboard.press('a');
+    await page.keyboard.press('Enter');
     await page.waitForFunction(n => window.__secondLook.participant.classificationCount > n
       || !document.getElementById('state-survey').hidden, before);
     if (!(await page.isHidden('#state-survey'))) return;
@@ -254,7 +274,9 @@ test('surveys: skepticism once on first visit, needs check-in after every 5th cl
   assert.equal(fourth.metadata.needs, undefined);
 
   // The 5th decision opens the check-in before anything is submitted.
-  await page.keyboard.press('r');
+  const ai = await page.evaluate(() => window.__secondLook.state.current.prediction.label);
+  await page.keyboard.press(String(CLASS_LABELS.findIndex(label => label !== ai) + 1));
+  await page.keyboard.press('Enter');
   await page.waitForSelector('form.survey[data-survey="needs"]');
   assert.equal(await page.locator('form.survey[data-survey="needs"] .likert-item').count(), 3);
   assert.equal((await lastPayload(page)).metadata.participant.classification_number, 4);
@@ -287,11 +309,11 @@ test('surveys: a failed submission after the check-in does not ask it again', as
 
   // Pretend four classifications already happened so the next one is the 5th.
   await page.evaluate(() => { window.__secondLook.participant.data.classificationCount = 4; });
-  await page.click('#accept-button');
+  await page.click('#submit-button');
   await answerSurvey(page, 'needs', 5);
   await page.waitForSelector('#feedback.error');
 
-  await page.click('#accept-button');
+  await page.click('#submit-button');
   await page.waitForFunction(() => !window.__secondLook.state.busy);
   assert.equal(await page.isHidden('#state-survey'), true);
   assert.equal(mock.posted.length, 2);

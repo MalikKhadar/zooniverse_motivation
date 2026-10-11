@@ -4,6 +4,8 @@
  * as it would arrive from a CSV manifest: every value is a string.
  */
 
+import { CONFIG } from './config.js';
+
 export const DEMO_PROJECT = {
   id: 'demo',
   slug: null,
@@ -16,8 +18,8 @@ export const DEMO_WORKFLOW = {
   tasks: {
     T0: {
       type: 'single',
-      question: 'Do you agree with the AI?',
-      answers: [{ label: 'Accept' }, { label: 'Reject' }],
+      question: 'Which tidal feature does this galaxy show?',
+      answers: Object.values(CONFIG.classes).map(({ name }) => ({ label: name })),
     },
   },
 };

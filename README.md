@@ -1,15 +1,13 @@
 # Second Look
 
 A Zooniverse custom front end where volunteers review an AI's classification
-instead of starting from scratch. For each subject the volunteer sees the
-model's answer and confidence and can:
+instead of starting from scratch. Every class is shown as a clickable
+silhouette, and the AI's pick is already selected. For each subject the
+volunteer can:
 
-- **Accept** it,
-- **Reject** it, or
-- ask **"Why does the AI think this?"** to see an explanation, then accept or reject.
-
-Silhouettes of every class the model chooses between are shown under its
-answer, with its choice highlighted.
+- **Accept** the AI's answer by submitting its preselected class (outlined green),
+- **Reject** it by picking a different class (outlined red) and submitting that, or
+- ask **"Why does the AI think this?"** to see an explanation first.
 
 ![Second Look with the explanation open](docs/screenshot.png)
 
@@ -42,28 +40,27 @@ npm start            # or: python3 -m http.server 8080
 ```
 
 Open <http://localhost:8080/>. With no project configured it runs in **demo
-mode** with 28 example galaxies in six tidal-feature classes (long tail, one
+mode** with 22 example galaxies in six tidal-feature classes (long tail, one
 arm, two arms, ring, shell, stream). The AI predictions and attention maps are
-made up, and 5 of the 28 are deliberately wrong. Nothing is sent to Zooniverse, and the payload that
+made up, and 5 of the 22 are deliberately wrong. Nothing is sent to Zooniverse, and the payload that
 would have been sent appears under "Last classification payload".
 
-Keyboard: <kbd>A</kbd> accept · <kbd>R</kbd> reject · <kbd>E</kbd> show/hide the explanation.
+Keyboard: <kbd>1</kbd>–<kbd>6</kbd> pick a class · <kbd>Enter</kbd> submit · <kbd>E</kbd> show/hide the explanation.
 
 ## Connecting it to a Zooniverse project
 
 ### 1. Create the workflow
 
 In the [Project Builder](https://www.zooniverse.org/lab), create a workflow
-with one **Question** task (key `T0`, single answer) whose answers are, in
-this order:
+with one **Question** task (key `T0`, single answer) with one answer per class,
+in the same order as `CONFIG.classes` in [`src/config.js`](src/config.js).
 
-1. Accept
-2. Reject
-
-The annotation value is the answer index (`0` = accept, `1` = reject). If you
-use a different task key or answer order, change `CONFIG.task` in
-[`src/config.js`](src/config.js). The page shows a warning if the workflow
-doesn't have the expected task.
+The annotation value is the index of the class the volunteer submitted, so the
+standard Zooniverse export reads like any classification workflow. Whether
+that was an accept or a reject is recorded in the metadata (see
+[What gets recorded](#what-gets-recorded)). If you use a different task key,
+change `CONFIG.task`. The page shows a warning if the workflow doesn't have the
+expected task or the number of answers doesn't match the classes.
 
 ### 2. Upload subjects with AI output in their metadata
 
@@ -98,10 +95,13 @@ The `#` prefix hides these fields from volunteers in the standard Zooniverse
 metadata viewer. Change the keys in `CONFIG.metadataKeys` if needed.
 
 List the model's classes in `CONFIG.classes`, keyed by the raw label in
-`#ai_label`, with a display name and a silhouette. A silhouette can be any
-single-colour SVG or transparent PNG; the page tints it to match the theme.
-The placeholder silhouettes in `assets/classes/` are rough drawings, to be
-replaced by the project's own.
+`#ai_label`, with a display name and a silhouette. Subjects whose AI label is
+not one of these classes are skipped. A silhouette can be any single-colour SVG
+or transparent PNG; the page tints it to match the theme. The silhouettes in
+`assets/classes/` were made by masking out one clear example of each class,
+in the style of the Tidal Tales icons. `scripts/silhouette.py` does the
+masking; choose the source images in `SILHOUETTE_FROM` in
+`scripts/make_demo_subjects.py`.
 
 ### 3. Point the page at the project
 
@@ -135,15 +135,16 @@ the branch). `.nojekyll` is already in place.
 
 ```jsonc
 {
-  "annotations": [{ "task": "T0", "value": 1 }],      // 0 = accept, 1 = reject
+  "annotations": [{ "task": "T0", "value": 3 }],      // index of the submitted class
   "metadata": {
     "workflow_version": "7.2", "started_at": "…", "finished_at": "…",
     "user_agent": "…", "user_language": "en-GB", "utc_offset": "0",
     "viewport": { "width": 1280, "height": 900 },
     "source": "second-look",
     "ai_review": {
-      "decision": "reject",
-      "ai_label": "spiral", "ai_confidence": 0.58, "ai_model": "toy-cnn-v0.3",
+      "decision": "reject",                   // "accept" if the AI's class was submitted
+      "chosen_label": "ring",
+      "ai_label": "shell", "ai_confidence": 0.58, "ai_model": "tidal-cnn-v1",
       "explanation_mode": "on-request",
       "explanation_available": true,
       "explanation_parts": ["saliency", "probabilities", "features", "examples", "rationale"],
@@ -152,8 +153,10 @@ the branch). `.nojekyll` is already in place.
       "time_to_decision_ms": 8421,
       "time_to_explanation_ms": 2210,         // null if never opened
       "explanation_dwell_ms": 5873,           // total time the explanation was open
+      "selection_changes": 1,                 // times the volunteer picked a class
       "events": [                              // up to 50 interactions
         { "type": "explanation_open", "t_ms": 2210 },
+        { "type": "select", "t_ms": 7950, "detail": "ring" },
         { "type": "heatmap_opacity", "t_ms": 4012, "detail": 0.85 }
       ]
     },
@@ -216,7 +219,7 @@ your institution requires before collecting survey data.
 
 - `on-request` (default): a "Why?" button. Use it to measure who asks for an explanation and when.
 - `always`: the explanation is open from the start.
-- `never`: accept/reject only, with no explanation (a control condition).
+- `never`: no explanation, only the class choice (a control condition).
 
 Every classification records its mode. You can run a between-subjects
 comparison by giving different groups different links.
@@ -242,7 +245,7 @@ python3 scripts/make_demo_subjects.py path/to/images   # rebuild the demo from <
 | `src/surveys.js`, `src/survey-view.js` | Questionnaire items, scoring and form |
 | `src/participant.js` | Anonymous participant ID, answers and classification count |
 | `src/demo.js`, `src/demo-data.js`, `demo/morphology/` | Offline demo subjects (images and made-up predictions) |
-| `assets/classes/` | Class silhouettes |
+| `assets/classes/` | Class silhouettes (made by `scripts/silhouette.py`) |
 | `scripts/` | Subject upload (panoptes-client) and demo generation |
 | `tests/` | `node:test` unit and Playwright browser tests, plus Python tests for the upload script |
 

@@ -2,9 +2,11 @@
  * Tracks how a volunteer reached a decision on one subject and turns it into
  * a Panoptes classification.
  *
- * The decision itself is a standard single-answer question annotation, so it
- * shows up in the normal Zooniverse classification export. Everything about
- * the AI and the explanation goes in classification metadata under `ai_review`.
+ * The volunteer's answer is a standard single-answer question annotation (the
+ * index of the class they chose), so it shows up in the normal Zooniverse
+ * classification export. Keeping the AI's preselected class is an accept;
+ * choosing any other class is a reject. Everything about the AI and the
+ * explanation goes in classification metadata under `ai_review`.
  */
 
 const MAX_EVENTS = 50;
@@ -52,13 +54,15 @@ export class ReviewTracker {
   }
 
   /** Freezes timings and returns the `ai_review` metadata block. */
-  finish(decision) {
+  finish(chosenLabel) {
     const now = this.clock();
+    const decision = chosenLabel === this.prediction?.label ? 'accept' : 'reject';
     const dwell = this.explanationDwellMs +
       (this.explanationOpen ? now - this.explanationOpenSince : 0);
     const viewed = this.firstExplanationAt !== null;
     return {
       decision,
+      chosen_label: chosenLabel,
       ai_label: this.prediction?.label ?? null,
       ai_confidence: this.prediction?.confidence ?? null,
       ai_model: this.prediction?.model ?? null,
@@ -70,15 +74,17 @@ export class ReviewTracker {
       time_to_decision_ms: now - this.startedAt,
       time_to_explanation_ms: viewed ? this.firstExplanationAt - this.startedAt : null,
       explanation_dwell_ms: dwell,
+      selection_changes: this.events.filter(e => e.type === 'select').length,
       events: this.events,
     };
   }
 }
 
-export function annotationValue(decision, task) {
-  if (decision === 'accept') return task.acceptAnswer;
-  if (decision === 'reject') return task.rejectAnswer;
-  throw new Error(`Unknown decision: ${decision}`);
+/** The answer index for a class: the workflow's answers follow `labels`. */
+export function answerIndex(label, labels) {
+  const index = labels.indexOf(label);
+  if (index === -1) throw new Error(`Unknown class: ${label}`);
+  return index;
 }
 
 export function buildClassification({
@@ -86,7 +92,7 @@ export function buildClassification({
   workflow,
   subject,
   task,
-  decision,
+  answer,
   review,
   startedAt,
   finishedAt,
@@ -95,7 +101,7 @@ export function buildClassification({
   extraMetadata = {},
 }) {
   return {
-    annotations: [{ task: task.key, value: annotationValue(decision, task) }],
+    annotations: [{ task: task.key, value: answer }],
     metadata: {
       workflow_version: workflow.version || '1.0',
       started_at: new Date(startedAt).toISOString(),

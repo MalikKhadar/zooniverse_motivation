@@ -1,9 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { parsePrediction, parseConfidence, safeUrl, subjectImage } from '../src/ai.js';
-import { ReviewTracker, buildClassification, annotationValue } from '../src/classification.js';
+import { ReviewTracker, buildClassification, answerIndex } from '../src/classification.js';
 import { Auth, PanoptesClient } from '../src/panoptes.js';
-import { CONFIG, LABEL_NAMES } from '../src/config.js';
+import { CONFIG, LABEL_NAMES, CLASS_LABELS } from '../src/config.js';
 import { DEMO_SUBJECTS } from '../src/demo.js';
 import { SKEPTICISM_SURVEY, NEEDS_SURVEY, scoreSurvey, isComplete } from '../src/surveys.js';
 import { Participant } from '../src/participant.js';
@@ -106,7 +106,9 @@ test('direct decision without opening the explanation', () => {
   const clock = fakeClock();
   const t = new ReviewTracker({ prediction, explanationMode: 'on-request', clock });
   clock.advance(1500);
-  const r = t.finish('accept');
+  const r = t.finish('a');
+  assert.equal(r.decision, 'accept');
+  assert.equal(r.chosen_label, 'a');
   assert.equal(r.decision_path, 'direct');
   assert.equal(r.explanation_viewed, false);
   assert.equal(r.time_to_decision_ms, 1500);
@@ -121,30 +123,33 @@ test('dwell time sums open periods, including one still open at decision', () =>
   clock.advance(2000); t.closeExplanation();
   clock.advance(500); t.openExplanation();
   clock.advance(700);
-  const r = t.finish('reject');
+  t.record('select', 'b');
+  const r = t.finish('b');
+  assert.equal(r.decision, 'reject');
+  assert.equal(r.chosen_label, 'b');
+  assert.equal(r.selection_changes, 1);
   assert.equal(r.decision_path, 'after_explanation');
   assert.equal(r.time_to_explanation_ms, 1000);
   assert.equal(r.explanation_dwell_ms, 2700);
-  assert.deepEqual(r.events.map(e => e.type), ['explanation_open', 'explanation_close', 'explanation_open']);
+  assert.deepEqual(r.events.map(e => e.type), ['explanation_open', 'explanation_close', 'explanation_open', 'select']);
 });
 
 test("'never' mode reports no explanation available", () => {
   const t = new ReviewTracker({ prediction, explanationMode: 'never' });
   assert.equal(t.explanationAvailable, false);
-  assert.deepEqual(t.finish('accept').explanation_parts, []);
+  assert.deepEqual(t.finish('a').explanation_parts, []);
 });
 
-test('annotation values follow the configured answer order', () => {
-  const task = { key: 'T0', acceptAnswer: 0, rejectAnswer: 1 };
-  assert.equal(annotationValue('accept', task), 0);
-  assert.equal(annotationValue('reject', task), 1);
-  assert.throws(() => annotationValue('maybe', task));
+test('annotation values are the index of the chosen class', () => {
+  assert.equal(answerIndex('ring', ['longtail', 'ring', 'shell']), 1);
+  assert.throws(() => answerIndex('blob', ['longtail', 'ring']), /blob/);
+  assert.deepEqual(CLASS_LABELS, Object.keys(CONFIG.classes));
 });
 
 test('classification payload matches the Panoptes contract', () => {
   const c = buildClassification({
     project: { id: 1 }, workflow: { id: 2, version: '3.4' }, subject: { id: 5 },
-    task: { key: 'T0', acceptAnswer: 0, rejectAnswer: 1 }, decision: 'reject',
+    task: { key: 'T0' }, answer: 1,
     review: { decision: 'reject' }, startedAt: 0, finishedAt: 1000, source: 'test',
     environment: { userAgent: 'ua', language: 'en', utcOffsetSeconds: -3600, viewport: { width: 1, height: 2 } },
   });

@@ -1,8 +1,9 @@
-"""Build the demo subjects from a folder of example cutouts.
+"""Build the demo subjects and class silhouettes from a folder of cutouts.
 
-Each image is named <class><number>.jpg (e.g. ring3.jpg). The script copies
-the images into demo/morphology/, invents an AI prediction for each one, draws
-a saliency map, and writes src/demo-data.js.
+Each image is named <class><number>.jpg (e.g. ring3.jpg). One clear image per
+class becomes that class's silhouette in assets/classes/. The rest are copied
+into demo/morphology/, each with an invented AI prediction and saliency map,
+and listed in src/demo-data.js.
 
 The predictions and saliency maps are made up. They only exist so the
 interface can be tried before a real model is available. Some predictions are
@@ -15,13 +16,18 @@ import json
 import random
 import re
 import shutil
+import sys
 from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageFilter
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from silhouette import silhouette  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
 OUT_IMAGES = ROOT / "demo" / "morphology"
+OUT_ICONS = ROOT / "assets" / "classes"
 OUT_JS = ROOT / "src" / "demo-data.js"
 MODEL = "demo-tidal-cnn (fake predictions)"
 
@@ -54,6 +60,17 @@ CONFUSED_WITH = {
     "ring": "shell",
     "shell": "ring",
     "stream": "longtail",
+}
+
+# The clearest example of each class, masked out to make its silhouette. These
+# are left out of the subjects so no subject matches its own icon.
+SILHOUETTE_FROM = {
+    "longtail": "longtail6",
+    "onearm": "onearm3",
+    "twoarm": "twoarm2",
+    "ring": "ring7",
+    "shell": "shell4",
+    "stream": "stream5",
 }
 
 # Which demo images get a wrong AI answer.
@@ -130,6 +147,10 @@ def main(argv=None):
         match = NAME.match(path.name)
         if match and match.group(1).lower() in CLASSES:
             images[path.stem.lower()] = (path, match.group(1).lower())
+
+    OUT_ICONS.mkdir(parents=True, exist_ok=True)
+    for cls, stem in SILHOUETTE_FROM.items():
+        silhouette(images.pop(stem)[0]).save(OUT_ICONS / f"{cls}.png", optimize=True)
 
     if OUT_IMAGES.exists():
         shutil.rmtree(OUT_IMAGES)
