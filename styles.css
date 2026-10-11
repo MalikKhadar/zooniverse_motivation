@@ -177,7 +177,7 @@ kbd {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  padding: 10px 4px 8px;
+  padding: 24px 4px 8px;
   border: 2px solid var(--tone);
   border-radius: 10px;
   background: var(--surface);
@@ -193,7 +193,7 @@ kbd {
 .class-option kbd { position: absolute; top: 4px; left: 5px; }
 
 /* The selected class: solid tone, glow ring, filled key and a check badge. */
-.class-option.is-selected { --tone: var(--reject); border-width: 3px; padding: 9px 3px 7px; }
+.class-option.is-selected { --tone: var(--reject); border-width: 3px; padding: 23px 3px 7px; }
 .class-option.is-selected.is-ai { --tone: var(--accept); }
 .class-option.is-selected {
   background: color-mix(in srgb, var(--tone) 18%, var(--surface));
@@ -234,6 +234,15 @@ kbd {
   font-size: 11px;
   font-weight: 700;
   color: var(--accept);
+}
+/* Sits in the top strip next to the number key, so every tile is the same height. */
+.class-option .ai-tag {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 0;
+  line-height: 16px;
+  pointer-events: none;
 }
 
 .submit-button {
