@@ -1,4 +1,4 @@
-import { CONFIG } from './config.js';
+import { CONFIG, LABEL_NAMES } from './config.js';
 import { parsePrediction, subjectImage } from './ai.js';
 import { ReviewTracker, buildClassification } from './classification.js';
 import { PanoptesClient, Auth } from './panoptes.js';
@@ -88,7 +88,7 @@ async function nextReviewable() {
   for (let attempt = 0; attempt < 3; attempt += 1) {
     while (state.queue.length) {
       const subject = state.queue.shift();
-      const prediction = parsePrediction(subject, CONFIG.metadataKeys, CONFIG.labelNames);
+      const prediction = parsePrediction(subject, CONFIG.metadataKeys, LABEL_NAMES);
       if (prediction) return { subject, prediction };
       state.seen.add(String(subject.id));
       console.warn(`Subject ${subject.id} has no ${CONFIG.metadataKeys.label} metadata; skipped.`);
@@ -102,7 +102,7 @@ async function nextReviewable() {
 
 function prefetch() {
   for (const subject of state.queue.slice(0, 2)) {
-    const prediction = parsePrediction(subject, CONFIG.metadataKeys, CONFIG.labelNames);
+    const prediction = parsePrediction(subject, CONFIG.metadataKeys, LABEL_NAMES);
     const url = subjectImage(subject, prediction);
     if (url) new Image().src = url;
   }
@@ -196,6 +196,33 @@ function renderExamples(examples) {
   }
 }
 
+/** The model's classes as silhouettes, with its choice highlighted. */
+function renderClassStrip(prediction) {
+  const classes = Object.entries(CONFIG.classes);
+  $('class-strip').hidden = classes.length === 0;
+  const list = $('class-options');
+  list.replaceChildren();
+  for (const [label, { name, icon }] of classes) {
+    const li = document.createElement('li');
+    li.className = 'class-option';
+    li.dataset.label = label;
+    const chosen = label === prediction.label;
+    if (chosen) {
+      li.classList.add('is-prediction');
+      li.setAttribute('aria-current', 'true');
+    }
+    const silhouette = document.createElement('span');
+    silhouette.className = 'class-icon';
+    silhouette.setAttribute('aria-hidden', 'true');
+    if (icon) silhouette.style.setProperty('--icon', `url("${icon}")`);
+    const caption = document.createElement('span');
+    caption.className = 'class-name';
+    caption.textContent = name;
+    li.append(silhouette, caption);
+    list.append(li);
+  }
+}
+
 function renderExplanation(prediction) {
   const parts = new Set(prediction.explanationParts);
   for (const part of ['saliency', 'probabilities', 'features', 'examples', 'rationale']) {
@@ -232,6 +259,7 @@ function renderSubject() {
   $('model-name').hidden = !prediction.model;
   $('model-name').textContent = prediction.model ? `Model: ${prediction.model}` : '';
 
+  renderClassStrip(prediction);
   $('saliency-image').src = prediction.saliencyUrl || '';
   renderExplanation(prediction);
 

@@ -21,7 +21,7 @@
   </header>
 
   <div class="banner banner-info" id="demo-banner" hidden>
-    <strong>Demo mode.</strong> These are synthetic subjects and nothing is sent to Zooniverse.
+    <strong>Demo mode.</strong> Example images with made-up AI predictions. Nothing is sent to Zooniverse.
     Add <code>?project=ID&amp;workflow=ID</code> to the URL, or set them in <code>src/config.js</code>.
   </div>
   <div class="banner banner-warning" id="warning-banner" role="status" hidden></div>
@@ -80,6 +80,10 @@
             <span id="confidence-text"></span>
           </div>
           <p class="model-name" id="model-name" hidden></p>
+          <div class="class-strip" id="class-strip" hidden>
+            <p class="class-strip-label" id="class-strip-label">The AI chose from these classes</p>
+            <ul class="class-options" id="class-options" aria-labelledby="class-strip-label"></ul>
+          </div>
         </div>
 
         <p class="prompt">Do you agree?</p>

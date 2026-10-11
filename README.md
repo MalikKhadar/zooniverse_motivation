@@ -8,6 +8,9 @@ model's answer and confidence and can:
 - **Reject** it, or
 - ask **"Why does the AI think this?"** to see an explanation, then accept or reject.
 
+Silhouettes of every class the model chooses between are shown under its
+answer, with its choice highlighted.
+
 ![Second Look with the explanation open](docs/screenshot.png)
 
 The explanation is assembled from whichever parts the subject provides:
@@ -39,8 +42,9 @@ npm start            # or: python3 -m http.server 8080
 ```
 
 Open <http://localhost:8080/>. With no project configured it runs in **demo
-mode** with four synthetic galaxies. One AI prediction is deliberately wrong
-and one is low-confidence. Nothing is sent to Zooniverse, and the payload that
+mode** with 28 example galaxies in six tidal-feature classes (long tail, one
+arm, two arms, ring, shell, stream). The AI predictions and attention maps are
+made up, and 5 of the 28 are deliberately wrong. Nothing is sent to Zooniverse, and the payload that
 would have been sent appears under "Last classification payload".
 
 Keyboard: <kbd>A</kbd> accept · <kbd>R</kbd> reject · <kbd>E</kbd> show/hide the explanation.
@@ -91,8 +95,13 @@ Subjects without it are skipped.
 | `#ai_model` | `galaxy-cnn-v2` | Shown under the confidence bar and stored with each classification |
 
 The `#` prefix hides these fields from volunteers in the standard Zooniverse
-metadata viewer. Change the keys in `CONFIG.metadataKeys` if needed, and
-provide friendly class names in `CONFIG.labelNames`.
+metadata viewer. Change the keys in `CONFIG.metadataKeys` if needed.
+
+List the model's classes in `CONFIG.classes`, keyed by the raw label in
+`#ai_label`, with a display name and a silhouette. A silhouette can be any
+single-colour SVG or transparent PNG; the page tints it to match the theme.
+The placeholder silhouettes in `assets/classes/` are rough drawings, to be
+replaced by the project's own.
 
 ### 3. Point the page at the project
 
@@ -219,7 +228,7 @@ npm install
 npx playwright install chromium   # or set CHROMIUM_PATH to an existing Chromium
 npm test                          # unit + browser tests (Panoptes is mocked)
 python3 -m unittest discover tests
-python3 scripts/make_demo_images.py   # regenerate the synthetic demo images
+python3 scripts/make_demo_subjects.py path/to/images   # rebuild the demo from <class><number>.jpg files
 ```
 
 | Path | Purpose |
@@ -232,8 +241,9 @@ python3 scripts/make_demo_images.py   # regenerate the synthetic demo images
 | `src/panoptes.js` | Panoptes API client and OAuth sign-in |
 | `src/surveys.js`, `src/survey-view.js` | Questionnaire items, scoring and form |
 | `src/participant.js` | Anonymous participant ID, answers and classification count |
-| `src/demo.js`, `demo/` | Offline demo subjects |
-| `scripts/` | Subject upload (panoptes-client) and demo image generation |
+| `src/demo.js`, `src/demo-data.js`, `demo/morphology/` | Offline demo subjects (images and made-up predictions) |
+| `assets/classes/` | Class silhouettes |
+| `scripts/` | Subject upload (panoptes-client) and demo generation |
 | `tests/` | `node:test` unit and Playwright browser tests, plus Python tests for the upload script |
 
 ## Related

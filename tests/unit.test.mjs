@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { parsePrediction, parseConfidence, safeUrl, subjectImage } from '../src/ai.js';
 import { ReviewTracker, buildClassification, annotationValue } from '../src/classification.js';
 import { Auth, PanoptesClient } from '../src/panoptes.js';
-import { CONFIG } from '../src/config.js';
+import { CONFIG, LABEL_NAMES } from '../src/config.js';
 import { DEMO_SUBJECTS } from '../src/demo.js';
 import { SKEPTICISM_SURVEY, NEEDS_SURVEY, scoreSurvey, isComplete } from '../src/surveys.js';
 import { Participant } from '../src/participant.js';
@@ -86,7 +86,7 @@ test('saliency can point at one of the subject locations', () => {
 
 test('every demo subject is reviewable with a full explanation', () => {
   for (const s of DEMO_SUBJECTS) {
-    const p = parsePrediction(s, KEYS, CONFIG.labelNames);
+    const p = parsePrediction(s, KEYS, LABEL_NAMES);
     assert.ok(p, s.id);
     assert.equal(p.explanationParts.length, 5, s.id);
     assert.ok(subjectImage(s, p).endsWith('.jpg'), s.id);
@@ -257,4 +257,16 @@ test('participant works without storage', () => {
   const p = new Participant({ storageKey: 'p', storage: null });
   p.recordClassification();
   assert.equal(p.classificationCount, 1);
+});
+
+test('every demo label is a configured class with a silhouette on disk', async () => {
+  const { existsSync } = await import('node:fs');
+  const root = new URL('../', import.meta.url);
+  const labels = new Set(DEMO_SUBJECTS.map(s => s.metadata['#ai_label']));
+  for (const label of labels) {
+    assert.ok(CONFIG.classes[label], `no class config for ${label}`);
+    assert.ok(existsSync(new URL(CONFIG.classes[label].icon, root)), `missing icon for ${label}`);
+  }
+  const wrong = DEMO_SUBJECTS.filter(s => s.metadata['#ai_label'] !== s.metadata['#demo_true_label']);
+  assert.ok(wrong.length > 0 && wrong.length < DEMO_SUBJECTS.length / 2, 'some, but not most, AI answers are wrong');
 });

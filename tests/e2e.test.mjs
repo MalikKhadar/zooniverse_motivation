@@ -9,6 +9,11 @@ import { readFile } from 'node:fs/promises';
 import { join, extname, normalize, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
+import { DEMO_SUBJECTS } from '../src/demo-data.js';
+import { LABEL_NAMES } from '../src/config.js';
+
+const [FIRST, SECOND] = DEMO_SUBJECTS;
+const FIRST_LABEL = FIRST.metadata['#ai_label'];
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const MIME = {
@@ -56,7 +61,12 @@ const lastPayload = async page => JSON.parse(await page.textContent('#payload-js
 test('demo: accept after viewing the explanation', async () => {
   const { page, errors } = await open('?surveys=off');
   assert.equal(await page.isVisible('#demo-banner'), true);
-  assert.equal(await page.textContent('#ai-label'), 'Spiral galaxy');
+  assert.equal(await page.textContent('#ai-label'), LABEL_NAMES[FIRST_LABEL]);
+  assert.equal(await page.locator('#class-options li').count(), Object.keys(LABEL_NAMES).length);
+  assert.deepEqual(
+    await page.$$eval('#class-options li.is-prediction', els => els.map(e => e.dataset.label)),
+    [FIRST_LABEL],
+  );
   assert.equal(await page.isVisible('#explanation'), false);
   assert.equal(await page.isVisible('#saliency-image'), false);
 
@@ -64,20 +74,20 @@ test('demo: accept after viewing the explanation', async () => {
   assert.equal(await page.isVisible('#explanation'), true);
   assert.equal(await page.isVisible('#saliency-image'), true);
   assert.equal(await page.getAttribute('#explain-button', 'aria-expanded'), 'true');
-  assert.equal(await page.locator('#probability-bars li').count(), 4);
+  assert.equal(await page.locator('#probability-bars li').count(), Object.keys(JSON.parse(FIRST.metadata['#ai_probabilities'])).length);
 
   await page.uncheck('#heatmap-toggle');
   assert.equal(await page.isVisible('#saliency-image'), false);
 
   await page.click('#accept-button');
-  await page.waitForFunction(() => document.getElementById('subject-id').textContent === 'demo-2');
+  await page.waitForFunction(id => document.getElementById('subject-id').textContent === id, SECOND.id);
 
   const payload = await lastPayload(page);
   assert.deepEqual(payload.annotations, [{ task: 'T0', value: 0 }]);
-  assert.deepEqual(payload.links.subjects, ['demo-1']);
+  assert.deepEqual(payload.links.subjects, [FIRST.id]);
   const review = payload.metadata.ai_review;
   assert.equal(review.decision, 'accept');
-  assert.equal(review.ai_label, 'spiral');
+  assert.equal(review.ai_label, FIRST_LABEL);
   assert.equal(review.decision_path, 'after_explanation');
   assert.ok(review.events.some(e => e.type === 'heatmap_toggle' && e.detail === false));
   assert.match(await page.textContent('#stats'), /1 reviewed · 1 accepted · 0 rejected/);
@@ -91,7 +101,7 @@ test('demo: accept after viewing the explanation', async () => {
 test('demo: keyboard reject without explanation', async () => {
   const { page } = await open('?surveys=off');
   await page.keyboard.press('r');
-  await page.waitForFunction(() => document.getElementById('subject-id').textContent === 'demo-2');
+  await page.waitForFunction(id => document.getElementById('subject-id').textContent === id, SECOND.id);
   const review = (await lastPayload(page)).metadata.ai_review;
   assert.equal(review.decision, 'reject');
   assert.equal(review.decision_path, 'direct');
@@ -143,7 +153,7 @@ function mockPanoptes({ failClassification = false } = {}) {
         return json(route, { subjects: [
           { id: '900', locations: [{ 'image/jpeg': 'https://cdn.test/a.jpg' }], metadata: { note: 'no prediction' } },
           { id: '901', locations: [{ 'image/jpeg': 'https://cdn.test/b.jpg' }, { 'image/png': 'https://cdn.test/b-heat.png' }],
-            metadata: { '#ai_label': 'merger', '#ai_confidence': '66', '#ai_saliency': '1' } },
+            metadata: { '#ai_label': 'ring', '#ai_confidence': '66', '#ai_saliency': '1' } },
         ] });
       }
       if (url.pathname === '/api/classifications' && req.method() === 'POST') {
@@ -155,8 +165,8 @@ function mockPanoptes({ failClassification = false } = {}) {
       return json(route, { errors: [{ message: `unmocked ${url.pathname}` }] }, 404);
     });
     await page.route('https://cdn.test/**', async (route) => {
-      const name = route.request().url().endsWith('heat.png') ? 'subject-merger-saliency.png' : 'subject-merger.jpg';
-      route.fulfill({ body: await readFile(join(ROOT, 'demo', name)) });
+      const name = route.request().url().endsWith('heat.png') ? 'ring1-saliency.png' : 'ring1.jpg';
+      route.fulfill({ body: await readFile(join(ROOT, 'demo', 'morphology', name)) });
     });
   };
   return { posted, setup };
@@ -168,7 +178,7 @@ test('live: skips unlabelled subjects and posts a reject classification', async 
   assert.equal(await page.isVisible('#demo-banner'), false);
   assert.equal(await page.textContent('#project-name'), 'Galaxy Check');
   assert.equal(await page.textContent('#subject-id'), '901');
-  assert.equal(await page.textContent('#ai-label'), 'Merging galaxies');
+  assert.equal(await page.textContent('#ai-label'), 'Ring');
   assert.equal(await page.textContent('#confidence-text'), '66% confident');
   assert.equal(await page.getAttribute('#talk-link', 'href'),
     'https://www.zooniverse.org/projects/someone/galaxies/talk/subjects/901');

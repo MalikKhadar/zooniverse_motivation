@@ -50,12 +50,16 @@ export const CONFIG = {
     model: '#ai_model',
   },
 
-  // Human-friendly names for raw model labels. Unlisted labels are shown as-is.
-  labelNames: {
-    spiral: 'Spiral galaxy',
-    elliptical: 'Elliptical galaxy',
-    edge_on: 'Edge-on disk',
-    merger: 'Merging galaxies',
+  // The classes the model chooses between, keyed by the raw model label: a
+  // display name and a silhouette (any single-colour SVG or transparent PNG,
+  // tinted to match the theme). Unlisted labels are shown as-is.
+  classes: {
+    longtail: { name: 'Long tail', icon: 'assets/classes/longtail.svg' },
+    onearm: { name: 'One arm', icon: 'assets/classes/onearm.svg' },
+    twoarm: { name: 'Two arms', icon: 'assets/classes/twoarm.svg' },
+    ring: { name: 'Ring', icon: 'assets/classes/ring.svg' },
+    shell: { name: 'Shell', icon: 'assets/classes/shell.svg' },
+    stream: { name: 'Stream', icon: 'assets/classes/stream.svg' },
   },
 
   // Written to classification metadata so exports can tell this front end apart.
@@ -65,3 +69,7 @@ export const CONFIG = {
     privacyPolicy: 'https://www.zooniverse.org/privacy',
   },
 };
+
+export const LABEL_NAMES = Object.fromEntries(
+  Object.entries(CONFIG.classes).map(([label, { name }]) => [label, name]),
+);
