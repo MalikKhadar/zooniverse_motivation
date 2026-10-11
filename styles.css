@@ -171,13 +171,14 @@ kbd {
   gap: 8px;
 }
 .class-option {
+  --tone: color-mix(in srgb, var(--reject) 55%, transparent);
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   padding: 10px 4px 8px;
-  border: 2px solid color-mix(in srgb, var(--reject) 55%, transparent);
+  border: 2px solid var(--tone);
   border-radius: 10px;
   background: var(--surface);
   color: var(--text);
@@ -185,13 +186,43 @@ kbd {
   line-height: 1.2;
   text-align: center;
 }
-.class-option.is-ai { border-color: var(--accept); }
-.class-option:not(:disabled):hover { background: var(--bg); }
-.class-option.is-selected { border-width: 3px; padding: 9px 3px 7px; }
-.class-option.is-selected:not(.is-ai) { border-color: var(--reject); background: var(--reject-bg); }
-.class-option.is-selected.is-ai { background: var(--accept-bg); }
-.class-option.is-selected .class-name { font-weight: 700; }
+.class-option.is-ai { --tone: var(--accept); }
+.class-option:not(:disabled):not(.is-selected):hover { background: var(--bg); }
+.class-option:not(.is-selected) .class-icon,
+.class-option:not(.is-selected) .class-name { opacity: 0.6; }
 .class-option kbd { position: absolute; top: 4px; left: 5px; }
+
+/* The selected class: solid tone, glow ring, filled key and a check badge. */
+.class-option.is-selected { --tone: var(--reject); border-width: 3px; padding: 9px 3px 7px; }
+.class-option.is-selected.is-ai { --tone: var(--accept); }
+.class-option.is-selected {
+  background: color-mix(in srgb, var(--tone) 18%, var(--surface));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--tone) 30%, transparent);
+}
+.class-option.is-selected .class-name { font-weight: 700; }
+.class-option.is-selected kbd {
+  top: 3px;
+  left: 4px;
+  opacity: 1;
+  background: var(--tone);
+  border-color: var(--tone);
+  color: var(--surface);
+}
+.class-option.is-selected::after {
+  content: "\2713";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--tone);
+  color: var(--surface);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 24px;
+  box-shadow: 0 0 0 2px var(--surface);
+}
 .class-icon {
   width: 64px;
   height: 64px;
