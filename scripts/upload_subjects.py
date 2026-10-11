@@ -22,9 +22,9 @@ CSV columns (only `image` and `label` are required):
     saliency       path to a saliency/heatmap image (same size as the image,
                    transparent PNG recommended)
     probabilities  JSON object, e.g. {"spiral": 0.9, "elliptical": 0.1}
-    features       JSON list, e.g. [{"name": "Arms", "value": 0.6}]
-    examples       JSON list of {"url": ..., "label": ..., "caption": ...}
-    rationale      free text
+    examples       JSON list of {"url": ..., "label": ...}: for each class, the
+                   training galaxies most similar to this one (nearest
+                   neighbours in the model's feature space)
     model          model name/version
 Any other column is copied into the subject metadata unchanged.
 """
@@ -36,8 +36,8 @@ import os
 import sys
 from pathlib import Path
 
-AI_COLUMNS = ("label", "confidence", "probabilities", "features", "examples", "rationale", "model")
-JSON_COLUMNS = ("probabilities", "features", "examples")
+AI_COLUMNS = ("label", "confidence", "probabilities", "examples", "model")
+JSON_COLUMNS = ("probabilities", "examples")
 PREFIX = "#ai_"
 
 

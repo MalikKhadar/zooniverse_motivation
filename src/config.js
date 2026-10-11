@@ -43,8 +43,6 @@ export const CONFIG = {
     confidence: '#ai_confidence',
     probabilities: '#ai_probabilities',
     saliency: '#ai_saliency',
-    rationale: '#ai_rationale',
-    features: '#ai_features',
     examples: '#ai_examples',
     model: '#ai_model',
   },

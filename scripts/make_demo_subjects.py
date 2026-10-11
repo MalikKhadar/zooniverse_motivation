@@ -1,9 +1,10 @@
 """Build the demo subjects and class silhouettes from a folder of cutouts.
 
 Each image is named <class><number>.jpg (e.g. ring3.jpg). One clear image per
-class becomes that class's silhouette in assets/classes/. The rest are copied
-into demo/morphology/, each with an invented AI prediction and saliency map,
-and listed in src/demo-data.js.
+class becomes that class's silhouette in assets/classes/; the rest become
+subjects, each with an invented AI prediction and saliency map, listed in
+src/demo-data.js. All the images double as the "training set" the
+nearest-neighbour examples are drawn from.
 
 The predictions and saliency maps are made up. They only exist so the
 interface can be tried before a real model is available. Some predictions are
@@ -33,25 +34,6 @@ MODEL = "demo-tidal-cnn (fake predictions)"
 
 CLASSES = ["longtail", "onearm", "twoarm", "ring", "shell", "stream"]
 
-# The feature each class leans on, used for the attribution bars.
-FEATURES = {
-    "longtail": "Long tail extending away",
-    "onearm": "Single curved arm",
-    "twoarm": "Arms on opposite sides",
-    "ring": "Closed loop around the galaxy",
-    "shell": "Sharp-edged arcs (shells)",
-    "stream": "Narrow band of light",
-}
-
-RATIONALE = {
-    "longtail": "The model found a single long, faint tail of light reaching well away from the galaxy.",
-    "onearm": "The model found one curved arm of light wrapping partway around the galaxy.",
-    "twoarm": "The model found curved features on opposite sides of the galaxy.",
-    "ring": "The model found faint light forming a loop that encircles the galaxy.",
-    "shell": "The model found sharp-edged arcs of faint light on the galaxy's outskirts, like nested shells.",
-    "stream": "The model found a narrow band of light running alongside or away from the galaxy.",
-}
-
 # Wrong guesses are drawn from the class the model most plausibly confuses.
 CONFUSED_WITH = {
     "longtail": "onearm",
@@ -63,7 +45,8 @@ CONFUSED_WITH = {
 }
 
 # The clearest example of each class, masked out to make its silhouette. These
-# are left out of the subjects so no subject matches its own icon.
+# are left out of the subjects so no subject matches its own icon, but can
+# still appear as training examples.
 SILHOUETTE_FROM = {
     "longtail": "longtail6",
     "onearm": "onearm3",
@@ -72,6 +55,9 @@ SILHOUETTE_FROM = {
     "shell": "shell4",
     "stream": "stream5",
 }
+
+# Training examples shown per class, standing in for nearest neighbours.
+NEIGHBOURS_PER_CLASS = 3
 
 # Which demo images get a wrong AI answer.
 WRONG = {"longtail3", "onearm2", "ring4", "shell2", "stream2"}
@@ -124,19 +110,6 @@ def probabilities(label, runner_up, confidence, rng):
     return dict(sorted(probs.items(), key=lambda kv: -kv[1]))
 
 
-def features(label, runner_up, wrong, rng):
-    items = [{"name": FEATURES[label], "value": round(rng.uniform(0.35, 0.6), 2)}]
-    if wrong:
-        # The evidence for the true class pulls against the model's answer.
-        items.append({"name": FEATURES[runner_up], "value": -round(rng.uniform(0.2, 0.4), 2)})
-        items.append({"name": "Bright central core", "value": round(rng.uniform(0.15, 0.3), 2)})
-    else:
-        items.append({"name": FEATURES[runner_up], "value": -round(rng.uniform(0.05, 0.2), 2)})
-    other = rng.choice([c for c in CLASSES if c not in (label, runner_up)])
-    items.append({"name": FEATURES[other], "value": round(rng.uniform(-0.1, 0.1), 2)})
-    return items
-
-
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("source", type=Path, help="folder of <class><number>.jpg images")
@@ -148,16 +121,18 @@ def main(argv=None):
         if match and match.group(1).lower() in CLASSES:
             images[path.stem.lower()] = (path, match.group(1).lower())
 
+    if OUT_IMAGES.exists():
+        shutil.rmtree(OUT_IMAGES)
+    OUT_IMAGES.mkdir(parents=True)
+    for stem, (path, _) in images.items():
+        shutil.copyfile(path, OUT_IMAGES / f"{stem}.jpg")
+    training = {c: [stem for stem, (_, cls) in images.items() if cls == c] for c in CLASSES}
+
     OUT_ICONS.mkdir(parents=True, exist_ok=True)
     for cls, stem in SILHOUETTE_FROM.items():
         silhouette(images.pop(stem)[0]).save(OUT_ICONS / f"{cls}.png", optimize=True)
 
-    if OUT_IMAGES.exists():
-        shutil.rmtree(OUT_IMAGES)
-    OUT_IMAGES.mkdir(parents=True)
-
     rng = random.Random(7)
-    by_class = {c: [stem for stem, (_, cls) in images.items() if cls == c] for c in CLASSES}
     subjects = []
     for stem, (path, true_class) in images.items():
         wrong = stem in WRONG
@@ -165,17 +140,15 @@ def main(argv=None):
         runner_up = true_class if wrong else CONFUSED_WITH[true_class]
         confidence = round(rng.uniform(0.42, 0.6) if wrong else rng.uniform(0.62, 0.94), 2)
 
-        shutil.copyfile(path, OUT_IMAGES / f"{stem}.jpg")
         saliency(path, focus_on_core=wrong).save(OUT_IMAGES / f"{stem}-saliency.png", optimize=True)
 
-        same = [s for s in by_class[label] if s != stem][:2]
-        other = [s for s in by_class[runner_up] if s != stem][:1]
-        examples = [{"url": f"demo/morphology/{s}.jpg", "label": label, "caption": "Training example"} for s in same]
-        examples += [{"url": f"demo/morphology/{s}.jpg", "label": runner_up, "caption": "Training example"} for s in other]
-
-        rationale = RATIONALE[label]
-        if wrong:
-            rationale += " It was not very sure, and leaned heavily on the bright core of the galaxy."
+        # A real model would return the training galaxies nearest this one in
+        # its feature space; here they are random members of each class.
+        examples = []
+        for cls in CLASSES:
+            pool = [s for s in training[cls] if s != stem]
+            for s in rng.sample(pool, min(NEIGHBOURS_PER_CLASS, len(pool))):
+                examples.append({"url": f"demo/morphology/{s}.jpg", "label": cls})
 
         subjects.append({
             "id": f"demo-{stem}",
@@ -188,9 +161,7 @@ def main(argv=None):
                 "#ai_confidence": str(confidence),
                 "#ai_probabilities": json.dumps(probabilities(label, runner_up, confidence, rng)),
                 "#ai_saliency": "1",
-                "#ai_features": json.dumps(features(label, runner_up, wrong, rng)),
                 "#ai_examples": json.dumps(examples),
-                "#ai_rationale": rationale,
                 "#ai_model": MODEL,
                 "#demo_true_label": true_class,
             },

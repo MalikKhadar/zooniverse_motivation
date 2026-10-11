@@ -85,33 +85,22 @@ function parseProbabilities(value, labelNames) {
     .sort((a, b) => b.value - a.value);
 }
 
-function parseFeatures(value) {
-  const raw = parseJsonField(value);
-  if (!raw || typeof raw !== 'object') return [];
-  const pairs = Array.isArray(raw)
-    ? raw.map(item => [item?.name, item?.value ?? item?.contribution])
-    : Object.entries(raw);
-  return pairs
-    .map(([name, v]) => ({ name: name == null ? '' : String(name), value: toNumber(v) }))
-    .filter(item => item.name && item.value !== null)
-    .sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
-}
-
-function parseExamples(value, labelNames) {
+/**
+ * Training galaxies the model finds most similar to this subject, each tagged
+ * with its class. Untagged examples count as the AI's own class.
+ */
+function parseExamples(value, labelNames, predictedLabel) {
   const raw = parseJsonField(value);
   if (!Array.isArray(raw)) return [];
   return raw
     .map(item => (typeof item === 'string' ? { url: item } : item || {}))
     .map(item => ({
       url: safeUrl(item.url),
-      label: item.label ? String(item.label) : null,
+      label: item.label ? String(item.label) : predictedLabel,
       caption: item.caption ? String(item.caption) : null,
     }))
     .filter(item => item.url)
-    .map(item => ({
-      ...item,
-      displayLabel: item.label ? displayLabel(item.label, labelNames) : null,
-    }));
+    .map(item => ({ ...item, displayLabel: displayLabel(item.label, labelNames) }));
 }
 
 /**
@@ -129,9 +118,7 @@ export function parsePrediction(subject, keys, labelNames = {}) {
     confidence: parseConfidence(metadata[keys.confidence]),
     probabilities: parseProbabilities(metadata[keys.probabilities], labelNames),
     saliencyUrl: resolveSaliency(metadata[keys.saliency], subject),
-    rationale: metadata[keys.rationale] ? String(metadata[keys.rationale]) : null,
-    features: parseFeatures(metadata[keys.features]),
-    examples: parseExamples(metadata[keys.examples], labelNames),
+    examples: parseExamples(metadata[keys.examples], labelNames, String(label).trim()),
     model: metadata[keys.model] ? String(metadata[keys.model]) : null,
   };
 
@@ -140,12 +127,15 @@ export function parsePrediction(subject, keys, labelNames = {}) {
     if (own) prediction.confidence = own.value;
   }
 
+  prediction.examplesByLabel = {};
+  for (const example of prediction.examples) {
+    (prediction.examplesByLabel[example.label] ||= []).push(example);
+  }
+
   prediction.explanationParts = [
     prediction.saliencyUrl && 'saliency',
     prediction.probabilities.length > 0 && 'probabilities',
-    prediction.features.length > 0 && 'features',
     prediction.examples.length > 0 && 'examples',
-    prediction.rationale && 'rationale',
   ].filter(Boolean);
 
   return prediction;

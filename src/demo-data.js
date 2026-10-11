@@ -2,113 +2,43 @@
 // The AI predictions are made up for the demo.
 export const DEMO_SUBJECTS = [
   {
-    "id": "demo-ring1",
+    "id": "demo-longtail5",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/ring1.jpg"
+        "image/jpeg": "demo/morphology/longtail5.jpg"
       },
       {
-        "image/png": "demo/morphology/ring1-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "ring",
-      "#ai_confidence": "0.64",
-      "#ai_probabilities": "{\"ring\": 0.64, \"shell\": 0.26, \"onearm\": 0.03, \"twoarm\": 0.03, \"longtail\": 0.02, \"stream\": 0.02}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.53}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.18}, {\"name\": \"Arms on opposite sides\", \"value\": -0.1}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "ring"
-    }
-  },
-  {
-    "id": "demo-onearm1",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/onearm1.jpg"
-      },
-      {
-        "image/png": "demo/morphology/onearm1-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "onearm",
-      "#ai_confidence": "0.71",
-      "#ai_probabilities": "{\"onearm\": 0.71, \"longtail\": 0.23, \"shell\": 0.03, \"ring\": 0.02, \"stream\": 0.01, \"twoarm\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Single curved arm\", \"value\": 0.47}, {\"name\": \"Long tail extending away\", \"value\": -0.06}, {\"name\": \"Arms on opposite sides\", \"value\": 0.05}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found one curved arm of light wrapping partway around the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "onearm"
-    }
-  },
-  {
-    "id": "demo-stream2",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/stream2.jpg"
-      },
-      {
-        "image/png": "demo/morphology/stream2-saliency.png"
+        "image/png": "demo/morphology/longtail5-saliency.png"
       }
     ],
     "metadata": {
       "#ai_label": "longtail",
-      "#ai_confidence": "0.53",
-      "#ai_probabilities": "{\"longtail\": 0.53, \"stream\": 0.3, \"shell\": 0.06, \"onearm\": 0.05, \"twoarm\": 0.04, \"ring\": 0.02}",
+      "#ai_confidence": "0.88",
+      "#ai_probabilities": "{\"longtail\": 0.88, \"onearm\": 0.08, \"twoarm\": 0.02, \"shell\": 0.01, \"stream\": 0.01, \"ring\": 0.0}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.37}, {\"name\": \"Narrow band of light\", \"value\": -0.22}, {\"name\": \"Bright central core\", \"value\": 0.22}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.06}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy. It was not very sure, and leaned heavily on the bright core of the galaxy.",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "longtail"
+    }
+  },
+  {
+    "id": "demo-stream3",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/stream3.jpg"
+      },
+      {
+        "image/png": "demo/morphology/stream3-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "stream",
+      "#ai_confidence": "0.7",
+      "#ai_probabilities": "{\"stream\": 0.7, \"longtail\": 0.24, \"twoarm\": 0.02, \"ring\": 0.02, \"shell\": 0.02, \"onearm\": 0.01}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "stream"
-    }
-  },
-  {
-    "id": "demo-ring3",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/ring3.jpg"
-      },
-      {
-        "image/png": "demo/morphology/ring3-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "ring",
-      "#ai_confidence": "0.76",
-      "#ai_probabilities": "{\"ring\": 0.76, \"shell\": 0.16, \"longtail\": 0.02, \"onearm\": 0.02, \"twoarm\": 0.02, \"stream\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.45}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.1}, {\"name\": \"Narrow band of light\", \"value\": 0.09}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "ring"
-    }
-  },
-  {
-    "id": "demo-shell3",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/shell3.jpg"
-      },
-      {
-        "image/png": "demo/morphology/shell3-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "shell",
-      "#ai_confidence": "0.67",
-      "#ai_probabilities": "{\"shell\": 0.67, \"ring\": 0.18, \"longtail\": 0.07, \"onearm\": 0.04, \"stream\": 0.04, \"twoarm\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.36}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.13}, {\"name\": \"Long tail extending away\", \"value\": 0.04}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found sharp-edged arcs of faint light on the galaxy's outskirts, like nested shells.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "shell"
     }
   },
   {
@@ -123,166 +53,30 @@ export const DEMO_SUBJECTS = [
     ],
     "metadata": {
       "#ai_label": "shell",
-      "#ai_confidence": "0.67",
-      "#ai_probabilities": "{\"shell\": 0.67, \"ring\": 0.19, \"twoarm\": 0.07, \"stream\": 0.05, \"longtail\": 0.03, \"onearm\": 0.0}",
+      "#ai_confidence": "0.79",
+      "#ai_probabilities": "{\"shell\": 0.79, \"ring\": 0.16, \"onearm\": 0.02, \"longtail\": 0.01, \"twoarm\": 0.01, \"stream\": 0.01}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.39}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.09}, {\"name\": \"Arms on opposite sides\", \"value\": 0.02}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found sharp-edged arcs of faint light on the galaxy's outskirts, like nested shells.",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "shell"
     }
   },
   {
-    "id": "demo-shell2",
+    "id": "demo-ring5",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/shell2.jpg"
+        "image/jpeg": "demo/morphology/ring5.jpg"
       },
       {
-        "image/png": "demo/morphology/shell2-saliency.png"
+        "image/png": "demo/morphology/ring5-saliency.png"
       }
     ],
     "metadata": {
       "#ai_label": "ring",
-      "#ai_confidence": "0.51",
-      "#ai_probabilities": "{\"ring\": 0.51, \"shell\": 0.28, \"onearm\": 0.09, \"longtail\": 0.05, \"twoarm\": 0.04, \"stream\": 0.03}",
+      "#ai_confidence": "0.92",
+      "#ai_probabilities": "{\"ring\": 0.92, \"shell\": 0.04, \"longtail\": 0.01, \"onearm\": 0.01, \"twoarm\": 0.01, \"stream\": 0.01}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.39}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.35}, {\"name\": \"Bright central core\", \"value\": 0.26}, {\"name\": \"Narrow band of light\", \"value\": 0.07}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy. It was not very sure, and leaned heavily on the bright core of the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "shell"
-    }
-  },
-  {
-    "id": "demo-longtail4",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/longtail4.jpg"
-      },
-      {
-        "image/png": "demo/morphology/longtail4-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "longtail",
-      "#ai_confidence": "0.8",
-      "#ai_probabilities": "{\"longtail\": 0.8, \"onearm\": 0.12, \"ring\": 0.03, \"shell\": 0.02, \"stream\": 0.02, \"twoarm\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.47}, {\"name\": \"Single curved arm\", \"value\": -0.13}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.01}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "longtail"
-    }
-  },
-  {
-    "id": "demo-onearm2",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/onearm2.jpg"
-      },
-      {
-        "image/png": "demo/morphology/onearm2-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "longtail",
-      "#ai_confidence": "0.52",
-      "#ai_probabilities": "{\"longtail\": 0.52, \"onearm\": 0.37, \"ring\": 0.04, \"shell\": 0.03, \"stream\": 0.03, \"twoarm\": 0.02}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.46}, {\"name\": \"Single curved arm\", \"value\": -0.37}, {\"name\": \"Bright central core\", \"value\": 0.29}, {\"name\": \"Narrow band of light\", \"value\": 0.04}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy. It was not very sure, and leaned heavily on the bright core of the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "onearm"
-    }
-  },
-  {
-    "id": "demo-longtail3",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/longtail3.jpg"
-      },
-      {
-        "image/png": "demo/morphology/longtail3-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "onearm",
-      "#ai_confidence": "0.49",
-      "#ai_probabilities": "{\"onearm\": 0.49, \"longtail\": 0.4, \"ring\": 0.07, \"shell\": 0.02, \"stream\": 0.01, \"twoarm\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Single curved arm\", \"value\": 0.38}, {\"name\": \"Long tail extending away\", \"value\": -0.26}, {\"name\": \"Bright central core\", \"value\": 0.27}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.08}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found one curved arm of light wrapping partway around the galaxy. It was not very sure, and leaned heavily on the bright core of the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "longtail"
-    }
-  },
-  {
-    "id": "demo-ring2",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/ring2.jpg"
-      },
-      {
-        "image/png": "demo/morphology/ring2-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "ring",
-      "#ai_confidence": "0.77",
-      "#ai_probabilities": "{\"ring\": 0.77, \"shell\": 0.14, \"twoarm\": 0.06, \"longtail\": 0.01, \"stream\": 0.01, \"onearm\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.41}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.11}, {\"name\": \"Narrow band of light\", \"value\": -0.08}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "ring"
-    }
-  },
-  {
-    "id": "demo-longtail2",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/longtail2.jpg"
-      },
-      {
-        "image/png": "demo/morphology/longtail2-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "longtail",
-      "#ai_confidence": "0.75",
-      "#ai_probabilities": "{\"longtail\": 0.75, \"onearm\": 0.15, \"stream\": 0.04, \"twoarm\": 0.03, \"shell\": 0.03, \"ring\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.51}, {\"name\": \"Single curved arm\", \"value\": -0.14}, {\"name\": \"Arms on opposite sides\", \"value\": 0.02}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "longtail"
-    }
-  },
-  {
-    "id": "demo-ring4",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/ring4.jpg"
-      },
-      {
-        "image/png": "demo/morphology/ring4-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "shell",
-      "#ai_confidence": "0.45",
-      "#ai_probabilities": "{\"shell\": 0.45, \"ring\": 0.33, \"stream\": 0.08, \"twoarm\": 0.07, \"longtail\": 0.03, \"onearm\": 0.03}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.42}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.2}, {\"name\": \"Bright central core\", \"value\": 0.21}, {\"name\": \"Arms on opposite sides\", \"value\": 0.02}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found sharp-edged arcs of faint light on the galaxy's outskirts, like nested shells. It was not very sure, and leaned heavily on the bright core of the galaxy.",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "ring"
     }
@@ -299,36 +93,32 @@ export const DEMO_SUBJECTS = [
     ],
     "metadata": {
       "#ai_label": "twoarm",
-      "#ai_confidence": "0.65",
-      "#ai_probabilities": "{\"twoarm\": 0.65, \"onearm\": 0.21, \"longtail\": 0.07, \"shell\": 0.04, \"stream\": 0.03, \"ring\": 0.0}",
+      "#ai_confidence": "0.73",
+      "#ai_probabilities": "{\"twoarm\": 0.73, \"onearm\": 0.18, \"stream\": 0.05, \"ring\": 0.03, \"shell\": 0.01, \"longtail\": 0.0}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Arms on opposite sides\", \"value\": 0.51}, {\"name\": \"Single curved arm\", \"value\": -0.14}, {\"name\": \"Narrow band of light\", \"value\": 0.03}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found curved features on opposite sides of the galaxy.",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "twoarm"
     }
   },
   {
-    "id": "demo-ring6",
+    "id": "demo-longtail4",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/ring6.jpg"
+        "image/jpeg": "demo/morphology/longtail4.jpg"
       },
       {
-        "image/png": "demo/morphology/ring6-saliency.png"
+        "image/png": "demo/morphology/longtail4-saliency.png"
       }
     ],
     "metadata": {
-      "#ai_label": "ring",
-      "#ai_confidence": "0.75",
-      "#ai_probabilities": "{\"ring\": 0.75, \"shell\": 0.17, \"twoarm\": 0.04, \"longtail\": 0.02, \"stream\": 0.02, \"onearm\": 0.01}",
+      "#ai_label": "longtail",
+      "#ai_confidence": "0.73",
+      "#ai_probabilities": "{\"longtail\": 0.73, \"onearm\": 0.19, \"stream\": 0.03, \"ring\": 0.02, \"shell\": 0.02, \"twoarm\": 0.0}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.38}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.14}, {\"name\": \"Long tail extending away\", \"value\": -0.1}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "ring"
+      "#demo_true_label": "longtail"
     }
   },
   {
@@ -343,14 +133,252 @@ export const DEMO_SUBJECTS = [
     ],
     "metadata": {
       "#ai_label": "shell",
-      "#ai_confidence": "0.7",
-      "#ai_probabilities": "{\"shell\": 0.7, \"ring\": 0.19, \"onearm\": 0.04, \"stream\": 0.04, \"twoarm\": 0.03, \"longtail\": 0.01}",
+      "#ai_confidence": "0.73",
+      "#ai_probabilities": "{\"shell\": 0.73, \"ring\": 0.2, \"longtail\": 0.02, \"onearm\": 0.02, \"stream\": 0.02, \"twoarm\": 0.01}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.43}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.08}, {\"name\": \"Single curved arm\", \"value\": 0.06}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found sharp-edged arcs of faint light on the galaxy's outskirts, like nested shells.",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "shell"
+    }
+  },
+  {
+    "id": "demo-onearm1",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/onearm1.jpg"
+      },
+      {
+        "image/png": "demo/morphology/onearm1-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "onearm",
+      "#ai_confidence": "0.9",
+      "#ai_probabilities": "{\"onearm\": 0.9, \"longtail\": 0.08, \"stream\": 0.01, \"twoarm\": 0.0, \"ring\": 0.0, \"shell\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "onearm"
+    }
+  },
+  {
+    "id": "demo-onearm2",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/onearm2.jpg"
+      },
+      {
+        "image/png": "demo/morphology/onearm2-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "longtail",
+      "#ai_confidence": "0.53",
+      "#ai_probabilities": "{\"longtail\": 0.53, \"onearm\": 0.28, \"twoarm\": 0.12, \"stream\": 0.05, \"ring\": 0.02, \"shell\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "onearm"
+    }
+  },
+  {
+    "id": "demo-shell2",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/shell2.jpg"
+      },
+      {
+        "image/png": "demo/morphology/shell2-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "ring",
+      "#ai_confidence": "0.5",
+      "#ai_probabilities": "{\"ring\": 0.5, \"shell\": 0.29, \"longtail\": 0.11, \"twoarm\": 0.06, \"onearm\": 0.02, \"stream\": 0.02}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "shell"
+    }
+  },
+  {
+    "id": "demo-ring4",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/ring4.jpg"
+      },
+      {
+        "image/png": "demo/morphology/ring4-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "shell",
+      "#ai_confidence": "0.44",
+      "#ai_probabilities": "{\"shell\": 0.44, \"ring\": 0.35, \"onearm\": 0.08, \"longtail\": 0.07, \"twoarm\": 0.03, \"stream\": 0.03}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "ring"
+    }
+  },
+  {
+    "id": "demo-shell3",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/shell3.jpg"
+      },
+      {
+        "image/png": "demo/morphology/shell3-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "shell",
+      "#ai_confidence": "0.83",
+      "#ai_probabilities": "{\"shell\": 0.83, \"ring\": 0.11, \"longtail\": 0.02, \"onearm\": 0.02, \"stream\": 0.02, \"twoarm\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "shell"
+    }
+  },
+  {
+    "id": "demo-stream4",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/stream4.jpg"
+      },
+      {
+        "image/png": "demo/morphology/stream4-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "stream",
+      "#ai_confidence": "0.75",
+      "#ai_probabilities": "{\"stream\": 0.75, \"longtail\": 0.14, \"shell\": 0.05, \"twoarm\": 0.04, \"onearm\": 0.02, \"ring\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "stream"
+    }
+  },
+  {
+    "id": "demo-ring2",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/ring2.jpg"
+      },
+      {
+        "image/png": "demo/morphology/ring2-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "ring",
+      "#ai_confidence": "0.89",
+      "#ai_probabilities": "{\"ring\": 0.89, \"shell\": 0.08, \"longtail\": 0.01, \"onearm\": 0.01, \"twoarm\": 0.01, \"stream\": 0.01}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "ring"
+    }
+  },
+  {
+    "id": "demo-stream1",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/stream1.jpg"
+      },
+      {
+        "image/png": "demo/morphology/stream1-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "stream",
+      "#ai_confidence": "0.75",
+      "#ai_probabilities": "{\"stream\": 0.75, \"longtail\": 0.19, \"twoarm\": 0.03, \"shell\": 0.03, \"onearm\": 0.0, \"ring\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "stream"
+    }
+  },
+  {
+    "id": "demo-longtail3",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/longtail3.jpg"
+      },
+      {
+        "image/png": "demo/morphology/longtail3-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "onearm",
+      "#ai_confidence": "0.53",
+      "#ai_probabilities": "{\"onearm\": 0.53, \"longtail\": 0.31, \"twoarm\": 0.07, \"shell\": 0.06, \"stream\": 0.02, \"ring\": 0.01}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "longtail"
+    }
+  },
+  {
+    "id": "demo-ring1",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/ring1.jpg"
+      },
+      {
+        "image/png": "demo/morphology/ring1-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "ring",
+      "#ai_confidence": "0.65",
+      "#ai_probabilities": "{\"ring\": 0.65, \"shell\": 0.23, \"twoarm\": 0.05, \"stream\": 0.04, \"onearm\": 0.02, \"longtail\": 0.01}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "ring"
+    }
+  },
+  {
+    "id": "demo-stream2",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/stream2.jpg"
+      },
+      {
+        "image/png": "demo/morphology/stream2-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "longtail",
+      "#ai_confidence": "0.5",
+      "#ai_probabilities": "{\"longtail\": 0.5, \"stream\": 0.31, \"onearm\": 0.09, \"ring\": 0.06, \"twoarm\": 0.03, \"shell\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "stream"
+    }
+  },
+  {
+    "id": "demo-ring3",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/ring3.jpg"
+      },
+      {
+        "image/png": "demo/morphology/ring3-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "ring",
+      "#ai_confidence": "0.86",
+      "#ai_probabilities": "{\"ring\": 0.86, \"shell\": 0.11, \"longtail\": 0.01, \"twoarm\": 0.01, \"onearm\": 0.0, \"stream\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "ring"
     }
   },
   {
@@ -366,123 +394,51 @@ export const DEMO_SUBJECTS = [
     "metadata": {
       "#ai_label": "longtail",
       "#ai_confidence": "0.72",
-      "#ai_probabilities": "{\"longtail\": 0.72, \"onearm\": 0.16, \"twoarm\": 0.05, \"shell\": 0.04, \"stream\": 0.03, \"ring\": 0.01}",
+      "#ai_probabilities": "{\"longtail\": 0.72, \"onearm\": 0.19, \"shell\": 0.04, \"stream\": 0.03, \"ring\": 0.02, \"twoarm\": 0.0}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.36}, {\"name\": \"Single curved arm\", \"value\": -0.13}, {\"name\": \"Arms on opposite sides\", \"value\": -0.08}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy.",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "longtail"
     }
   },
   {
-    "id": "demo-stream4",
+    "id": "demo-ring6",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/stream4.jpg"
+        "image/jpeg": "demo/morphology/ring6.jpg"
       },
       {
-        "image/png": "demo/morphology/stream4-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "stream",
-      "#ai_confidence": "0.86",
-      "#ai_probabilities": "{\"stream\": 0.86, \"longtail\": 0.09, \"twoarm\": 0.02, \"shell\": 0.02, \"ring\": 0.01, \"onearm\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Narrow band of light\", \"value\": 0.59}, {\"name\": \"Long tail extending away\", \"value\": -0.11}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.05}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a narrow band of light running alongside or away from the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "stream"
-    }
-  },
-  {
-    "id": "demo-stream3",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/stream3.jpg"
-      },
-      {
-        "image/png": "demo/morphology/stream3-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "stream",
-      "#ai_confidence": "0.82",
-      "#ai_probabilities": "{\"stream\": 0.82, \"longtail\": 0.14, \"onearm\": 0.01, \"twoarm\": 0.01, \"ring\": 0.01, \"shell\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Narrow band of light\", \"value\": 0.37}, {\"name\": \"Long tail extending away\", \"value\": -0.15}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.06}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a narrow band of light running alongside or away from the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "stream"
-    }
-  },
-  {
-    "id": "demo-stream1",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/stream1.jpg"
-      },
-      {
-        "image/png": "demo/morphology/stream1-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "stream",
-      "#ai_confidence": "0.88",
-      "#ai_probabilities": "{\"stream\": 0.88, \"longtail\": 0.09, \"onearm\": 0.01, \"twoarm\": 0.01, \"ring\": 0.01, \"shell\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Narrow band of light\", \"value\": 0.36}, {\"name\": \"Long tail extending away\", \"value\": -0.09}, {\"name\": \"Closed loop around the galaxy\", \"value\": -0.06}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a narrow band of light running alongside or away from the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "stream"
-    }
-  },
-  {
-    "id": "demo-longtail5",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/longtail5.jpg"
-      },
-      {
-        "image/png": "demo/morphology/longtail5-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "longtail",
-      "#ai_confidence": "0.92",
-      "#ai_probabilities": "{\"longtail\": 0.92, \"onearm\": 0.05, \"shell\": 0.02, \"twoarm\": 0.01, \"ring\": 0.0, \"stream\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Long tail extending away\", \"value\": 0.43}, {\"name\": \"Single curved arm\", \"value\": -0.12}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": 0.05}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found a single long, faint tail of light reaching well away from the galaxy.",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "longtail"
-    }
-  },
-  {
-    "id": "demo-ring5",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/ring5.jpg"
-      },
-      {
-        "image/png": "demo/morphology/ring5-saliency.png"
+        "image/png": "demo/morphology/ring6-saliency.png"
       }
     ],
     "metadata": {
       "#ai_label": "ring",
-      "#ai_confidence": "0.72",
-      "#ai_probabilities": "{\"ring\": 0.72, \"shell\": 0.16, \"onearm\": 0.04, \"longtail\": 0.03, \"stream\": 0.03, \"twoarm\": 0.02}",
+      "#ai_confidence": "0.76",
+      "#ai_probabilities": "{\"ring\": 0.76, \"shell\": 0.17, \"longtail\": 0.02, \"twoarm\": 0.02, \"onearm\": 0.01, \"stream\": 0.01}",
       "#ai_saliency": "1",
-      "#ai_features": "[{\"name\": \"Closed loop around the galaxy\", \"value\": 0.46}, {\"name\": \"Sharp-edged arcs (shells)\", \"value\": -0.18}, {\"name\": \"Narrow band of light\", \"value\": -0.02}]",
-      "#ai_examples": "[{\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\", \"caption\": \"Training example\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\", \"caption\": \"Training example\"}]",
-      "#ai_rationale": "The model found faint light forming a loop that encircles the galaxy.",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "ring"
+    }
+  },
+  {
+    "id": "demo-longtail2",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/longtail2.jpg"
+      },
+      {
+        "image/png": "demo/morphology/longtail2-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "longtail",
+      "#ai_confidence": "0.81",
+      "#ai_probabilities": "{\"longtail\": 0.81, \"onearm\": 0.13, \"shell\": 0.03, \"stream\": 0.02, \"twoarm\": 0.01, \"ring\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "longtail"
     }
   }
 ];

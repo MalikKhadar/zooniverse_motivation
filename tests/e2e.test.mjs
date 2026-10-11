@@ -76,7 +76,20 @@ test('demo: agree with the AI after viewing the explanation', async () => {
   assert.equal(await page.isVisible('#explanation'), true);
   assert.equal(await page.isVisible('#saliency-image'), true);
   assert.equal(await page.getAttribute('#explain-button', 'aria-expanded'), 'true');
-  assert.equal(await page.locator('#probability-bars li').count(), Object.keys(JSON.parse(FIRST.metadata['#ai_probabilities'])).length);
+  assert.equal(await page.locator('#class-scores .class-score').count(), Object.keys(JSON.parse(FIRST.metadata['#ai_probabilities'])).length);
+  // Examples stay hidden until a class is opened.
+  assert.equal(await page.locator('.neighbours:visible').count(), 0);
+
+  // The AI's class shows factual examples; another class shows counterfactuals.
+  const aiRow = `.class-score[data-label="${FIRST_LABEL}"] .score-row`;
+  const otherRow = `.class-score[data-label="${OTHER_LABEL}"] .score-row`;
+  await page.click(aiRow);
+  assert.match(await page.textContent(`#neighbours-${FIRST_LABEL}`), new RegExp(`Why ${LABEL_NAMES[FIRST_LABEL]}\\?`));
+  await page.click(otherRow);
+  assert.equal(await page.isHidden(`#neighbours-${FIRST_LABEL}`), true, 'one class open at a time');
+  assert.match(await page.textContent(`#neighbours-${OTHER_LABEL}`), new RegExp(`Why not ${LABEL_NAMES[OTHER_LABEL]}\\?`));
+  assert.equal(await page.getAttribute(otherRow, 'aria-expanded'), 'true');
+  assert.ok(await page.locator(`#neighbours-${OTHER_LABEL} img`).count() > 0);
 
   await page.uncheck('#heatmap-toggle');
   assert.equal(await page.isVisible('#saliency-image'), false);
@@ -94,6 +107,9 @@ test('demo: agree with the AI after viewing the explanation', async () => {
   assert.equal(review.selection_changes, 0);
   assert.equal(review.decision_path, 'after_explanation');
   assert.ok(review.events.some(e => e.type === 'heatmap_toggle' && e.detail === false));
+  assert.deepEqual(review.examples_viewed, [FIRST_LABEL, OTHER_LABEL]);
+  assert.equal(review.counterfactual_viewed, true);
+  assert.deepEqual(review.explanation_parts, ['saliency', 'probabilities', 'examples']);
   assert.match(await page.textContent('#stats'), /1 reviewed · 1 accepted · 0 rejected/);
 
   // The next subject starts with the explanation closed again.

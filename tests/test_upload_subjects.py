@@ -11,7 +11,7 @@ class BuildMetadataTest(unittest.TestCase):
     def test_maps_ai_columns_and_keeps_extra_columns(self):
         metadata = build_metadata(
             {"image": "a.jpg", "saliency": "", "label": "spiral", "confidence": "0.9",
-             "probabilities": '{"spiral": 0.9}', "features": "", "object_id": "X1"},
+             "probabilities": '{"spiral": 0.9}', "examples": "", "object_id": "X1"},
             has_saliency=True,
         )
         self.assertEqual(metadata, {
@@ -26,7 +26,7 @@ class BuildMetadataTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "missing label"):
             build_metadata({"label": " "}, has_saliency=False)
         with self.assertRaisesRegex(ValueError, "not valid JSON"):
-            build_metadata({"label": "a", "features": "[oops"}, has_saliency=False)
+            build_metadata({"label": "a", "examples": "[oops"}, has_saliency=False)
         with self.assertRaisesRegex(ValueError, "not a number"):
             build_metadata({"label": "a", "confidence": "high"}, has_saliency=False)
 

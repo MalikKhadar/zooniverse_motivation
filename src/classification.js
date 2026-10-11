@@ -9,7 +9,7 @@
  * explanation goes in classification metadata under `ai_review`.
  */
 
-const MAX_EVENTS = 50;
+const MAX_EVENTS = 100;
 
 export class ReviewTracker {
   constructor({ prediction, explanationMode, clock = () => Date.now() }) {
@@ -20,6 +20,7 @@ export class ReviewTracker {
     this.firstExplanationAt = null;
     this.explanationOpenSince = null;
     this.explanationDwellMs = 0;
+    this.examplesViewed = [];
     this.events = [];
   }
 
@@ -53,6 +54,17 @@ export class ReviewTracker {
     this.record('explanation_close');
   }
 
+  /** Factual for the AI's own class, counterfactual for any other. */
+  openExamples(label) {
+    const kind = label === this.prediction?.label ? 'factual' : 'counterfactual';
+    if (!this.examplesViewed.includes(label)) this.examplesViewed.push(label);
+    this.record('examples_open', { label, kind });
+  }
+
+  closeExamples(label) {
+    this.record('examples_close', { label });
+  }
+
   /** Freezes timings and returns the `ai_review` metadata block. */
   finish(chosenLabel) {
     const now = this.clock();
@@ -75,6 +87,8 @@ export class ReviewTracker {
       time_to_explanation_ms: viewed ? this.firstExplanationAt - this.startedAt : null,
       explanation_dwell_ms: dwell,
       selection_changes: this.events.filter(e => e.type === 'select').length,
+      examples_viewed: [...this.examplesViewed],
+      counterfactual_viewed: this.examplesViewed.some(label => label !== this.prediction?.label),
       events: this.events,
     };
   }

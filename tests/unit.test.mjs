@@ -49,25 +49,24 @@ test('full CSV-style metadata is parsed and sorted', () => {
   const p = parsePrediction(subject({
     '#ai_label': 'b',
     '#ai_probabilities': '{"a":0.2,"b":0.7,"c":0.1}',
-    '#ai_features': '[{"name":"x","value":0.1},{"name":"y","value":-0.5}]',
     '#ai_examples': '["https://ex.org/1.jpg", {"url":"javascript:bad"}, {"url":"rel.jpg","label":"a"}]',
-    '#ai_rationale': 'Because.',
     '#ai_saliency': 'https://ex.org/heat.png',
   }), KEYS);
   assert.equal(p.confidence, 0.7, 'falls back to the label probability');
   assert.deepEqual(p.probabilities.map(x => x.label), ['b', 'a', 'c']);
-  assert.deepEqual(p.features.map(x => x.name), ['y', 'x']);
   assert.deepEqual(p.examples.map(x => x.url), ['https://ex.org/1.jpg', 'rel.jpg']);
+  // Untagged examples count as the AI's own class.
+  assert.deepEqual(Object.keys(p.examplesByLabel).sort(), ['a', 'b']);
+  assert.deepEqual(p.examplesByLabel.b.map(x => x.url), ['https://ex.org/1.jpg']);
   assert.equal(p.saliencyUrl, 'https://ex.org/heat.png');
-  assert.deepEqual(p.explanationParts, ['saliency', 'probabilities', 'features', 'examples', 'rationale']);
+  assert.deepEqual(p.explanationParts, ['saliency', 'probabilities', 'examples']);
 });
 
 test('malformed JSON fields are dropped, not fatal', () => {
   const p = parsePrediction(subject({
-    '#ai_label': 'a', '#ai_probabilities': '{oops', '#ai_features': 'nope', '#ai_examples': '{}',
+    '#ai_label': 'a', '#ai_probabilities': '{oops', '#ai_examples': '{}',
   }), KEYS);
   assert.deepEqual(p.probabilities, []);
-  assert.deepEqual(p.features, []);
   assert.deepEqual(p.examples, []);
 });
 
@@ -88,7 +87,9 @@ test('every demo subject is reviewable with a full explanation', () => {
   for (const s of DEMO_SUBJECTS) {
     const p = parsePrediction(s, KEYS, LABEL_NAMES);
     assert.ok(p, s.id);
-    assert.equal(p.explanationParts.length, 5, s.id);
+    assert.deepEqual(p.explanationParts, ['saliency', 'probabilities', 'examples'], s.id);
+    // Every class can be drilled into.
+    assert.deepEqual(Object.keys(p.examplesByLabel).sort(), [...CLASS_LABELS].sort(), s.id);
     assert.ok(subjectImage(s, p).endsWith('.jpg'), s.id);
   }
 });
@@ -132,6 +133,19 @@ test('dwell time sums open periods, including one still open at decision', () =>
   assert.equal(r.time_to_explanation_ms, 1000);
   assert.equal(r.explanation_dwell_ms, 2700);
   assert.deepEqual(r.events.map(e => e.type), ['explanation_open', 'explanation_close', 'explanation_open', 'select']);
+});
+
+test('examples opened are classified as factual or counterfactual', () => {
+  const clock = fakeClock();
+  const t = new ReviewTracker({ prediction, explanationMode: 'on-request', clock });
+  t.openExamples('b'); clock.advance(400); t.closeExamples('b');
+  t.openExamples('a'); t.closeExamples('a'); t.openExamples('b');
+  const r = t.finish('a');
+  assert.deepEqual(r.examples_viewed, ['b', 'a']);
+  assert.equal(r.counterfactual_viewed, true);
+  assert.deepEqual(r.events.filter(e => e.type === 'examples_open').map(e => e.detail),
+    [{ label: 'b', kind: 'counterfactual' }, { label: 'a', kind: 'factual' }, { label: 'b', kind: 'counterfactual' }]);
+  assert.equal(new ReviewTracker({ prediction, explanationMode: 'on-request' }).finish('a').counterfactual_viewed, false);
 });
 
 test("'never' mode reports no explanation available", () => {

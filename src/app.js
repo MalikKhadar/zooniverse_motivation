@@ -148,56 +148,6 @@ function renderHeader() {
   $('auth-button').textContent = auth.token ? `Sign out${auth.login ? ` (${auth.login})` : ''}` : 'Sign in';
 }
 
-function renderBars(listId, items, { signed = false } = {}) {
-  const list = $(listId);
-  list.replaceChildren();
-  const max = signed ? Math.max(...items.map(i => Math.abs(i.value)), 1e-9) : 1;
-  for (const item of items) {
-    const li = document.createElement('li');
-    const name = document.createElement('span');
-    name.className = 'bar-name';
-    name.textContent = item.displayLabel || item.name;
-
-    const track = document.createElement('span');
-    track.className = signed ? 'bar-track signed' : 'bar-track';
-    const fill = document.createElement('span');
-    fill.className = 'bar-fill';
-    const width = (Math.abs(item.value) / max) * (signed ? 50 : 100);
-    fill.style.width = `${width}%`;
-    if (signed) {
-      fill.classList.add(item.value >= 0 ? 'positive' : 'negative');
-      fill.style.left = item.value >= 0 ? '50%' : `${50 - width}%`;
-    }
-    track.append(fill);
-
-    const value = document.createElement('span');
-    value.className = 'bar-value';
-    value.textContent = signed
-      ? `${item.value >= 0 ? '+' : '−'}${Math.abs(item.value).toFixed(2)}`
-      : percent(item.value);
-
-    if (item.isPrediction) li.classList.add('is-prediction');
-    li.append(name, track, value);
-    list.append(li);
-  }
-}
-
-function renderExamples(examples) {
-  const list = $('examples');
-  list.replaceChildren();
-  for (const example of examples) {
-    const li = document.createElement('li');
-    const img = document.createElement('img');
-    img.src = example.url;
-    img.alt = example.displayLabel ? `Example: ${example.displayLabel}` : 'Example image';
-    img.loading = 'lazy';
-    const caption = document.createElement('span');
-    caption.textContent = [example.displayLabel, example.caption].filter(Boolean).join(' · ');
-    li.append(img, caption);
-    list.append(li);
-  }
-}
-
 /**
  * The classes as clickable silhouettes. The AI's pick is preselected and
  * outlined green; every other class is outlined red, so choosing one reads as
@@ -262,17 +212,123 @@ function select(label) {
   renderSelection();
 }
 
+/** One row per class, by confidence; prediction.probabilities may be empty. */
+function classScores(prediction) {
+  if (prediction.probabilities.length) return prediction.probabilities;
+  return Object.keys(prediction.examplesByLabel)
+    .map(label => ({ label, displayLabel: LABEL_NAMES[label] || label, value: null }));
+}
+
 function renderExplanation(prediction) {
-  const parts = new Set(prediction.explanationParts);
-  for (const part of ['saliency', 'probabilities', 'features', 'examples', 'rationale']) {
-    $(`part-${part}`).hidden = !parts.has(part);
+  const scores = classScores(prediction);
+  $('part-saliency').hidden = !prediction.saliencyUrl;
+  $('part-probabilities').hidden = scores.length === 0;
+  $('part-probabilities').querySelector('h3').textContent =
+    prediction.probabilities.length ? 'How sure it was' : 'Similar galaxies';
+  $('drilldown-hint').hidden = prediction.examples.length === 0;
+  $('class-scores').replaceChildren(...scores.map(score => renderScoreRow(prediction, score)));
+  renderOpenExamples();
+}
+
+/**
+ * A class with its confidence. Classes with training examples expand to show
+ * the galaxies most like this one: factual examples for the AI's class,
+ * counterfactual ("why not?") examples for every other class.
+ */
+function renderScoreRow(prediction, { label, displayLabel, value }) {
+  const examples = prediction.examplesByLabel[label] || [];
+  const isAi = label === prediction.label;
+  const item = document.createElement('li');
+  item.className = 'class-score';
+  item.dataset.label = label;
+  item.classList.toggle('is-ai', isAi);
+
+  const row = document.createElement(examples.length ? 'button' : 'div');
+  row.className = 'score-row';
+  const chevron = document.createElement('span');
+  chevron.className = 'chevron';
+  chevron.setAttribute('aria-hidden', 'true');
+  const name = document.createElement('span');
+  name.className = 'score-name';
+  name.textContent = displayLabel;
+  if (isAi) {
+    const tag = document.createElement('span');
+    tag.className = 'ai-tag';
+    tag.textContent = "AI's pick";
+    name.append(' ', tag);
   }
-  renderBars('probability-bars', prediction.probabilities.map(p => ({
-    ...p, isPrediction: p.label === prediction.label,
-  })));
-  renderBars('feature-bars', prediction.features, { signed: true });
-  renderExamples(prediction.examples);
-  $('rationale').textContent = prediction.rationale || '';
+  const track = document.createElement('span');
+  track.className = 'bar-track';
+  if (value !== null) {
+    const fill = document.createElement('span');
+    fill.className = 'bar-fill';
+    fill.style.width = percent(value);
+    track.append(fill);
+  }
+  const amount = document.createElement('span');
+  amount.className = 'bar-value';
+  amount.textContent = value === null ? '' : percent(value);
+  row.append(chevron, name, track, amount);
+  item.append(row);
+
+  if (examples.length) {
+    const panel = document.createElement('div');
+    panel.className = 'neighbours';
+    panel.id = `neighbours-${label}`;
+    panel.hidden = true;
+    const title = document.createElement('p');
+    title.className = 'neighbours-title';
+    const question = document.createElement('strong');
+    question.textContent = isAi ? `Why ${displayLabel}?` : `Why not ${displayLabel}?`;
+    title.append(question, ` The training galaxies most like this one that were labelled ${displayLabel}.`);
+    const list = document.createElement('ul');
+    list.className = 'examples';
+    for (const example of examples) {
+      const li = document.createElement('li');
+      const img = document.createElement('img');
+      img.src = example.url;
+      img.alt = `Training galaxy labelled ${displayLabel}`;
+      img.loading = 'lazy';
+      li.append(img);
+      if (example.caption) {
+        const caption = document.createElement('span');
+        caption.textContent = example.caption;
+        li.append(caption);
+      }
+      list.append(li);
+    }
+    panel.append(title, list);
+    item.append(panel);
+
+    row.type = 'button';
+    row.setAttribute('aria-expanded', 'false');
+    row.setAttribute('aria-controls', panel.id);
+    row.addEventListener('click', () => toggleExamples(label));
+  } else {
+    item.classList.add('no-examples');
+  }
+  return item;
+}
+
+/** One class's examples are open at a time. */
+function toggleExamples(label) {
+  const { tracker } = state.current;
+  const open = state.current.openExamples;
+  if (open) tracker.closeExamples(open);
+  state.current.openExamples = open === label ? null : label;
+  if (state.current.openExamples) tracker.openExamples(label);
+  renderOpenExamples();
+}
+
+function renderOpenExamples() {
+  for (const item of $('class-scores').children) {
+    const open = item.dataset.label === state.current?.openExamples;
+    item.classList.toggle('is-open', open);
+    const row = item.querySelector('button.score-row');
+    if (row) row.setAttribute('aria-expanded', String(open));
+    const panel = item.querySelector('.neighbours');
+    if (panel) panel.hidden = !open;
+  }
 }
 
 function renderSubject() {
@@ -320,8 +376,12 @@ function renderSaliency() {
 
 function setExplanationOpen(open) {
   const { tracker } = state.current;
-  if (open) tracker.openExplanation();
-  else tracker.closeExplanation();
+  if (open) {
+    tracker.openExplanation();
+  } else {
+    if (state.current.openExamples) toggleExamples(state.current.openExamples);
+    tracker.closeExplanation();
+  }
   $('explanation').hidden = !open;
   $('explain-button').setAttribute('aria-expanded', String(open));
   $('explain-button-text').textContent = open ? 'Hide explanation' : 'Why does the AI think this?';
@@ -354,6 +414,7 @@ async function advance() {
     state.current = {
       ...next,
       selected: next.prediction.label,
+      openExamples: null,
       tracker: new ReviewTracker({ prediction: next.prediction, explanationMode: settings.explanationMode }),
     };
     renderSubject();

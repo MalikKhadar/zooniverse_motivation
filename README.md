@@ -11,15 +11,14 @@ volunteer can:
 
 ![Second Look with the explanation open](docs/screenshot.png)
 
-The explanation is assembled from whichever parts the subject provides:
+The explanation is built for a classic image classifier and revealed step by
+step, so each thing a volunteer chooses to look at is recorded:
 
 | Part | What the volunteer sees |
 |---|---|
-| Saliency map | A heatmap over the image showing where the model looked, with a toggle and an opacity slider |
-| Class probabilities | Bars for every class, with the predicted one highlighted |
-| Feature attributions | SHAP/LIME-style signed bars: what pushed the model towards or away from its answer |
-| Examples | Training images of the predicted and other classes |
-| Rationale | A sentence in plain language |
+| Saliency map | A heatmap over the image showing where the model looked, with a toggle and an opacity slider. Shown when the explanation is opened. |
+| Class confidence | The model's confidence in every class, the AI's pick marked. Shown when the explanation is opened. |
+| Nearest training examples | Hidden until the volunteer clicks a class. For the AI's class: *"Why Ring?"*, the training galaxies most like this one that were labelled Ring (factual). For any other class: *"Why not Shell?"*, the most similar Shells (a case-based counterfactual). One class is open at a time. |
 
 Each decision is sent to Panoptes as an ordinary classification. Metadata
 records whether the volunteer opened the explanation, how long they kept it
@@ -86,9 +85,7 @@ Subjects without it are skipped.
 | `#ai_confidence` | `0.91`, `91`, `91%` | Falls back to the label's entry in `#ai_probabilities` |
 | `#ai_probabilities` | `{"spiral":0.91,"elliptical":0.09}` | Object or `[{"label","value"}]` list |
 | `#ai_saliency` | `1` or `https://…/heat.png` | Index into the subject's `locations`, or a URL. A transparent PNG the same size as the image works best |
-| `#ai_features` | `[{"name":"Arms","value":0.6}]` | Signed contributions, largest magnitude first |
-| `#ai_examples` | `[{"url":"…","label":"spiral","caption":"…"}]` | Reference images |
-| `#ai_rationale` | `Curved arms around a bulge.` | Plain text |
+| `#ai_examples` | `[{"url":"…","label":"ring"},{"url":"…","label":"shell"}]` | For each class, the training galaxies nearest this subject in the model's feature space (a few per class). A class without examples can't be drilled into. Untagged examples count as the AI's class |
 | `#ai_model` | `galaxy-cnn-v2` | Shown under the confidence bar and stored with each classification |
 
 The `#` prefix hides these fields from volunteers in the standard Zooniverse
@@ -147,15 +144,19 @@ the branch). `.nojekyll` is already in place.
       "ai_label": "shell", "ai_confidence": 0.58, "ai_model": "tidal-cnn-v1",
       "explanation_mode": "on-request",
       "explanation_available": true,
-      "explanation_parts": ["saliency", "probabilities", "features", "examples", "rationale"],
+      "explanation_parts": ["saliency", "probabilities", "examples"],
       "explanation_viewed": true,
       "decision_path": "after_explanation",   // or "direct"
       "time_to_decision_ms": 8421,
       "time_to_explanation_ms": 2210,         // null if never opened
       "explanation_dwell_ms": 5873,           // total time the explanation was open
       "selection_changes": 1,                 // times the volunteer picked a class
-      "events": [                              // up to 50 interactions
+      "examples_viewed": ["shell", "ring"],   // classes drilled into, in order
+      "counterfactual_viewed": true,          // opened any class other than the AI's
+      "events": [                              // up to 100 interactions
         { "type": "explanation_open", "t_ms": 2210 },
+        { "type": "examples_open", "t_ms": 5120, "detail": { "label": "shell", "kind": "counterfactual" } },
+        { "type": "examples_close", "t_ms": 7310, "detail": { "label": "shell" } },
         { "type": "select", "t_ms": 7950, "detail": "ring" },
         { "type": "heatmap_opacity", "t_ms": 4012, "detail": 0.85 }
       ]
