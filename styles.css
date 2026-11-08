@@ -420,15 +420,22 @@ button.score-row .chevron::before {
   margin-top: 8px;
 }
 .quiz-galaxy { margin: 0; }
-.quiz-galaxy img,
-.quiz-option img {
-  display: block;
-  width: 100%;
+.quiz-frame {
+  position: relative;
   aspect-ratio: 1 / 1;
-  object-fit: contain;
   background: var(--image-bg);
   border-radius: 6px;
+  overflow: hidden;
 }
+.quiz-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.quiz-frame .quiz-heat { opacity: var(--quiz-opacity, 0.6); pointer-events: none; }
+.quiz-opacity { margin-top: 8px; font-size: 14px; justify-content: center; width: 100%; }
 .quiz-galaxy figcaption { margin-top: 4px; font-size: 12px; color: var(--muted); text-align: center; }
 .quiz-options {
   border: 0;
@@ -489,7 +496,7 @@ button.score-row .chevron::before {
   .review { grid-template-columns: 1fr; }
   .survey { padding: 16px 16px 0; }
   .quiz-layout { grid-template-columns: 1fr; }
-  .quiz-galaxy img { max-width: 220px; margin: 0 auto; }
+  .quiz-galaxy .quiz-frame { max-width: 260px; margin: 0 auto; }
   .survey-footer { margin: 8px -16px 0; padding: 12px 16px; }
   .likert-options { gap: 4px; }
 }

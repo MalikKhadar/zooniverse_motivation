@@ -327,10 +327,13 @@ test('heat map question: falls back to the pool, excludes the current galaxy, ne
 
 test('heat map answers are scored and timed', () => {
   const q = { type: 'heatmap', subjectId: 'c', options: ['b', 'c', 'a', 'd'].map(id => ({ subjectId: id })), correctIndex: 1 };
-  const right = scoreQuestion(q, 1, { startedAt: 0, completedAt: 4200, changes: 2 });
+  const events = [{ type: 'select', t_ms: 900, detail: 3 }, { type: 'opacity', t_ms: 2000, detail: 0.9 },
+    { type: 'select', t_ms: 3000, detail: 1 }];
+  const right = scoreQuestion(q, 1, { startedAt: 0, completedAt: 4200, changes: 2, events, finalOpacity: 0.9 });
   assert.deepEqual(right, {
     type: 'heatmap', subject_id: 'c', option_subject_ids: ['b', 'c', 'a', 'd'],
     correct_index: 1, chosen_index: 1, correct: true, answer_changes: 2,
+    final_opacity: 0.9, opacity_changes: 1, events,
     started_at: '1970-01-01T00:00:00.000Z', completed_at: '1970-01-01T00:00:04.200Z', duration_ms: 4200,
   });
   assert.equal(scoreQuestion(q, 3, { startedAt: 0, completedAt: 1, changes: 0 }).correct, false);

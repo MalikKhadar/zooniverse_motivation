@@ -268,13 +268,22 @@ async function answerHeatmap(page, { pickReal = true } = {}) {
   await form.waitFor();
   assert.equal(await page.isHidden('#state-review'), true, 'the classify view (and its overlay) is hidden');
   assert.equal(await form.locator('button[type=submit]').isDisabled(), true, 'cannot continue before choosing');
-  const galaxy = await form.locator('.quiz-galaxy img').getAttribute('src');
+  const galaxy = await form.locator('.quiz-galaxy .quiz-frame img').first().getAttribute('src');
+  assert.equal(await form.locator('.quiz-galaxy .quiz-heat').isHidden(), true, 'no overlay before choosing');
   const realMap = galaxy.replace(/\.jpg$/, '-saliency.png');
-  const maps = await form.locator('.quiz-option img').evaluateAll(imgs => imgs.map(i => i.getAttribute('src')));
+  const maps = await form.locator('.quiz-option .quiz-heat').evaluateAll(imgs => imgs.map(i => i.getAttribute('src')));
+  // Every option is laid over the same galaxy.
+  const backs = await form.locator('.quiz-option .quiz-frame img:first-child').evaluateAll(imgs => imgs.map(i => i.getAttribute('src')));
+  assert.deepEqual(backs, [galaxy, galaxy, galaxy, galaxy]);
   assert.equal(maps.length, 4);
   assert.equal(maps.filter(m => m === realMap).length, 1, 'exactly one option is the real map');
   const index = pickReal ? maps.indexOf(realMap) : maps.findIndex(m => m !== realMap);
   await form.locator('.quiz-option').nth(index).click();
+  // The chosen map is laid over the large view, and the slider sets every overlay's opacity.
+  assert.equal(await form.locator('.quiz-galaxy .quiz-heat').getAttribute('src'), maps[index]);
+  await form.locator('.quiz-opacity input').fill('0.25');
+  const opacities = await form.locator('.quiz-heat').evaluateAll(imgs => imgs.map(i => getComputedStyle(i).opacity));
+  assert.deepEqual(opacities, ['0.25', '0.25', '0.25', '0.25', '0.25']);
   await form.locator('button[type=submit]').click();
   return { galaxy, index };
 }
@@ -322,6 +331,9 @@ test('surveys: skepticism once on first visit, needs check-in after every 5th cl
   const quiz = fifth.metadata.xai_quiz.heatmap;
   assert.equal(quiz.correct, true);
   assert.equal(quiz.chosen_index, answered.index);
+  assert.equal(quiz.final_opacity, 0.25);
+  assert.equal(quiz.opacity_changes, 1);
+  assert.deepEqual(quiz.events.map(e => e.type), ['select', 'opacity']);
   assert.equal(quiz.option_subject_ids.length, 4);
   assert.ok(answered.galaxy.includes(quiz.subject_id.replace('demo-', '')));
   assert.notEqual(quiz.subject_id, fifthSubject, 'not the galaxy just classified');

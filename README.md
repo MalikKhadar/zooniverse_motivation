@@ -177,7 +177,9 @@ the branch). `.nojekyll` is already in place.
         "type": "heatmap", "subject_id": "1234",       // the galaxy shown
         "option_subject_ids": ["88", "1234", "57", "301"], // whose heat map each option was
         "correct_index": 1, "chosen_index": 1, "correct": true,
-        "answer_changes": 0, "started_at": "…", "completed_at": "…", "duration_ms": 7120
+        "answer_changes": 0, "final_opacity": 0.35, "opacity_changes": 2,
+        "events": [{ "type": "select", "t_ms": 2100, "detail": 1 }, { "type": "opacity", "t_ms": 3400, "detail": 0.35 }],
+        "started_at": "…", "completed_at": "…", "duration_ms": 7120
       }
     }
   },
@@ -216,8 +218,9 @@ that classification, so they reach Panoptes together.
 **Explanation check (with each check-in).** After the needs items, the
 volunteer is shown a galaxy and four heat maps: the AI's real heat map for that
 galaxy and three taken from other galaxies, in random order. They pick the one
-they think is real; there is no overlay and no feedback on whether they were
-right. The galaxy is one still waiting in the volunteer's queue, so they have
+they think is real. Each option is shown laid over the galaxy, the selected one
+also over a large view, and one slider sets the overlays' opacity. There is no
+feedback on whether they were right. The galaxy is one still waiting in the volunteer's queue, so they have
 not seen its heat map before, and it is then removed from their queue so they
 don't classify it after seeing its map. If fewer than four galaxies with heat
 maps have been loaded, the question is skipped and recorded as skipped.

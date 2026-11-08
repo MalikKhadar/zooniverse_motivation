@@ -57,7 +57,9 @@ export function buildHeatmapQuestion({ candidates, pool, excludeIds = [], random
 }
 
 /** The record stored with the classification. */
-export function scoreQuestion(question, chosenIndex, { startedAt, completedAt, changes }) {
+export function scoreQuestion(question, chosenIndex, {
+  startedAt, completedAt, changes, events = [], finalOpacity = null,
+}) {
   return {
     type: question.type,
     subject_id: question.subjectId,
@@ -66,6 +68,9 @@ export function scoreQuestion(question, chosenIndex, { startedAt, completedAt, c
     chosen_index: chosenIndex,
     correct: chosenIndex === question.correctIndex,
     answer_changes: changes,
+    final_opacity: finalOpacity,
+    opacity_changes: events.filter(e => e.type === 'opacity').length,
+    events,
     started_at: new Date(startedAt).toISOString(),
     completed_at: new Date(completedAt).toISOString(),
     duration_ms: completedAt - startedAt,
