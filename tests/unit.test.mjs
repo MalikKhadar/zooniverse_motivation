@@ -346,7 +346,7 @@ const scored = (id, label, top = 0.7) => ({
   probabilities: [{ label, value: top }, { label: 'other', value: Math.round((1 - top) * 100) / 100 }],
 });
 
-test('confidence question: the real breakdown plus three from galaxies of other classes', () => {
+test('confidence question: the real breakdown plus three others, all with different top classes', () => {
   const pool = [
     scored('a', 'ring'), scored('b', 'ring', 0.8), scored('c', 'shell'), scored('d', 'stream'),
     scored('e', 'onearm'), scored('f', 'shell', 0.6),
@@ -358,17 +358,19 @@ test('confidence question: the real breakdown plus three from galaxies of other 
     assert.equal(q.subjectId, 'a');
     assert.equal(q.options.length, OPTION_COUNT);
     assert.equal(q.options[q.correctIndex].subjectId, 'a');
-    const decoys = q.options.filter((_, i) => i !== q.correctIndex);
-    assert.ok(decoys.every(o => o.label !== 'ring'), 'no decoy from the same class');
+    const tops = q.options.map(o => o.probabilities[0].label);
+    assert.equal(new Set(tops).size, OPTION_COUNT, `no two options share a top class: ${tops}`);
+    assert.deepEqual(q.options.map(o => o.label), tops);
     assert.ok(!q.options.some(o => o.subjectId === 'b'));
     positions.add(q.correctIndex);
   }
   assert.equal(positions.size, OPTION_COUNT, 'the real breakdown appears in every position');
 });
 
-test('confidence question: needs three other-class galaxies with distinct breakdowns', () => {
-  const pool = [scored('a', 'ring'), scored('b', 'shell'), scored('c', 'shell'), scored('d', 'ring')];
-  // b and c share a breakdown, so only one counts: two decoys at most.
+test('confidence question: needs four different top classes', () => {
+  // Plenty of galaxies, but only two top classes besides the target's.
+  const pool = [scored('a', 'ring'), scored('b', 'shell'), scored('c', 'shell', 0.9), scored('d', 'ring', 0.6),
+    scored('e', 'stream')];
   assert.equal(buildProbabilityQuestion({ candidates: [pool[0]], pool }), null);
   const noProbs = pool.map(g => ({ ...g, probabilities: [] }));
   assert.equal(buildProbabilityQuestion({ candidates: noProbs, pool: noProbs }), null);

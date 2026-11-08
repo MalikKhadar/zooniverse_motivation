@@ -5,11 +5,11 @@
  * taken from other galaxies. They pick the real one.
  *
  * Heat map: four heat maps, which they can lay over the galaxy.
- * Probabilities: four class-confidence breakdowns. The decoys come from
- * galaxies the AI put in a different class, so the real one is the only
- * option whose top class is the AI's answer for this galaxy.
+ * Probabilities: four class-confidence breakdowns, each with a different top
+ * class, so the real one is the only option whose top class is the AI's
+ * answer for this galaxy.
  *
- * Pool entries are { id, imageUrl, saliencyUrl, label, probabilities }.
+ * Pool entries are { id, imageUrl, saliencyUrl, probabilities }.
  */
 
 export const OPTION_COUNT = 4;
@@ -66,31 +66,31 @@ export function buildHeatmapQuestion({ candidates, pool, excludeIds = [], random
   };
 }
 
-const breakdownKey = probabilities => probabilities.map(p => `${p.label}:${p.value}`).join('|');
+// Breakdowns are sorted highest first, so the first entry is the top class.
+const topClass = item => item.probabilities[0].label;
 
 /**
  * Builds one class-confidence question, or returns null when there aren't
- * three galaxies from other classes to draw decoys from.
+ * enough galaxies to give all four options different top classes.
  */
 export function buildProbabilityQuestion({ candidates, pool, excludeIds = [], random = Math.random }) {
-  const usable = item => item?.imageUrl && item?.label && item?.probabilities?.length && !excludeIds.includes(item.id);
+  const usable = item => item?.imageUrl && item?.probabilities?.length && !excludeIds.includes(item.id);
   const target = pickTarget(candidates, pool, usable, random);
   if (!target) return null;
 
-  const seen = new Set([breakdownKey(target.probabilities)]);
+  // No two options share a top class.
+  const usedTops = new Set([topClass(target)]);
   const distractors = [];
   for (const item of shuffle(pool.filter(usable), random)) {
     if (distractors.length === OPTION_COUNT - 1) break;
-    if (item.id === target.id || item.label === target.label) continue;
-    const key = breakdownKey(item.probabilities);
-    if (seen.has(key)) continue;
-    seen.add(key);
+    if (item.id === target.id || usedTops.has(topClass(item))) continue;
+    usedTops.add(topClass(item));
     distractors.push(item);
   }
   if (distractors.length < OPTION_COUNT - 1) return null;
 
   const options = shuffle([target, ...distractors], random)
-    .map(item => ({ subjectId: item.id, label: item.label, probabilities: item.probabilities }));
+    .map(item => ({ subjectId: item.id, label: topClass(item), probabilities: item.probabilities }));
   return {
     type: 'probabilities',
     subjectId: target.id,

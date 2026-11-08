@@ -298,7 +298,8 @@ async function answerProbabilities(page) {
   const realTop = LABEL_NAMES[subject.metadata['#ai_label']];
   const tops = await form.locator('.quiz-probs li:first-child .quiz-prob-name').allTextContents();
   assert.equal(tops.length, 4);
-  assert.equal(tops.filter(t => t === realTop).length, 1, 'only the real breakdown has the AI\'s class on top');
+  assert.equal(new Set(tops).size, 4, `no two options share a top class: ${tops}`);
+  assert.ok(tops.includes(realTop));
   const rows = await form.locator('.quiz-option').first().locator('.quiz-probs li').count();
   assert.ok(rows > 1, 'each option shows the whole breakdown');
   const index = tops.indexOf(realTop);
@@ -360,8 +361,7 @@ test('surveys: skepticism once on first visit, needs check-in after every 5th cl
   assert.equal(probs.chosen_index, answeredProbs.index);
   assert.notEqual(probs.subject_id, quiz.subject_id, 'the two questions use different galaxies');
   assert.notEqual(probs.subject_id, fifthSubject);
-  const decoyLabels = probs.option_ai_labels.filter((_, i) => i !== probs.correct_index);
-  assert.ok(!decoyLabels.includes(probs.option_ai_labels[probs.correct_index]));
+  assert.equal(new Set(probs.option_ai_labels).size, 4);
   assert.equal(quiz.option_subject_ids.length, 4);
   assert.ok(answered.galaxy.includes(quiz.subject_id.replace('demo-', '')));
   assert.notEqual(quiz.subject_id, fifthSubject, 'not the galaxy just classified');

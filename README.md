@@ -231,9 +231,8 @@ There is no feedback on whether they were right.
 - **Heat map.** Each option is shown laid over the galaxy, the selected one
   also over a large view, and one slider sets the overlays' opacity.
 - **Class confidences.** Each option is a full confidence breakdown, highest
-  class first. The decoys come from galaxies the AI put in a different class,
-  so the real breakdown is the only one topped by the AI's answer for this
-  galaxy.
+  class first. No two options share a top class, so the real breakdown is the
+  only one topped by the AI's answer for this galaxy.
 
 Each question's galaxy is one still waiting in the volunteer's queue, so they
 have not seen its explanation before; it is then removed from their queue so
