@@ -262,6 +262,23 @@ async function answerSurvey(page, id, value) {
   await submit.click();
 }
 
+/** Answers the check-in heat map question, picking the real map or a decoy. */
+async function answerHeatmap(page, { pickReal = true } = {}) {
+  const form = page.locator('form.quiz[data-quiz="heatmap"]');
+  await form.waitFor();
+  assert.equal(await page.isHidden('#state-review'), true, 'the classify view (and its overlay) is hidden');
+  assert.equal(await form.locator('button[type=submit]').isDisabled(), true, 'cannot continue before choosing');
+  const galaxy = await form.locator('.quiz-galaxy img').getAttribute('src');
+  const realMap = galaxy.replace(/\.jpg$/, '-saliency.png');
+  const maps = await form.locator('.quiz-option img').evaluateAll(imgs => imgs.map(i => i.getAttribute('src')));
+  assert.equal(maps.length, 4);
+  assert.equal(maps.filter(m => m === realMap).length, 1, 'exactly one option is the real map');
+  const index = pickReal ? maps.indexOf(realMap) : maps.findIndex(m => m !== realMap);
+  await form.locator('.quiz-option').nth(index).click();
+  await form.locator('button[type=submit]').click();
+  return { galaxy, index };
+}
+
 async function classifyDirect(page, times) {
   for (let i = 0; i < times; i += 1) {
     const before = await page.evaluate(() => window.__secondLook.participant.classificationCount);
@@ -298,8 +315,18 @@ test('surveys: skepticism once on first visit, needs check-in after every 5th cl
   assert.equal((await lastPayload(page)).metadata.participant.classification_number, 4);
 
   await answerSurvey(page, 'needs', 3);
+  const fifthSubject = await page.evaluate(() => window.__secondLook.state.current.subject.id);
+  const answered = await answerHeatmap(page);
   await page.waitForFunction(() => window.__secondLook.participant.classificationCount === 5);
   const fifth = await lastPayload(page);
+  const quiz = fifth.metadata.xai_quiz.heatmap;
+  assert.equal(quiz.correct, true);
+  assert.equal(quiz.chosen_index, answered.index);
+  assert.equal(quiz.option_subject_ids.length, 4);
+  assert.ok(answered.galaxy.includes(quiz.subject_id.replace('demo-', '')));
+  assert.notEqual(quiz.subject_id, fifthSubject, 'not the galaxy just classified');
+  assert.equal(await page.evaluate(id => window.__secondLook.state.queue.some(s => s.id === id), quiz.subject_id), false,
+    'the quiz galaxy is dropped from the queue');
   assert.equal(fifth.metadata.ai_review.decision, 'reject');
   assert.equal(fifth.metadata.participant.classification_number, 5);
   assert.equal(fifth.metadata.needs.survey, 'needs');
@@ -327,7 +354,9 @@ test('surveys: a failed submission after the check-in does not ask it again', as
   await page.evaluate(() => { window.__secondLook.participant.data.classificationCount = 4; });
   await page.click('#submit-button');
   await answerSurvey(page, 'needs', 5);
+  // The mock queue has too few galaxies with heat maps for a question.
   await page.waitForSelector('#feedback.error');
+  assert.deepEqual(mock.posted[0].metadata.xai_quiz, { heatmap: { type: 'heatmap', skipped: 'not_enough_heatmaps' } });
 
   await page.click('#submit-button');
   await page.waitForFunction(() => !window.__secondLook.state.busy);

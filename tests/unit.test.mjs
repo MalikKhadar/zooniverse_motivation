@@ -289,3 +289,49 @@ test('every demo label is a configured class with a silhouette on disk', async (
   const wrong = DEMO_SUBJECTS.filter(s => s.metadata['#ai_label'] !== s.metadata['#demo_true_label']);
   assert.ok(wrong.length > 0 && wrong.length < DEMO_SUBJECTS.length / 2, 'some, but not most, AI answers are wrong');
 });
+
+import { buildHeatmapQuestion, scoreQuestion, OPTION_COUNT } from '../src/quiz.js';
+
+function seededRandom(seed = 1) {
+  let x = seed;
+  return () => { x = (x * 16807) % 2147483647; return (x - 1) / 2147483646; };
+}
+
+const galaxy = id => ({ id, imageUrl: `img/${id}.jpg`, saliencyUrl: `heat/${id}.png` });
+
+test('heat map question: one real map, three from other galaxies, in random order', () => {
+  const pool = ['a', 'b', 'c', 'd', 'e', 'f'].map(galaxy);
+  const positions = new Set();
+  for (let seed = 1; seed <= 40; seed += 1) {
+    const q = buildHeatmapQuestion({ candidates: [pool[2]], pool, random: seededRandom(seed) });
+    assert.equal(q.subjectId, 'c', 'target comes from the unclassified candidates');
+    assert.equal(q.imageUrl, 'img/c.jpg');
+    assert.equal(q.options.length, OPTION_COUNT);
+    assert.equal(q.options[q.correctIndex].saliencyUrl, 'heat/c.png');
+    assert.equal(new Set(q.options.map(o => o.saliencyUrl)).size, OPTION_COUNT, 'no duplicate maps');
+    positions.add(q.correctIndex);
+  }
+  assert.equal(positions.size, OPTION_COUNT, 'the real map appears in every position');
+});
+
+test('heat map question: falls back to the pool, excludes the current galaxy, needs four maps', () => {
+  const pool = ['a', 'b', 'c', 'd', 'e'].map(galaxy);
+  for (let seed = 1; seed <= 20; seed += 1) {
+    const q = buildHeatmapQuestion({ candidates: [], pool, excludeIds: ['a'], random: seededRandom(seed) });
+    assert.ok(!q.options.some(o => o.subjectId === 'a'));
+  }
+  assert.equal(buildHeatmapQuestion({ candidates: [], pool: pool.slice(0, 3) }), null);
+  const noMaps = pool.map(g => ({ ...g, saliencyUrl: null }));
+  assert.equal(buildHeatmapQuestion({ candidates: noMaps, pool: noMaps }), null);
+});
+
+test('heat map answers are scored and timed', () => {
+  const q = { type: 'heatmap', subjectId: 'c', options: ['b', 'c', 'a', 'd'].map(id => ({ subjectId: id })), correctIndex: 1 };
+  const right = scoreQuestion(q, 1, { startedAt: 0, completedAt: 4200, changes: 2 });
+  assert.deepEqual(right, {
+    type: 'heatmap', subject_id: 'c', option_subject_ids: ['b', 'c', 'a', 'd'],
+    correct_index: 1, chosen_index: 1, correct: true, answer_changes: 2,
+    started_at: '1970-01-01T00:00:00.000Z', completed_at: '1970-01-01T00:00:04.200Z', duration_ms: 4200,
+  });
+  assert.equal(scoreQuestion(q, 3, { startedAt: 0, completedAt: 1, changes: 0 }).correct, false);
+});

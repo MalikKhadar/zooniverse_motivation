@@ -171,6 +171,14 @@ the branch). `.nojekyll` is already in place.
       "responses": { "autonomy": 6, "competence": 5, "relatedness": 2 },
       "scores": { "autonomy": 6, "competence": 5, "relatedness": 2 },
       "started_at": "…", "completed_at": "…", "duration_ms": 9234
+    },
+    "xai_quiz": {                             // with each check-in
+      "heatmap": {
+        "type": "heatmap", "subject_id": "1234",       // the galaxy shown
+        "option_subject_ids": ["88", "1234", "57", "301"], // whose heat map each option was
+        "correct_index": 1, "chosen_index": 1, "correct": true,
+        "answer_changes": 0, "started_at": "…", "completed_at": "…", "duration_ms": 7120
+      }
     }
   },
   "links": { "project": "123", "workflow": "456", "subjects": ["901"] },
@@ -204,6 +212,17 @@ adaptation of the BPNSFS items. Each item is scored on its own, from
 the volunteer decides on their 5th, 10th, 15th… subject. The answers go in
 that classification, so they reach Panoptes together.
 `CONFIG.surveys.checkInEvery` changes the interval.
+
+**Explanation check (with each check-in).** After the needs items, the
+volunteer is shown a galaxy and four heat maps: the AI's real heat map for that
+galaxy and three taken from other galaxies, in random order. They pick the one
+they think is real; there is no overlay and no feedback on whether they were
+right. The galaxy is one still waiting in the volunteer's queue, so they have
+not seen its heat map before, and it is then removed from their queue so they
+don't classify it after seeing its map. If fewer than four galaxies with heat
+maps have been loaded, the question is skipped and recorded as skipped.
+`CONFIG.surveys.quiz` lists which checks run; questions for the class
+confidences and the counterfactual examples will join `heatmap` there.
 
 **Where the answers go.** A static page can only send data to Zooniverse as
 classifications, so answers travel in classification metadata (see above).
@@ -244,6 +263,7 @@ python3 scripts/make_demo_subjects.py path/to/images   # rebuild the demo from <
 | `src/classification.js` | Decision/explanation timing and the Panoptes payload |
 | `src/panoptes.js` | Panoptes API client and OAuth sign-in |
 | `src/surveys.js`, `src/survey-view.js` | Questionnaire items, scoring and form |
+| `src/quiz.js`, `src/quiz-view.js` | Check-in explanation questions (heat map) |
 | `src/participant.js` | Anonymous participant ID, answers and classification count |
 | `src/demo.js`, `src/demo-data.js`, `demo/morphology/` | Offline demo subjects (images and made-up predictions) |
 | `assets/classes/` | Class silhouettes (made by `scripts/silhouette.py`) |

@@ -6,6 +6,8 @@ import { DEMO_PROJECT, DEMO_WORKFLOW, DEMO_SUBJECTS } from './demo.js';
 import { Participant } from './participant.js';
 import { SKEPTICISM_SURVEY, NEEDS_SURVEY } from './surveys.js';
 import { runSurvey } from './survey-view.js';
+import { buildHeatmapQuestion } from './quiz.js';
+import { runHeatmapQuestion } from './quiz-view.js';
 
 const EXPLANATION_MODES = ['on-request', 'always', 'never'];
 const ADVANCE_DELAY_MS = 900;
@@ -42,6 +44,9 @@ const state = {
   workflow: null,
   queue: [],
   seen: new Set(),
+  // Every galaxy fetched so far that has a heat map: the pool for the
+  // check-in heat map question. id -> { id, imageUrl, saliencyUrl }
+  known: new Map(),
   current: null, // { subject, prediction, tracker }
   busy: false,
   stats: { accept: 0, reject: 0 },
@@ -97,9 +102,38 @@ async function nextReviewable() {
     }
     const batch = await source.nextBatch();
     if (!batch.length) return null;
+    remember(batch);
     state.queue.push(...batch);
   }
   return null;
+}
+
+function remember(subjects) {
+  for (const subject of subjects) {
+    const prediction = parsePrediction(subject, CONFIG.metadataKeys, LABEL_NAMES);
+    if (!prediction?.saliencyUrl) continue;
+    const id = String(subject.id);
+    state.known.set(id, { id, imageUrl: subjectImage(subject, prediction), saliencyUrl: prediction.saliencyUrl });
+  }
+}
+
+/**
+ * The check-in heat map question. The target is a galaxy still in the queue,
+ * so the participant hasn't seen its heat map; it is then dropped from the
+ * queue so they don't classify it after seeing its map here.
+ */
+async function askHeatmapQuestion() {
+  const queuedIds = state.queue.map(s => String(s.id));
+  const question = buildHeatmapQuestion({
+    candidates: queuedIds.map(id => state.known.get(id)).filter(Boolean),
+    pool: [...state.known.values()],
+    excludeIds: [String(state.current.subject.id)],
+  });
+  if (!question) return { type: 'heatmap', skipped: 'not_enough_heatmaps' };
+  state.queue = state.queue.filter(s => String(s.id) !== question.subjectId);
+  show('state-survey');
+  window.scrollTo(0, 0);
+  return runHeatmapQuestion($('state-survey'), question);
 }
 
 function prefetch() {
@@ -444,9 +478,12 @@ async function submit() {
   if (settings.surveys && participant.checkInDueOnNext(CONFIG.surveys.checkInEvery) && !state.current.needs) {
     const result = await askSurvey(NEEDS_SURVEY);
     state.current.needs = { ...result, block: participant.data.checkInCount + 1 };
+    if (CONFIG.surveys.quiz.includes('heatmap')) {
+      state.current.quiz = { heatmap: await askHeatmapQuestion() };
+    }
     show('state-review');
   }
-  const { needs } = state.current;
+  const { needs, quiz } = state.current;
 
   const classification = buildClassification({
     project: state.project,
@@ -467,6 +504,7 @@ async function submit() {
     extraMetadata: {
       participant: participant.metadata(),
       ...(needs ? { needs } : {}),
+      ...(quiz ? { xai_quiz: quiz } : {}),
     },
   });
 

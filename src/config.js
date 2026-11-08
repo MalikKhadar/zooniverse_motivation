@@ -34,6 +34,9 @@ export const CONFIG = {
   surveys: {
     skepticism: true, // AI skepticism questions on a volunteer's first visit
     checkInEvery: 5,  // needs check-in (autonomy, competence, relatedness) after every Nth classification; 0 = never
+    // Explanation-literacy questions added to each check-in. 'heatmap': pick
+    // the AI's real heat map for a galaxy from four options.
+    quiz: ['heatmap'],
   },
 
   // Subject metadata keys holding the model output. A leading '#' hides a
