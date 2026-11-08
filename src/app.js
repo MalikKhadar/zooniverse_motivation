@@ -6,8 +6,8 @@ import { DEMO_PROJECT, DEMO_WORKFLOW, DEMO_SUBJECTS } from './demo.js';
 import { Participant } from './participant.js';
 import { SKEPTICISM_SURVEY, NEEDS_SURVEY } from './surveys.js';
 import { runSurvey } from './survey-view.js';
-import { buildHeatmapQuestion } from './quiz.js';
-import { runHeatmapQuestion } from './quiz-view.js';
+import { buildHeatmapQuestion, buildProbabilityQuestion } from './quiz.js';
+import { runHeatmapQuestion, runProbabilityQuestion } from './quiz-view.js';
 
 const EXPLANATION_MODES = ['on-request', 'always', 'never'];
 const ADVANCE_DELAY_MS = 900;
@@ -44,8 +44,9 @@ const state = {
   workflow: null,
   queue: [],
   seen: new Set(),
-  // Every galaxy fetched so far that has a heat map: the pool for the
-  // check-in heat map question. id -> { id, imageUrl, saliencyUrl }
+  // Every galaxy fetched so far with an AI prediction: the pool for the
+  // check-in explanation questions.
+  // id -> { id, imageUrl, saliencyUrl, label, probabilities }
   known: new Map(),
   current: null, // { subject, prediction, tracker }
   busy: false,
@@ -111,29 +112,42 @@ async function nextReviewable() {
 function remember(subjects) {
   for (const subject of subjects) {
     const prediction = parsePrediction(subject, CONFIG.metadataKeys, LABEL_NAMES);
-    if (!prediction?.saliencyUrl) continue;
+    if (!prediction) continue;
     const id = String(subject.id);
-    state.known.set(id, { id, imageUrl: subjectImage(subject, prediction), saliencyUrl: prediction.saliencyUrl });
+    state.known.set(id, {
+      id,
+      imageUrl: subjectImage(subject, prediction),
+      saliencyUrl: prediction.saliencyUrl,
+      label: prediction.label,
+      probabilities: prediction.probabilities,
+    });
   }
 }
 
+const QUESTIONS = {
+  heatmap: { build: buildHeatmapQuestion, run: runHeatmapQuestion, skipped: 'not_enough_heatmaps' },
+  probabilities: { build: buildProbabilityQuestion, run: runProbabilityQuestion, skipped: 'not_enough_other_classes' },
+};
+
 /**
- * The check-in heat map question. The target is a galaxy still in the queue,
- * so the participant hasn't seen its heat map; it is then dropped from the
- * queue so they don't classify it after seeing its map here.
+ * One check-in explanation question. Its galaxy is one still in the queue, so
+ * the participant hasn't seen its explanation; it is then dropped from the
+ * queue so they don't classify it after seeing its explanation here.
+ * `usedIds` keeps the questions at one check-in on different galaxies.
  */
-async function askHeatmapQuestion() {
-  const queuedIds = state.queue.map(s => String(s.id));
-  const question = buildHeatmapQuestion({
-    candidates: queuedIds.map(id => state.known.get(id)).filter(Boolean),
+async function askQuestion(type, usedIds) {
+  const { build, run, skipped } = QUESTIONS[type];
+  const question = build({
+    candidates: state.queue.map(s => state.known.get(String(s.id))).filter(Boolean),
     pool: [...state.known.values()],
-    excludeIds: [String(state.current.subject.id)],
+    excludeIds: [String(state.current.subject.id), ...usedIds],
   });
-  if (!question) return { type: 'heatmap', skipped: 'not_enough_heatmaps' };
+  if (!question) return { type, skipped };
+  usedIds.push(question.subjectId);
   state.queue = state.queue.filter(s => String(s.id) !== question.subjectId);
   show('state-survey');
   window.scrollTo(0, 0);
-  return runHeatmapQuestion($('state-survey'), question);
+  return run($('state-survey'), question, { labelNames: LABEL_NAMES });
 }
 
 function prefetch() {
@@ -478,9 +492,10 @@ async function submit() {
   if (settings.surveys && participant.checkInDueOnNext(CONFIG.surveys.checkInEvery) && !state.current.needs) {
     const result = await askSurvey(NEEDS_SURVEY);
     state.current.needs = { ...result, block: participant.data.checkInCount + 1 };
-    if (CONFIG.surveys.quiz.includes('heatmap')) {
-      state.current.quiz = { heatmap: await askHeatmapQuestion() };
-    }
+    const quiz = {};
+    const usedIds = [];
+    for (const type of CONFIG.surveys.quiz) quiz[type] = await askQuestion(type, usedIds);
+    if (CONFIG.surveys.quiz.length) state.current.quiz = quiz;
     show('state-review');
   }
   const { needs, quiz } = state.current;

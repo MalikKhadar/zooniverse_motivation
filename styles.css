@@ -476,6 +476,21 @@ button.score-row .chevron::before {
 }
 .quiz-option:has(input:checked) .quiz-letter { background: var(--brand-strong); }
 
+/* Confidence breakdowns: the letter sits above the list, not over it. */
+.quiz[data-quiz="probabilities"] .quiz-option { padding: 34px 10px 10px; }
+.quiz-probs { list-style: none; margin: 0; padding: 0; }
+.quiz-probs li {
+  display: grid;
+  grid-template-columns: minmax(64px, 42%) 1fr 34px;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  font-size: 12px;
+}
+.quiz-probs li:first-child { font-weight: 700; }
+.quiz-prob-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.quiz-probs .bar-track { height: 8px; }
+
 /* ---------- Debug payload ---------- */
 
 .payload-preview { margin-top: 24px; font-size: 13px; }

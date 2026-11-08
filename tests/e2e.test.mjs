@@ -288,6 +288,25 @@ async function answerHeatmap(page, { pickReal = true } = {}) {
   return { galaxy, index };
 }
 
+/** Answers the check-in confidence question, picking the real breakdown. */
+async function answerProbabilities(page) {
+  const form = page.locator('form.quiz[data-quiz="probabilities"]');
+  await form.waitFor();
+  assert.equal(await form.locator('button[type=submit]').isDisabled(), true, 'cannot continue before choosing');
+  const galaxy = await form.locator('.quiz-galaxy img').getAttribute('src');
+  const subject = DEMO_SUBJECTS.find(s => s.locations[0]['image/jpeg'] === galaxy);
+  const realTop = LABEL_NAMES[subject.metadata['#ai_label']];
+  const tops = await form.locator('.quiz-probs li:first-child .quiz-prob-name').allTextContents();
+  assert.equal(tops.length, 4);
+  assert.equal(tops.filter(t => t === realTop).length, 1, 'only the real breakdown has the AI\'s class on top');
+  const rows = await form.locator('.quiz-option').first().locator('.quiz-probs li').count();
+  assert.ok(rows > 1, 'each option shows the whole breakdown');
+  const index = tops.indexOf(realTop);
+  await form.locator('.quiz-option').nth(index).click();
+  await form.locator('button[type=submit]').click();
+  return { subjectId: subject.id, index };
+}
+
 async function classifyDirect(page, times) {
   for (let i = 0; i < times; i += 1) {
     const before = await page.evaluate(() => window.__secondLook.participant.classificationCount);
@@ -326,6 +345,7 @@ test('surveys: skepticism once on first visit, needs check-in after every 5th cl
   await answerSurvey(page, 'needs', 3);
   const fifthSubject = await page.evaluate(() => window.__secondLook.state.current.subject.id);
   const answered = await answerHeatmap(page);
+  const answeredProbs = await answerProbabilities(page);
   await page.waitForFunction(() => window.__secondLook.participant.classificationCount === 5);
   const fifth = await lastPayload(page);
   const quiz = fifth.metadata.xai_quiz.heatmap;
@@ -334,6 +354,14 @@ test('surveys: skepticism once on first visit, needs check-in after every 5th cl
   assert.equal(quiz.final_opacity, 0.25);
   assert.equal(quiz.opacity_changes, 1);
   assert.deepEqual(quiz.events.map(e => e.type), ['select', 'opacity']);
+  const probs = fifth.metadata.xai_quiz.probabilities;
+  assert.equal(probs.correct, true);
+  assert.equal(probs.subject_id, answeredProbs.subjectId);
+  assert.equal(probs.chosen_index, answeredProbs.index);
+  assert.notEqual(probs.subject_id, quiz.subject_id, 'the two questions use different galaxies');
+  assert.notEqual(probs.subject_id, fifthSubject);
+  const decoyLabels = probs.option_ai_labels.filter((_, i) => i !== probs.correct_index);
+  assert.ok(!decoyLabels.includes(probs.option_ai_labels[probs.correct_index]));
   assert.equal(quiz.option_subject_ids.length, 4);
   assert.ok(answered.galaxy.includes(quiz.subject_id.replace('demo-', '')));
   assert.notEqual(quiz.subject_id, fifthSubject, 'not the galaxy just classified');
@@ -368,7 +396,10 @@ test('surveys: a failed submission after the check-in does not ask it again', as
   await answerSurvey(page, 'needs', 5);
   // The mock queue has too few galaxies with heat maps for a question.
   await page.waitForSelector('#feedback.error');
-  assert.deepEqual(mock.posted[0].metadata.xai_quiz, { heatmap: { type: 'heatmap', skipped: 'not_enough_heatmaps' } });
+  assert.deepEqual(mock.posted[0].metadata.xai_quiz, {
+    heatmap: { type: 'heatmap', skipped: 'not_enough_heatmaps' },
+    probabilities: { type: 'probabilities', skipped: 'not_enough_other_classes' },
+  });
 
   await page.click('#submit-button');
   await page.waitForFunction(() => !window.__secondLook.state.busy);

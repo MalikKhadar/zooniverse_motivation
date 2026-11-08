@@ -180,6 +180,13 @@ the branch). `.nojekyll` is already in place.
         "answer_changes": 0, "final_opacity": 0.35, "opacity_changes": 2,
         "events": [{ "type": "select", "t_ms": 2100, "detail": 1 }, { "type": "opacity", "t_ms": 3400, "detail": 0.35 }],
         "started_at": "…", "completed_at": "…", "duration_ms": 7120
+      },
+      "probabilities": {
+        "type": "probabilities", "subject_id": "77",
+        "option_subject_ids": ["12", "940", "77", "5"],
+        "option_ai_labels": ["ring", "stream", "shell", "onearm"], // AI's top class for each option
+        "correct_index": 2, "chosen_index": 2, "correct": true, "answer_changes": 0,
+        "events": [{ "type": "select", "t_ms": 3900, "detail": 2 }], "started_at": "…", "completed_at": "…", "duration_ms": 5200
       }
     }
   },
@@ -215,17 +222,26 @@ the volunteer decides on their 5th, 10th, 15th… subject. The answers go in
 that classification, so they reach Panoptes together.
 `CONFIG.surveys.checkInEvery` changes the interval.
 
-**Explanation check (with each check-in).** After the needs items, the
-volunteer is shown a galaxy and four heat maps: the AI's real heat map for that
-galaxy and three taken from other galaxies, in random order. They pick the one
-they think is real. Each option is shown laid over the galaxy, the selected one
-also over a large view, and one slider sets the overlays' opacity. There is no
-feedback on whether they were right. The galaxy is one still waiting in the volunteer's queue, so they have
-not seen its heat map before, and it is then removed from their queue so they
-don't classify it after seeing its map. If fewer than four galaxies with heat
-maps have been loaded, the question is skipped and recorded as skipped.
-`CONFIG.surveys.quiz` lists which checks run; questions for the class
-confidences and the counterfactual examples will join `heatmap` there.
+**Explanation checks (with each check-in).** After the needs items come one
+question per explanation type. Each shows a galaxy and four versions of one
+explanation, in random order: the AI's real one for that galaxy and three
+taken from other galaxies. The volunteer picks the one they think is real.
+There is no feedback on whether they were right.
+
+- **Heat map.** Each option is shown laid over the galaxy, the selected one
+  also over a large view, and one slider sets the overlays' opacity.
+- **Class confidences.** Each option is a full confidence breakdown, highest
+  class first. The decoys come from galaxies the AI put in a different class,
+  so the real breakdown is the only one topped by the AI's answer for this
+  galaxy.
+
+Each question's galaxy is one still waiting in the volunteer's queue, so they
+have not seen its explanation before; it is then removed from their queue so
+they don't classify it afterwards. The questions at one check-in use different
+galaxies. If too few galaxies have been loaded to build a question, it is
+skipped and recorded as skipped. `CONFIG.surveys.quiz` lists which questions
+run, in order; the counterfactual examples will join `heatmap` and
+`probabilities` there.
 
 **Where the answers go.** A static page can only send data to Zooniverse as
 classifications, so answers travel in classification metadata (see above).
@@ -266,7 +282,7 @@ python3 scripts/make_demo_subjects.py path/to/images   # rebuild the demo from <
 | `src/classification.js` | Decision/explanation timing and the Panoptes payload |
 | `src/panoptes.js` | Panoptes API client and OAuth sign-in |
 | `src/surveys.js`, `src/survey-view.js` | Questionnaire items, scoring and form |
-| `src/quiz.js`, `src/quiz-view.js` | Check-in explanation questions (heat map) |
+| `src/quiz.js`, `src/quiz-view.js` | Check-in explanation questions (heat map, class confidences) |
 | `src/participant.js` | Anonymous participant ID, answers and classification count |
 | `src/demo.js`, `src/demo-data.js`, `demo/morphology/` | Offline demo subjects (images and made-up predictions) |
 | `assets/classes/` | Class silhouettes (made by `scripts/silhouette.py`) |

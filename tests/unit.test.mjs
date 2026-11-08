@@ -338,3 +338,38 @@ test('heat map answers are scored and timed', () => {
   });
   assert.equal(scoreQuestion(q, 3, { startedAt: 0, completedAt: 1, changes: 0 }).correct, false);
 });
+
+import { buildProbabilityQuestion } from '../src/quiz.js';
+
+const scored = (id, label, top = 0.7) => ({
+  id, imageUrl: `img/${id}.jpg`, label,
+  probabilities: [{ label, value: top }, { label: 'other', value: Math.round((1 - top) * 100) / 100 }],
+});
+
+test('confidence question: the real breakdown plus three from galaxies of other classes', () => {
+  const pool = [
+    scored('a', 'ring'), scored('b', 'ring', 0.8), scored('c', 'shell'), scored('d', 'stream'),
+    scored('e', 'onearm'), scored('f', 'shell', 0.6),
+  ];
+  const positions = new Set();
+  for (let seed = 1; seed <= 40; seed += 1) {
+    const q = buildProbabilityQuestion({ candidates: [pool[0]], pool, random: seededRandom(seed) });
+    assert.equal(q.type, 'probabilities');
+    assert.equal(q.subjectId, 'a');
+    assert.equal(q.options.length, OPTION_COUNT);
+    assert.equal(q.options[q.correctIndex].subjectId, 'a');
+    const decoys = q.options.filter((_, i) => i !== q.correctIndex);
+    assert.ok(decoys.every(o => o.label !== 'ring'), 'no decoy from the same class');
+    assert.ok(!q.options.some(o => o.subjectId === 'b'));
+    positions.add(q.correctIndex);
+  }
+  assert.equal(positions.size, OPTION_COUNT, 'the real breakdown appears in every position');
+});
+
+test('confidence question: needs three other-class galaxies with distinct breakdowns', () => {
+  const pool = [scored('a', 'ring'), scored('b', 'shell'), scored('c', 'shell'), scored('d', 'ring')];
+  // b and c share a breakdown, so only one counts: two decoys at most.
+  assert.equal(buildProbabilityQuestion({ candidates: [pool[0]], pool }), null);
+  const noProbs = pool.map(g => ({ ...g, probabilities: [] }));
+  assert.equal(buildProbabilityQuestion({ candidates: noProbs, pool: noProbs }), null);
+});
