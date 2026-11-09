@@ -174,7 +174,7 @@ the branch). `.nojekyll` is already in place.
     },
     "xai_quiz": {                             // with each check-in
       "heatmap": {
-        "type": "heatmap", "subject_id": "1234",       // the galaxy shown
+        "type": "heatmap", "subject_id": "1234", "ai_label": "ring", // the galaxy shown, and its AI class
         "option_subject_ids": ["88", "1234", "57", "301"], // whose heat map each option was
         "correct_index": 1, "chosen_index": 1, "correct": true,
         "answer_changes": 0, "final_opacity": 0.35, "opacity_changes": 2,
@@ -184,7 +184,7 @@ the branch). `.nojekyll` is already in place.
       "probabilities": {
         "type": "probabilities", "subject_id": "77",
         "option_subject_ids": ["12", "940", "77", "5"],
-        "option_ai_labels": ["ring", "stream", "shell", "onearm"], // AI's top class for each option
+        "ai_label": "shell",                     // the class every option shares
         "correct_index": 2, "chosen_index": 2, "correct": true, "answer_changes": 0,
         "events": [{ "type": "select", "t_ms": 3900, "detail": 2 }], "started_at": "…", "completed_at": "…", "duration_ms": 5200
       },
@@ -236,8 +236,12 @@ There is no feedback on whether they were right.
 - **Heat map.** Each option is shown laid over the galaxy, the selected one
   also over a large view, and one slider sets the overlays' opacity.
 - **Class confidences.** Each option is a full confidence breakdown, highest
-  class first. No two options share a top class, so the real breakdown is the
-  only one topped by the AI's answer for this galaxy.
+  class first.
+
+For both of these, all four options come from galaxies the AI put in the same
+class as the galaxy shown: four Shell heat maps for a galaxy the AI called a
+Shell, four breakdowns topped by Shell. The class alone never gives the answer
+away, and no two options are identical.
 - **Counterfactual ("Why not …?").** Each option is a set of training
   galaxies from the same class the AI didn't pick (its runner-up where
   possible): the set it found most similar to this galaxy, and the sets it

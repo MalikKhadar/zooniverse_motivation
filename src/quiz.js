@@ -5,16 +5,16 @@
  * taken from other galaxies. They pick the real one.
  *
  * Heat map: four heat maps, which they can lay over the galaxy.
- * Probabilities: four class-confidence breakdowns, each with a different top
- * class, so the real one is the only option whose top class is the AI's
- * answer for this galaxy.
+ * Probabilities: four class-confidence breakdowns.
+ * For both, all four options come from galaxies the AI put in the same class,
+ * so the class alone doesn't give the answer away.
  *
  * Counterfactual: four sets of training galaxies, all from the same class
  * that the AI did not pick (its runner-up where possible): the ones it found
  * most similar to this galaxy, and the ones it found most similar to three
  * other galaxies. Telling them apart takes judging resemblance, not class.
  *
- * Pool entries are { id, imageUrl, saliencyUrl, probabilities, examples },
+ * Pool entries are { id, imageUrl, saliencyUrl, label, probabilities, examples },
  * where examples maps a class to its nearest training images' URLs.
  */
 
@@ -37,29 +37,40 @@ function shuffle(items, random) {
  * the target, so they haven't seen its real heat map); `pool` is every known
  * galaxy, used for distractors. Each entry is { id, imageUrl, saliencyUrl }.
  */
-function pickTarget(candidates, pool, usable, random) {
-  const fresh = candidates.filter(usable);
+// The class the AI put a galaxy in: its label, else the top of its breakdown
+// (breakdowns are sorted highest first).
+const aiClass = item => item.label ?? item.probabilities?.[0]?.label ?? null;
+
+/**
+ * Picks a target galaxy and three decoys the AI put in the same class, all
+ * with different explanations (by `key`). Unclassified candidates are tried
+ * first, in random order, then any galaxy in the pool. Returns null when no
+ * galaxy has three such peers.
+ */
+function sameClassOptions({ candidates, pool, usable, key, random }) {
   const all = pool.filter(usable);
-  const from = fresh.length ? fresh : all;
-  return from.length ? from[Math.floor(random() * from.length)] : null;
+  const fresh = shuffle(candidates.filter(usable), random);
+  const freshIds = new Set(fresh.map(item => item.id));
+  const targets = [...fresh, ...shuffle(all.filter(item => !freshIds.has(item.id)), random)];
+  for (const target of targets) {
+    const seen = new Set([key(target)]);
+    const distractors = [];
+    for (const item of shuffle(all, random)) {
+      if (distractors.length === OPTION_COUNT - 1) break;
+      if (item.id === target.id || aiClass(item) !== aiClass(target) || seen.has(key(item))) continue;
+      seen.add(key(item));
+      distractors.push(item);
+    }
+    if (distractors.length === OPTION_COUNT - 1) return { target, distractors };
+  }
+  return null;
 }
 
 export function buildHeatmapQuestion({ candidates, pool, excludeIds = [], random = Math.random }) {
-  const usable = item => item?.imageUrl && item?.saliencyUrl && !excludeIds.includes(item.id);
-  const all = pool.filter(usable);
-  const target = pickTarget(candidates, pool, usable, random);
-  if (!target) return null;
-
-  // Distinct heat maps only, so no two options are the same picture.
-  const seenUrls = new Set([target.saliencyUrl]);
-  const distractors = [];
-  for (const item of shuffle(all, random)) {
-    if (distractors.length === OPTION_COUNT - 1) break;
-    if (item.id === target.id || seenUrls.has(item.saliencyUrl)) continue;
-    seenUrls.add(item.saliencyUrl);
-    distractors.push(item);
-  }
-  if (distractors.length < OPTION_COUNT - 1) return null;
+  const usable = item => item?.imageUrl && item?.saliencyUrl && aiClass(item) && !excludeIds.includes(item.id);
+  const picked = sameClassOptions({ candidates, pool, usable, key: item => item.saliencyUrl, random });
+  if (!picked) return null;
+  const { target, distractors } = picked;
 
   const options = shuffle([target, ...distractors], random)
     .map(item => ({ subjectId: item.id, saliencyUrl: item.saliencyUrl }));
@@ -67,40 +78,31 @@ export function buildHeatmapQuestion({ candidates, pool, excludeIds = [], random
     type: 'heatmap',
     subjectId: target.id,
     imageUrl: target.imageUrl,
+    aiLabel: aiClass(target),
     options,
     correctIndex: options.findIndex(option => option.subjectId === target.id),
   };
 }
 
-// Breakdowns are sorted highest first, so the first entry is the top class.
-const topClass = item => item.probabilities[0].label;
+const breakdownKey = item => item.probabilities.map(p => `${p.label}:${p.value}`).join('|');
 
 /**
- * Builds one class-confidence question, or returns null when there aren't
- * enough galaxies to give all four options different top classes.
+ * Builds one class-confidence question, or returns null when no galaxy has
+ * three others of its class with different breakdowns.
  */
 export function buildProbabilityQuestion({ candidates, pool, excludeIds = [], random = Math.random }) {
   const usable = item => item?.imageUrl && item?.probabilities?.length && !excludeIds.includes(item.id);
-  const target = pickTarget(candidates, pool, usable, random);
-  if (!target) return null;
-
-  // No two options share a top class.
-  const usedTops = new Set([topClass(target)]);
-  const distractors = [];
-  for (const item of shuffle(pool.filter(usable), random)) {
-    if (distractors.length === OPTION_COUNT - 1) break;
-    if (item.id === target.id || usedTops.has(topClass(item))) continue;
-    usedTops.add(topClass(item));
-    distractors.push(item);
-  }
-  if (distractors.length < OPTION_COUNT - 1) return null;
+  const picked = sameClassOptions({ candidates, pool, usable, key: breakdownKey, random });
+  if (!picked) return null;
+  const { target, distractors } = picked;
 
   const options = shuffle([target, ...distractors], random)
-    .map(item => ({ subjectId: item.id, label: topClass(item), probabilities: item.probabilities }));
+    .map(item => ({ subjectId: item.id, probabilities: item.probabilities }));
   return {
     type: 'probabilities',
     subjectId: target.id,
     imageUrl: target.imageUrl,
+    aiLabel: aiClass(target),
     options,
     correctIndex: options.findIndex(option => option.subjectId === target.id),
   };
@@ -167,8 +169,7 @@ export function scoreQuestion(question, chosenIndex, {
     type: question.type,
     subject_id: question.subjectId,
     option_subject_ids: question.options.map(option => option.subjectId),
-    ...(question.type === 'probabilities'
-      ? { option_ai_labels: question.options.map(option => option.label) } : {}),
+    ...(question.aiLabel ? { ai_label: question.aiLabel } : {}),
     ...(question.type === 'counterfactual' ? { contrast_label: question.contrastLabel } : {}),
     correct_index: question.correctIndex,
     chosen_index: chosenIndex,

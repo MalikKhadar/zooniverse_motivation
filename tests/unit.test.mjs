@@ -297,30 +297,35 @@ function seededRandom(seed = 1) {
   return () => { x = (x * 16807) % 2147483647; return (x - 1) / 2147483646; };
 }
 
-const galaxy = id => ({ id, imageUrl: `img/${id}.jpg`, saliencyUrl: `heat/${id}.png` });
+const galaxy = (id, label = 'shell') => ({ id, label, imageUrl: `img/${id}.jpg`, saliencyUrl: `heat/${id}.png` });
 
-test('heat map question: one real map, three from other galaxies, in random order', () => {
-  const pool = ['a', 'b', 'c', 'd', 'e', 'f'].map(galaxy);
+test('heat map question: the real map plus three from galaxies of the same AI class', () => {
+  const pool = [galaxy('a'), galaxy('b'), galaxy('c'), galaxy('d'), galaxy('e'),
+    galaxy('r1', 'ring'), galaxy('r2', 'ring'), galaxy('r3', 'ring')];
   const positions = new Set();
   for (let seed = 1; seed <= 40; seed += 1) {
     const q = buildHeatmapQuestion({ candidates: [pool[2]], pool, random: seededRandom(seed) });
     assert.equal(q.subjectId, 'c', 'target comes from the unclassified candidates');
+    assert.equal(q.aiLabel, 'shell');
     assert.equal(q.imageUrl, 'img/c.jpg');
     assert.equal(q.options.length, OPTION_COUNT);
     assert.equal(q.options[q.correctIndex].saliencyUrl, 'heat/c.png');
+    assert.ok(q.options.every(o => !o.subjectId.startsWith('r')), 'no decoy from another class');
     assert.equal(new Set(q.options.map(o => o.saliencyUrl)).size, OPTION_COUNT, 'no duplicate maps');
     positions.add(q.correctIndex);
   }
   assert.equal(positions.size, OPTION_COUNT, 'the real map appears in every position');
 });
 
-test('heat map question: falls back to the pool, excludes the current galaxy, needs four maps', () => {
-  const pool = ['a', 'b', 'c', 'd', 'e'].map(galaxy);
+test('heat map question: tries other targets, excludes the current galaxy, needs four of a class', () => {
+  // The only candidate is a ring with no ring peers, so a shell is used instead.
+  const pool = [galaxy('r1', 'ring'), galaxy('a'), galaxy('b'), galaxy('c'), galaxy('d'), galaxy('e')];
   for (let seed = 1; seed <= 20; seed += 1) {
-    const q = buildHeatmapQuestion({ candidates: [], pool, excludeIds: ['a'], random: seededRandom(seed) });
+    const q = buildHeatmapQuestion({ candidates: [pool[0]], pool, excludeIds: ['a'], random: seededRandom(seed) });
+    assert.equal(q.aiLabel, 'shell');
     assert.ok(!q.options.some(o => o.subjectId === 'a'));
   }
-  assert.equal(buildHeatmapQuestion({ candidates: [], pool: pool.slice(0, 3) }), null);
+  assert.equal(buildHeatmapQuestion({ candidates: [], pool: [...pool.slice(0, 3), galaxy('r2', 'ring')] }), null);
   const noMaps = pool.map(g => ({ ...g, saliencyUrl: null }));
   assert.equal(buildHeatmapQuestion({ candidates: noMaps, pool: noMaps }), null);
 });
@@ -346,31 +351,31 @@ const scored = (id, label, top = 0.7) => ({
   probabilities: [{ label, value: top }, { label: 'other', value: Math.round((1 - top) * 100) / 100 }],
 });
 
-test('confidence question: the real breakdown plus three others, all with different top classes', () => {
+test('confidence question: the real breakdown plus three others with the same top class', () => {
   const pool = [
-    scored('a', 'ring'), scored('b', 'ring', 0.8), scored('c', 'shell'), scored('d', 'stream'),
-    scored('e', 'onearm'), scored('f', 'shell', 0.6),
+    scored('a', 'ring'), scored('b', 'ring', 0.8), scored('c', 'ring', 0.55), scored('d', 'ring', 0.9),
+    scored('e', 'ring'), scored('f', 'shell', 0.6), scored('g', 'shell', 0.65),
   ];
   const positions = new Set();
   for (let seed = 1; seed <= 40; seed += 1) {
     const q = buildProbabilityQuestion({ candidates: [pool[0]], pool, random: seededRandom(seed) });
     assert.equal(q.type, 'probabilities');
     assert.equal(q.subjectId, 'a');
+    assert.equal(q.aiLabel, 'ring');
     assert.equal(q.options.length, OPTION_COUNT);
     assert.equal(q.options[q.correctIndex].subjectId, 'a');
-    const tops = q.options.map(o => o.probabilities[0].label);
-    assert.equal(new Set(tops).size, OPTION_COUNT, `no two options share a top class: ${tops}`);
-    assert.deepEqual(q.options.map(o => o.label), tops);
-    assert.ok(!q.options.some(o => o.subjectId === 'b'));
+    assert.ok(q.options.every(o => o.probabilities[0].label === 'ring'), 'every option is topped by Ring');
+    // 'e' has the same breakdown as 'a', so it would be indistinguishable.
+    assert.ok(!q.options.some(o => o.subjectId === 'e'));
     positions.add(q.correctIndex);
   }
   assert.equal(positions.size, OPTION_COUNT, 'the real breakdown appears in every position');
 });
 
-test('confidence question: needs four different top classes', () => {
-  // Plenty of galaxies, but only two top classes besides the target's.
-  const pool = [scored('a', 'ring'), scored('b', 'shell'), scored('c', 'shell', 0.9), scored('d', 'ring', 0.6),
-    scored('e', 'stream')];
+test('confidence question: needs three others of the class with different breakdowns', () => {
+  const pool = [scored('a', 'ring'), scored('b', 'ring', 0.8), scored('c', 'ring'), scored('d', 'shell'),
+    scored('e', 'shell', 0.9), scored('f', 'stream')];
+  // Ring has one usable peer (c duplicates a), shell two, stream none.
   assert.equal(buildProbabilityQuestion({ candidates: [pool[0]], pool }), null);
   const noProbs = pool.map(g => ({ ...g, probabilities: [] }));
   assert.equal(buildProbabilityQuestion({ candidates: noProbs, pool: noProbs }), null);
