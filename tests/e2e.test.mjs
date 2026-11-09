@@ -315,29 +315,35 @@ async function answerProbabilities(page) {
   return { subjectId: subject.id, index };
 }
 
-/** Answers the check-in counterfactual question, picking the real set. */
+/** Answers the check-in counterfactual question, picking the runner-up's set. */
 async function answerCounterfactual(page) {
   const form = page.locator('form.quiz[data-quiz="counterfactual"]');
   await form.waitFor();
   assert.equal(await form.locator('button[type=submit]').isDisabled(), true, 'cannot continue before choosing');
   const galaxy = await form.locator('.quiz-galaxy img').getAttribute('src');
   const subject = DEMO_SUBJECTS.find(s => s.locations[0]['image/jpeg'] === galaxy);
-  const title = await form.locator('h2').textContent();
-  const contrast = Object.keys(LABEL_NAMES).find(label => title === `Why not ${LABEL_NAMES[label]}?`);
-  assert.ok(contrast, `title names a class: ${title}`);
-  assert.notEqual(contrast, subject.metadata['#ai_label'], 'a class the AI did not pick');
-  const realSet = JSON.parse(subject.metadata['#ai_examples']).filter(e => e.label === contrast).map(e => e.url);
+  const aiLabel = subject.metadata['#ai_label'];
+  const ranked = Object.entries(JSON.parse(subject.metadata['#ai_probabilities']))
+    .sort((a, b) => b[1] - a[1]).map(([label]) => label).filter(label => label !== aiLabel);
+  const contrast = ranked[0];
+  assert.equal(await form.locator('h2').textContent(), `Find "Why not ${LABEL_NAMES[contrast]}?"`);
+  assert.match(await form.locator('.survey-intro').textContent(), new RegExp(`The AI said this galaxy is ${LABEL_NAMES[aiLabel]}`));
+  const examples = JSON.parse(subject.metadata['#ai_examples']);
+  const setOf = label => examples.filter(e => e.label === label).map(e => e.url).join();
   const sets = [];
   for (const option of await form.locator('.quiz-option').all()) {
-    sets.push(await option.locator('.quiz-examples img').evaluateAll(imgs => imgs.map(i => i.getAttribute('src'))));
+    sets.push((await option.locator('.quiz-examples img').evaluateAll(imgs => imgs.map(i => i.getAttribute('src')))).join());
   }
   assert.equal(sets.length, 4);
-  assert.equal(new Set(sets.map(set => set.join())).size, 4, 'all four sets differ');
-  const index = sets.findIndex(set => set.join() === realSet.join());
-  assert.ok(index >= 0, 'the real set is one of the options');
+  const labels = sets.map(set => Object.keys(LABEL_NAMES).find(label => setOf(label) === set));
+  assert.ok(labels.every(Boolean), "every set is one of this galaxy's own");
+  assert.equal(new Set(labels).size, 4, 'each set is a different class');
+  assert.ok(!labels.includes(aiLabel), "none is the AI's own class");
+  assert.equal(new Set(sets.map(set => set.split(',').length)).size, 1, 'every set has the same number of images');
+  const index = labels.indexOf(contrast);
   await form.locator('.quiz-option').nth(index).click();
   await form.locator('button[type=submit]').click();
-  return { subjectId: subject.id, contrast, index };
+  return { subjectId: subject.id, contrast, labels, index };
 }
 
 async function classifyDirect(page, times) {
@@ -403,6 +409,7 @@ test('surveys: skepticism once on first visit, needs check-in after every 5th cl
   assert.equal(cf.subject_id, answeredCf.subjectId);
   assert.equal(cf.contrast_label, answeredCf.contrast);
   assert.equal(cf.chosen_index, answeredCf.index);
+  assert.deepEqual(cf.option_labels, answeredCf.labels);
   assert.equal(new Set([quiz.subject_id, probs.subject_id, cf.subject_id, fifthSubject]).size, 4,
     'each question uses its own galaxy');
   assert.equal(quiz.option_subject_ids.length, 4);

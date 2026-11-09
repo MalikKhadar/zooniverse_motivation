@@ -219,8 +219,8 @@ export function runProbabilityQuestion(container, question, { clock, labelNames 
 }
 
 /**
- * Counterfactual question: four sets of training galaxies from one class the
- * AI didn't pick, one of them the set it found most similar to this galaxy.
+ * Counterfactual question: the galaxy's "Why not …?" sets for four classes
+ * the AI didn't pick. Which one is the set for the runner-up class?
  */
 export function runCounterfactualQuestion(container, question, { clock, labelNames = {} } = {}) {
   const { figure, caption } = galaxyFigure();
@@ -232,13 +232,15 @@ export function runCounterfactualQuestion(container, question, { clock, labelNam
   frame.append(image);
   figure.append(frame, caption);
 
-  const name = labelNames[question.contrastLabel] || question.contrastLabel;
+  const name = label => labelNames[label] || label;
+  const picked = name(question.aiLabel);
+  const contrast = name(question.contrastLabel);
   return runQuestion(container, question, {
     clock,
-    title: `Why not ${name}?`,
-    intro: `In an explanation, "Why not ${name}?" shows the ${name} galaxies from the AI's training ` +
-      'that look most like the galaxy being classified. One of these sets is the one the AI found for this galaxy. ' +
-      'The other three were found for other galaxies. Which set is real?',
+    title: `Find "Why not ${contrast}?"`,
+    intro: `The AI said this galaxy is ${picked}. "Why not ${contrast}?" would show the ${contrast} ` +
+      "galaxies from the AI's training that look most like it. Each set below is this galaxy's " +
+      `closest matches from a different class. Which set is the ${contrast} one?`,
     noun: 'Set',
     galaxy: figure,
     renderOption: (option) => {

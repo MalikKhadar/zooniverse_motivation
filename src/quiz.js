@@ -9,10 +9,9 @@
  * For both, all four options come from galaxies the AI put in the same class,
  * so the class alone doesn't give the answer away.
  *
- * Counterfactual: four sets of training galaxies, all from the same class
- * that the AI did not pick (its runner-up where possible): the ones it found
- * most similar to this galaxy, and the ones it found most similar to three
- * other galaxies. Telling them apart takes judging resemblance, not class.
+ * Counterfactual: the galaxy's own "Why not …?" sets for four classes the
+ * AI didn't pick, each a different class. Told the AI's pick, the participant
+ * finds the set for its runner-up class.
  *
  * Pool entries are { id, imageUrl, saliencyUrl, label, probabilities, examples },
  * where examples maps a class to its nearest training images' URLs.
@@ -108,55 +107,41 @@ export function buildProbabilityQuestion({ candidates, pool, excludeIds = [], ra
   };
 }
 
-const setKey = urls => [...urls].sort().join('|');
-
 /**
- * Builds one counterfactual question, or returns null when no class other
- * than the AI's has four different example sets to choose from.
+ * Builds one counterfactual question from a single galaxy's explanation: its
+ * "Why not …?" sets for four classes the AI didn't pick. The participant is
+ * told the AI's pick and asked which set is the one for the runner-up class.
+ * Returns null when no galaxy has example sets for four such classes.
  */
 export function buildCounterfactualQuestion({ candidates, pool, excludeIds = [], random = Math.random }) {
   const usable = item => item?.imageUrl && item?.probabilities?.length && item?.examples && !excludeIds.includes(item.id);
   const fresh = shuffle(candidates.filter(usable), random);
-  const targets = fresh.length ? fresh : shuffle(pool.filter(usable), random);
+  const freshIds = new Set(fresh.map(item => item.id));
+  const targets = [...fresh, ...shuffle(pool.filter(item => usable(item) && !freshIds.has(item.id)), random)];
 
   for (const target of targets) {
-    // Classes the AI didn't pick, most likely first: the runner-up is the
-    // natural "why not?" question.
-    const contrasts = target.probabilities.slice(1).map(p => p.label)
-      .filter(label => target.examples[label]?.length);
-    for (const contrast of contrasts) {
-      const real = target.examples[contrast];
-      const chosen = [real];
-      const keys = new Set([setKey(real)]);
-      // Other galaxies' sets for the same class: different from every option
-      // so far, never containing this galaxy's own image, least overlap first.
-      let others = shuffle(pool.filter(usable), random)
-        .filter(item => item.id !== target.id && item.examples[contrast]?.length)
-        .map(item => ({ item, urls: item.examples[contrast] }))
-        .filter(({ urls }) => !urls.includes(target.imageUrl));
-      const decoys = [];
-      while (decoys.length < OPTION_COUNT - 1 && others.length) {
-        const overlap = urls => chosen.reduce((n, set) => n + urls.filter(u => set.includes(u)).length, 0);
-        others = others.filter(({ urls }) => !keys.has(setKey(urls)));
-        if (!others.length) break;
-        const best = others.reduce((a, b) => (overlap(b.urls) < overlap(a.urls) ? b : a));
-        decoys.push(best);
-        chosen.push(best.urls);
-        keys.add(setKey(best.urls));
-      }
-      if (decoys.length < OPTION_COUNT - 1) continue;
-
-      const options = shuffle([{ item: target, urls: real }, ...decoys], random)
-        .map(({ item, urls }) => ({ subjectId: item.id, urls }));
-      return {
-        type: 'counterfactual',
-        subjectId: target.id,
-        imageUrl: target.imageUrl,
-        contrastLabel: contrast,
-        options,
-        correctIndex: options.findIndex(option => option.subjectId === target.id),
-      };
-    }
+    const picked = aiClass(target);
+    // Classes the AI didn't pick, most likely first, that have examples.
+    const others = target.probabilities.map(p => p.label)
+      .filter(label => label !== picked && target.examples[label]?.length);
+    if (others.length < OPTION_COUNT) continue;
+    const [contrast, ...rest] = others;
+    // Same number of images in every set, so set size isn't a giveaway.
+    const size = target.examples[contrast].length;
+    const sameSize = rest.filter(label => target.examples[label].length === size);
+    if (sameSize.length < OPTION_COUNT - 1) continue;
+    const labels = [contrast, ...shuffle(sameSize, random).slice(0, OPTION_COUNT - 1)];
+    const options = shuffle(labels, random)
+      .map(label => ({ subjectId: target.id, label, urls: target.examples[label] }));
+    return {
+      type: 'counterfactual',
+      subjectId: target.id,
+      imageUrl: target.imageUrl,
+      aiLabel: picked,
+      contrastLabel: contrast,
+      options,
+      correctIndex: options.findIndex(option => option.label === contrast),
+    };
   }
   return null;
 }
@@ -170,7 +155,10 @@ export function scoreQuestion(question, chosenIndex, {
     subject_id: question.subjectId,
     option_subject_ids: question.options.map(option => option.subjectId),
     ...(question.aiLabel ? { ai_label: question.aiLabel } : {}),
-    ...(question.type === 'counterfactual' ? { contrast_label: question.contrastLabel } : {}),
+    ...(question.type === 'counterfactual' ? {
+      contrast_label: question.contrastLabel,
+      option_labels: question.options.map(option => option.label),
+    } : {}),
     correct_index: question.correctIndex,
     chosen_index: chosenIndex,
     correct: chosenIndex === question.correctIndex,

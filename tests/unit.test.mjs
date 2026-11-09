@@ -292,9 +292,16 @@ test('every demo label is a configured class with a silhouette on disk', async (
 
 import { buildHeatmapQuestion, scoreQuestion, OPTION_COUNT } from '../src/quiz.js';
 
+/** mulberry32: a small, well-mixed seeded generator, so nearby seeds give unrelated draws. */
 function seededRandom(seed = 1) {
-  let x = seed;
-  return () => { x = (x * 16807) % 2147483647; return (x - 1) / 2147483646; };
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6D2B79F5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
 }
 
 const galaxy = (id, label = 'shell') => ({ id, label, imageUrl: `img/${id}.jpg`, saliencyUrl: `heat/${id}.png` });
@@ -383,52 +390,57 @@ test('confidence question: needs three others of the class with different breakd
 
 import { buildCounterfactualQuestion } from '../src/quiz.js';
 
-/** A galaxy whose nearest Shells are `shells` (and nearest Rings `rings`). */
-const withExamples = (id, top, second, { shells = [], rings = [] } = {}) => ({
+/** A galaxy with a confidence breakdown and nearest examples for some classes. */
+const cfGalaxy = (id, ranked, exampleLabels = ranked) => ({
   id, imageUrl: `img/${id}.jpg`,
-  probabilities: [{ label: top, value: 0.7 }, { label: second, value: 0.2 }, { label: 'stream', value: 0.1 }],
-  examples: { shell: shells, ring: rings },
+  probabilities: ranked.map((label, i) => ({ label, value: Math.round((0.6 / (i + 1)) * 100) / 100 })),
+  examples: Object.fromEntries(exampleLabels.map(label => [label, [`${label}-1`, `${label}-2`, `${label}-3`]])),
 });
 
-test('counterfactual question: four different sets for the AI\'s runner-up class, one of them real', () => {
-  const target = withExamples('t', 'ring', 'shell', { shells: ['s1', 's2', 's3'], rings: ['r1'] });
-  const pool = [target,
-    withExamples('a', 'ring', 'onearm', { shells: ['s4', 's5', 's6'] }),
-    withExamples('b', 'stream', 'ring', { shells: ['s1', 's2', 's3'] }), // same set as the real one
-    withExamples('c', 'onearm', 'ring', { shells: ['s7', 's8', 's9'] }),
-    withExamples('d', 'shell', 'ring', { shells: ['s2', 's4', 's7'] }),
-    withExamples('e', 'ring', 'stream', { shells: ['img/t.jpg', 's9', 's1'] }), // contains the galaxy itself
-  ];
+test("counterfactual question: four of this galaxy's sets, each a different class, find the runner-up's", () => {
+  const target = cfGalaxy('t', ['ring', 'shell', 'stream', 'onearm', 'twoarm', 'longtail']);
   const positions = new Set();
-  for (let seed = 1; seed <= 40; seed += 1) {
-    const q = buildCounterfactualQuestion({ candidates: [target], pool, random: seededRandom(seed) });
+  const decoyLabels = new Set();
+  for (let seed = 1; seed <= 60; seed += 1) {
+    const q = buildCounterfactualQuestion({ candidates: [target], pool: [target], random: seededRandom(seed) });
     assert.equal(q.type, 'counterfactual');
+    assert.equal(q.aiLabel, 'ring');
     assert.equal(q.contrastLabel, 'shell', 'the runner-up class');
     assert.equal(q.options.length, OPTION_COUNT);
-    assert.deepEqual(q.options[q.correctIndex].urls, ['s1', 's2', 's3']);
-    const keys = q.options.map(o => [...o.urls].sort().join());
-    assert.equal(new Set(keys).size, OPTION_COUNT, 'all sets differ');
-    assert.ok(!q.options.some(o => o.subjectId === 'b' || o.subjectId === 'e'));
+    const labels = q.options.map(o => o.label);
+    assert.equal(new Set(labels).size, OPTION_COUNT, 'each set is a different class');
+    assert.ok(!labels.includes('ring'), "never the AI's own class");
+    assert.ok(q.options.every(o => o.subjectId === 't'), "all sets are this galaxy's");
+    assert.deepEqual(q.options[q.correctIndex].urls, ['shell-1', 'shell-2', 'shell-3']);
+    labels.filter(l => l !== 'shell').forEach(l => decoyLabels.add(l));
     positions.add(q.correctIndex);
   }
   assert.equal(positions.size, OPTION_COUNT);
+  assert.deepEqual([...decoyLabels].sort(), ['longtail', 'onearm', 'stream', 'twoarm'], 'decoy classes vary');
 });
 
-test('counterfactual question: falls back to the next class, or null', () => {
-  // Only one other galaxy has Shell examples, but three have Ring ones.
-  const target = withExamples('t', 'onearm', 'shell', { shells: ['s1'], rings: ['r1', 'r2'] });
-  const pool = [target,
-    withExamples('a', 'ring', 'onearm', { shells: ['s4'], rings: ['r3'] }),
-    withExamples('b', 'stream', 'onearm', { rings: ['r4'] }),
-    withExamples('c', 'stream', 'onearm', { rings: ['r5', 'r6'] }),
-  ];
-  const fallback = { ...target, probabilities: [...target.probabilities.slice(0, 2), { label: 'ring', value: 0.1 }] };
-  const q = buildCounterfactualQuestion({ candidates: [fallback], pool: [fallback, ...pool.slice(1)], random: seededRandom(3) });
+test('counterfactual question: needs four other classes with examples, tries other galaxies', () => {
+  const sparse = cfGalaxy('s', ['ring', 'shell', 'stream', 'onearm', 'twoarm'], ['ring', 'shell', 'stream']);
+  const full = cfGalaxy('f', ['stream', 'ring', 'shell', 'onearm', 'twoarm']);
+  const q = buildCounterfactualQuestion({ candidates: [sparse], pool: [sparse, full], random: seededRandom(2) });
+  assert.equal(q.subjectId, 'f');
   assert.equal(q.contrastLabel, 'ring');
-  assert.equal(buildCounterfactualQuestion({ candidates: [target], pool: pool.slice(0, 2) }), null);
+  assert.equal(buildCounterfactualQuestion({ candidates: [sparse], pool: [sparse] }), null);
+
+  // A class with a shorter set is left out rather than shown as a giveaway.
+  const uneven = cfGalaxy('u', ['ring', 'shell', 'stream', 'onearm', 'twoarm', 'longtail']);
+  uneven.examples.twoarm = ['twoarm-1', 'twoarm-2'];
+  for (let seed = 1; seed <= 20; seed += 1) {
+    const qu = buildCounterfactualQuestion({ candidates: [uneven], pool: [uneven], random: seededRandom(seed) });
+    assert.ok(qu.options.every(o => o.urls.length === 3));
+  }
 });
 
 test('counterfactual answers record the contrast class', () => {
-  const q = { type: 'counterfactual', subjectId: 't', contrastLabel: 'shell', options: [{ subjectId: 't' }], correctIndex: 0 };
-  assert.equal(scoreQuestion(q, 0, { startedAt: 0, completedAt: 1, changes: 0 }).contrast_label, 'shell');
+  const q = { type: 'counterfactual', subjectId: 't', aiLabel: 'ring', contrastLabel: 'shell',
+    options: [{ subjectId: 't', label: 'stream' }, { subjectId: 't', label: 'shell' }], correctIndex: 1 };
+  const r = scoreQuestion(q, 1, { startedAt: 0, completedAt: 1, changes: 0 });
+  assert.equal(r.contrast_label, 'shell');
+  assert.equal(r.ai_label, 'ring');
+  assert.deepEqual(r.option_labels, ['stream', 'shell']);
 });
