@@ -219,8 +219,8 @@ export function runProbabilityQuestion(container, question, { clock, labelNames 
 }
 
 /**
- * Counterfactual question: the galaxy's "Why not …?" sets for four classes
- * the AI didn't pick. Which one is the set for the runner-up class?
+ * Counterfactual question: four "Why not Y?" sets, each found for a different
+ * galaxy the AI put in the same class. Which one was found for this galaxy?
  */
 export function runCounterfactualQuestion(container, question, { clock, labelNames = {} } = {}) {
   const { figure, caption } = galaxyFigure();
@@ -237,10 +237,10 @@ export function runCounterfactualQuestion(container, question, { clock, labelNam
   const contrast = name(question.contrastLabel);
   return runQuestion(container, question, {
     clock,
-    title: `Find "Why not ${contrast}?"`,
-    intro: `The AI said this galaxy is ${picked}. "Why not ${contrast}?" would show the ${contrast} ` +
-      "galaxies from the AI's training that look most like it. Each set below is this galaxy's " +
-      `closest matches from a different class. Which set is the ${contrast} one?`,
+    title: 'Spot the real "Why not?"',
+    intro: `The AI said this galaxy is ${picked}. "Why not ${contrast}?" shows the ${contrast} galaxies ` +
+      "from the AI's training that look most like the galaxy. Each set below was found for a different " +
+      `${picked} galaxy. Which set was found for this one?`,
     noun: 'Set',
     galaxy: figure,
     renderOption: (option) => {

@@ -190,8 +190,8 @@ the branch). `.nojekyll` is already in place.
       },
       "counterfactual": {
         "type": "counterfactual", "subject_id": "410",
-        "ai_label": "ring", "contrast_label": "shell",  // "The AI said Ring. Which set is Shell?"
-        "option_labels": ["stream", "shell", "onearm", "longtail"], // the class of each set shown
+        "ai_label": "longtail", "contrast_label": "ring", // four "Why not Ring?" sets from Long tail galaxies
+        "option_subject_ids": ["33", "410", "702", "81"],  // whose set each option was
         "correct_index": 1, "chosen_index": 3, "correct": false, "answer_changes": 1, "events": [ … ], …
       }
     }
@@ -239,15 +239,17 @@ There is no feedback on whether they were right.
 - **Class confidences.** Each option is a full confidence breakdown, highest
   class first.
 
-For both of these, all four options come from galaxies the AI put in the same
+For all three, the four options come from galaxies the AI put in the same
 class as the galaxy shown: four Shell heat maps for a galaxy the AI called a
-Shell, four breakdowns topped by Shell. The class alone never gives the answer
-away, and no two options are identical.
-- **Counterfactual ("Why not …?").** The volunteer is told the AI's pick and
-  shown four of this galaxy's own "Why not …?" sets, each for a different
-  class the AI didn't pick. They find the set for the AI's runner-up class
-  (e.g. "The AI said Ring. Which set is the Shell one?"). Every set has the
-  same number of images, so size is no giveaway.
+Shell, four breakdowns topped by Shell, four "Why not Ring?" sets found for
+Shell galaxies. Only the galaxy each explanation came from differs, so the
+class alone never gives the answer away, and no two options are identical.
+- **Counterfactual ("Why not …?").** Each option is a "Why not Y?" set of
+  training galaxies, found for a different galaxy. Y is the AI's runner-up for
+  the galaxy shown where possible (e.g. "The AI said Long tail. Each 'Why not
+  Ring?' set below was found for a different Long tail galaxy. Which was found
+  for this one?"). Every set differs, all have the same number of images, none
+  contains the galaxy itself, and decoys that overlap least are preferred.
 
 Each question's galaxy is one still waiting in the volunteer's queue, so they
 have not seen its explanation before; it is then removed from their queue so
@@ -258,8 +260,9 @@ run, in order.
 
 In the demo, "most similar" is crude image similarity
 (`scripts/make_demo_subjects.py`), and each class has only a handful of
-images, so some classes can't fill a set and these questions draw on fewer
-classes than a real training set would allow.
+images, so these questions draw on fewer classes than a real training set
+would allow, and the counterfactual sets found for different galaxies often
+share images. With a real model's training set they rarely will.
 
 **Where the answers go.** A static page can only send data to Zooniverse as
 classifications, so answers travel in classification metadata (see above).

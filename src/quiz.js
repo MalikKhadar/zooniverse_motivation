@@ -6,12 +6,14 @@
  *
  * Heat map: four heat maps, which they can lay over the galaxy.
  * Probabilities: four class-confidence breakdowns.
- * For both, all four options come from galaxies the AI put in the same class,
- * so the class alone doesn't give the answer away.
+ * For both, all four options come from galaxies the AI put in the same class.
  *
- * Counterfactual: the galaxy's own "Why not …?" sets for four classes the
- * AI didn't pick, each a different class. Told the AI's pick, the participant
- * finds the set for its runner-up class.
+ * Counterfactual: four "Why not Y?" sets of training galaxies, each found
+ * for a different galaxy the AI put in the same class X. Y is the AI's
+ * runner-up for this galaxy where possible.
+ *
+ * In all three, everything but the galaxy each explanation came from is held
+ * fixed, so the class never gives the answer away.
  *
  * Pool entries are { id, imageUrl, saliencyUrl, label, probabilities, examples },
  * where examples maps a class to its nearest training images' URLs.
@@ -107,41 +109,62 @@ export function buildProbabilityQuestion({ candidates, pool, excludeIds = [], ra
   };
 }
 
+const setKey = urls => [...urls].sort().join('|');
+
 /**
- * Builds one counterfactual question from a single galaxy's explanation: its
- * "Why not …?" sets for four classes the AI didn't pick. The participant is
- * told the AI's pick and asked which set is the one for the runner-up class.
- * Returns null when no galaxy has example sets for four such classes.
+ * Builds one counterfactual question: four "Why not Y?" sets, each found for
+ * a different galaxy the AI put in class X. One is this galaxy's. Y is the
+ * AI's runner-up for this galaxy where possible. Returns null when no galaxy
+ * has three same-class peers with different, same-sized sets for a class.
  */
 export function buildCounterfactualQuestion({ candidates, pool, excludeIds = [], random = Math.random }) {
-  const usable = item => item?.imageUrl && item?.probabilities?.length && item?.examples && !excludeIds.includes(item.id);
+  const usable = item => item?.imageUrl && item?.probabilities?.length && item?.examples && aiClass(item)
+    && !excludeIds.includes(item.id);
+  const all = pool.filter(usable);
   const fresh = shuffle(candidates.filter(usable), random);
   const freshIds = new Set(fresh.map(item => item.id));
-  const targets = [...fresh, ...shuffle(pool.filter(item => usable(item) && !freshIds.has(item.id)), random)];
+  const targets = [...fresh, ...shuffle(all.filter(item => !freshIds.has(item.id)), random)];
 
   for (const target of targets) {
     const picked = aiClass(target);
-    // Classes the AI didn't pick, most likely first, that have examples.
-    const others = target.probabilities.map(p => p.label)
+    // Classes the AI didn't pick, most likely first: the runner-up is the
+    // natural "why not?" question.
+    const contrasts = target.probabilities.map(p => p.label)
       .filter(label => label !== picked && target.examples[label]?.length);
-    if (others.length < OPTION_COUNT) continue;
-    const [contrast, ...rest] = others;
-    // Same number of images in every set, so set size isn't a giveaway.
-    const size = target.examples[contrast].length;
-    const sameSize = rest.filter(label => target.examples[label].length === size);
-    if (sameSize.length < OPTION_COUNT - 1) continue;
-    const labels = [contrast, ...shuffle(sameSize, random).slice(0, OPTION_COUNT - 1)];
-    const options = shuffle(labels, random)
-      .map(label => ({ subjectId: target.id, label, urls: target.examples[label] }));
-    return {
-      type: 'counterfactual',
-      subjectId: target.id,
-      imageUrl: target.imageUrl,
-      aiLabel: picked,
-      contrastLabel: contrast,
-      options,
-      correctIndex: options.findIndex(option => option.label === contrast),
-    };
+    for (const contrast of contrasts) {
+      const real = target.examples[contrast];
+      const chosen = [real];
+      const keys = new Set([setKey(real)]);
+      // Other galaxies the AI also called `picked`, with a different set of
+      // the same size that doesn't contain this galaxy; least overlap first.
+      let peers = shuffle(all, random)
+        .filter(item => item.id !== target.id && aiClass(item) === picked)
+        .map(item => ({ item, urls: item.examples[contrast] }))
+        .filter(({ urls }) => urls?.length === real.length && !urls.includes(target.imageUrl));
+      const decoys = [];
+      const overlap = urls => chosen.reduce((n, set) => n + urls.filter(u => set.includes(u)).length, 0);
+      while (decoys.length < OPTION_COUNT - 1) {
+        peers = peers.filter(({ urls }) => !keys.has(setKey(urls)));
+        if (!peers.length) break;
+        const best = peers.reduce((a, b) => (overlap(b.urls) < overlap(a.urls) ? b : a));
+        decoys.push(best);
+        chosen.push(best.urls);
+        keys.add(setKey(best.urls));
+      }
+      if (decoys.length < OPTION_COUNT - 1) continue;
+
+      const options = shuffle([{ item: target, urls: real }, ...decoys], random)
+        .map(({ item, urls }) => ({ subjectId: item.id, urls }));
+      return {
+        type: 'counterfactual',
+        subjectId: target.id,
+        imageUrl: target.imageUrl,
+        aiLabel: picked,
+        contrastLabel: contrast,
+        options,
+        correctIndex: options.findIndex(option => option.subjectId === target.id),
+      };
+    }
   }
   return null;
 }
@@ -155,10 +178,7 @@ export function scoreQuestion(question, chosenIndex, {
     subject_id: question.subjectId,
     option_subject_ids: question.options.map(option => option.subjectId),
     ...(question.aiLabel ? { ai_label: question.aiLabel } : {}),
-    ...(question.type === 'counterfactual' ? {
-      contrast_label: question.contrastLabel,
-      option_labels: question.options.map(option => option.label),
-    } : {}),
+    ...(question.type === 'counterfactual' ? { contrast_label: question.contrastLabel } : {}),
     correct_index: question.correctIndex,
     chosen_index: chosenIndex,
     correct: chosenIndex === question.correctIndex,
