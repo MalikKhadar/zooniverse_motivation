@@ -375,3 +375,55 @@ test('confidence question: needs four different top classes', () => {
   const noProbs = pool.map(g => ({ ...g, probabilities: [] }));
   assert.equal(buildProbabilityQuestion({ candidates: noProbs, pool: noProbs }), null);
 });
+
+import { buildCounterfactualQuestion } from '../src/quiz.js';
+
+/** A galaxy whose nearest Shells are `shells` (and nearest Rings `rings`). */
+const withExamples = (id, top, second, { shells = [], rings = [] } = {}) => ({
+  id, imageUrl: `img/${id}.jpg`,
+  probabilities: [{ label: top, value: 0.7 }, { label: second, value: 0.2 }, { label: 'stream', value: 0.1 }],
+  examples: { shell: shells, ring: rings },
+});
+
+test('counterfactual question: four different sets for the AI\'s runner-up class, one of them real', () => {
+  const target = withExamples('t', 'ring', 'shell', { shells: ['s1', 's2', 's3'], rings: ['r1'] });
+  const pool = [target,
+    withExamples('a', 'ring', 'onearm', { shells: ['s4', 's5', 's6'] }),
+    withExamples('b', 'stream', 'ring', { shells: ['s1', 's2', 's3'] }), // same set as the real one
+    withExamples('c', 'onearm', 'ring', { shells: ['s7', 's8', 's9'] }),
+    withExamples('d', 'shell', 'ring', { shells: ['s2', 's4', 's7'] }),
+    withExamples('e', 'ring', 'stream', { shells: ['img/t.jpg', 's9', 's1'] }), // contains the galaxy itself
+  ];
+  const positions = new Set();
+  for (let seed = 1; seed <= 40; seed += 1) {
+    const q = buildCounterfactualQuestion({ candidates: [target], pool, random: seededRandom(seed) });
+    assert.equal(q.type, 'counterfactual');
+    assert.equal(q.contrastLabel, 'shell', 'the runner-up class');
+    assert.equal(q.options.length, OPTION_COUNT);
+    assert.deepEqual(q.options[q.correctIndex].urls, ['s1', 's2', 's3']);
+    const keys = q.options.map(o => [...o.urls].sort().join());
+    assert.equal(new Set(keys).size, OPTION_COUNT, 'all sets differ');
+    assert.ok(!q.options.some(o => o.subjectId === 'b' || o.subjectId === 'e'));
+    positions.add(q.correctIndex);
+  }
+  assert.equal(positions.size, OPTION_COUNT);
+});
+
+test('counterfactual question: falls back to the next class, or null', () => {
+  // Only one other galaxy has Shell examples, but three have Ring ones.
+  const target = withExamples('t', 'onearm', 'shell', { shells: ['s1'], rings: ['r1', 'r2'] });
+  const pool = [target,
+    withExamples('a', 'ring', 'onearm', { shells: ['s4'], rings: ['r3'] }),
+    withExamples('b', 'stream', 'onearm', { rings: ['r4'] }),
+    withExamples('c', 'stream', 'onearm', { rings: ['r5', 'r6'] }),
+  ];
+  const fallback = { ...target, probabilities: [...target.probabilities.slice(0, 2), { label: 'ring', value: 0.1 }] };
+  const q = buildCounterfactualQuestion({ candidates: [fallback], pool: [fallback, ...pool.slice(1)], random: seededRandom(3) });
+  assert.equal(q.contrastLabel, 'ring');
+  assert.equal(buildCounterfactualQuestion({ candidates: [target], pool: pool.slice(0, 2) }), null);
+});
+
+test('counterfactual answers record the contrast class', () => {
+  const q = { type: 'counterfactual', subjectId: 't', contrastLabel: 'shell', options: [{ subjectId: 't' }], correctIndex: 0 };
+  assert.equal(scoreQuestion(q, 0, { startedAt: 0, completedAt: 1, changes: 0 }).contrast_label, 'shell');
+});

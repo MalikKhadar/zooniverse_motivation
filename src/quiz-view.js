@@ -217,3 +217,40 @@ export function runProbabilityQuestion(container, question, { clock, labelNames 
     renderOption: option => breakdown(option.probabilities, labelNames),
   }).done;
 }
+
+/**
+ * Counterfactual question: four sets of training galaxies from one class the
+ * AI didn't pick, one of them the set it found most similar to this galaxy.
+ */
+export function runCounterfactualQuestion(container, question, { clock, labelNames = {} } = {}) {
+  const { figure, caption } = galaxyFigure();
+  const frame = document.createElement('div');
+  frame.className = 'quiz-frame';
+  const image = document.createElement('img');
+  image.src = question.imageUrl;
+  image.alt = 'The galaxy';
+  frame.append(image);
+  figure.append(frame, caption);
+
+  const name = labelNames[question.contrastLabel] || question.contrastLabel;
+  return runQuestion(container, question, {
+    clock,
+    title: `Why not ${name}?`,
+    intro: `In an explanation, "Why not ${name}?" shows the ${name} galaxies from the AI's training ` +
+      'that look most like the galaxy being classified. One of these sets is the one the AI found for this galaxy. ' +
+      'The other three were found for other galaxies. Which set is real?',
+    noun: 'Set',
+    galaxy: figure,
+    renderOption: (option) => {
+      const row = document.createElement('div');
+      row.className = 'quiz-examples';
+      for (const url of option.urls) {
+        const thumb = document.createElement('img');
+        thumb.src = url;
+        thumb.alt = '';
+        row.append(thumb);
+      }
+      return row;
+    },
+  }).done;
+}

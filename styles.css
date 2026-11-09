@@ -491,6 +491,20 @@ button.score-row .chevron::before {
 .quiz-prob-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .quiz-probs .bar-track { height: 8px; }
 
+/* Counterfactual sets: one option per row, its galaxies side by side. */
+.quiz[data-quiz="counterfactual"] .quiz-options { grid-template-columns: 1fr; }
+.quiz[data-quiz="counterfactual"] .quiz-option { padding: 6px 6px 6px 40px; }
+.quiz[data-quiz="counterfactual"] .quiz-letter { top: 50%; transform: translateY(-50%); }
+.quiz-examples { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.quiz-examples img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: var(--image-bg);
+  border-radius: 6px;
+}
+
 /* ---------- Debug payload ---------- */
 
 .payload-preview { margin-top: 24px; font-size: 13px; }

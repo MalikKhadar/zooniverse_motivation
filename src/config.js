@@ -36,8 +36,9 @@ export const CONFIG = {
     checkInEvery: 5,  // needs check-in (autonomy, competence, relatedness) after every Nth classification; 0 = never
     // Explanation-literacy questions added to each check-in, in this order.
     // Each asks which of four versions of an explanation is the AI's real one
-    // for a galaxy. 'heatmap': heat maps; 'probabilities': class confidences.
-    quiz: ['heatmap', 'probabilities'],
+    // for a galaxy. 'heatmap': heat maps; 'probabilities': class confidences;
+    // 'counterfactual': "why not X?" sets of most similar training galaxies.
+    quiz: ['heatmap', 'probabilities', 'counterfactual'],
   },
 
   // Subject metadata keys holding the model output. A leading '#' hides a

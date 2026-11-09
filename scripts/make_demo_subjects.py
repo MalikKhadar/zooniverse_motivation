@@ -56,7 +56,7 @@ SILHOUETTE_FROM = {
     "stream": "stream5",
 }
 
-# Training examples shown per class, standing in for nearest neighbours.
+# Training examples shown per class: the most similar galaxies of that class.
 NEIGHBOURS_PER_CLASS = 3
 
 # Which demo images get a wrong AI answer.
@@ -99,6 +99,27 @@ def saliency(path, focus_on_core):
     return Image.fromarray(np.uint8(rgba * 255), mode="RGBA")
 
 
+def appearance(path):
+    """A crude stand-in for a model's feature vector: the image shrunk to
+    32x32, brightness-stretched and normalised, in all 8 rotations and flips
+    so similarity doesn't depend on orientation."""
+    gray = np.asarray(Image.open(path).convert("L").resize((32, 32), Image.LANCZOS), dtype=float) / 255
+    gray = np.log1p(30 * gray)
+    variants = []
+    for k in range(4):
+        for flip in (False, True):
+            v = np.rot90(gray, k)
+            v = np.fliplr(v) if flip else v
+            v = v.ravel() - v.mean()
+            variants.append(v / (np.linalg.norm(v) or 1))
+    return np.array(variants)
+
+
+def similarity(a, b):
+    """Best match over orientations (cosine similarity)."""
+    return float((a @ b[0]).max())
+
+
 def probabilities(label, runner_up, confidence, rng):
     rest = [c for c in CLASSES if c not in (label, runner_up)]
     second = round((1 - confidence) * rng.uniform(0.55, 0.8), 2)
@@ -127,6 +148,7 @@ def main(argv=None):
     for stem, (path, _) in images.items():
         shutil.copyfile(path, OUT_IMAGES / f"{stem}.jpg")
     training = {c: [stem for stem, (_, cls) in images.items() if cls == c] for c in CLASSES}
+    looks = {stem: appearance(path) for stem, (path, _) in images.items()}
 
     OUT_ICONS.mkdir(parents=True, exist_ok=True)
     for cls, stem in SILHOUETTE_FROM.items():
@@ -143,11 +165,12 @@ def main(argv=None):
         saliency(path, focus_on_core=wrong).save(OUT_IMAGES / f"{stem}-saliency.png", optimize=True)
 
         # A real model would return the training galaxies nearest this one in
-        # its feature space; here they are random members of each class.
+        # its feature space; here "nearest" is by crude image similarity.
         examples = []
         for cls in CLASSES:
             pool = [s for s in training[cls] if s != stem]
-            for s in rng.sample(pool, min(NEIGHBOURS_PER_CLASS, len(pool))):
+            pool.sort(key=lambda s: similarity(looks[stem], looks[s]), reverse=True)
+            for s in pool[:NEIGHBOURS_PER_CLASS]:
                 examples.append({"url": f"demo/morphology/{s}.jpg", "label": cls})
 
         subjects.append({

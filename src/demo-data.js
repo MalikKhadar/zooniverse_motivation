@@ -2,126 +2,6 @@
 // The AI predictions are made up for the demo.
 export const DEMO_SUBJECTS = [
   {
-    "id": "demo-longtail5",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/longtail5.jpg"
-      },
-      {
-        "image/png": "demo/morphology/longtail5-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "longtail",
-      "#ai_confidence": "0.88",
-      "#ai_probabilities": "{\"longtail\": 0.88, \"onearm\": 0.08, \"twoarm\": 0.02, \"shell\": 0.01, \"stream\": 0.01, \"ring\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}]",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "longtail"
-    }
-  },
-  {
-    "id": "demo-stream3",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/stream3.jpg"
-      },
-      {
-        "image/png": "demo/morphology/stream3-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "stream",
-      "#ai_confidence": "0.7",
-      "#ai_probabilities": "{\"stream\": 0.7, \"longtail\": 0.24, \"twoarm\": 0.02, \"ring\": 0.02, \"shell\": 0.02, \"onearm\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}]",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "stream"
-    }
-  },
-  {
-    "id": "demo-shell1",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/shell1.jpg"
-      },
-      {
-        "image/png": "demo/morphology/shell1-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "shell",
-      "#ai_confidence": "0.79",
-      "#ai_probabilities": "{\"shell\": 0.79, \"ring\": 0.16, \"onearm\": 0.02, \"longtail\": 0.01, \"twoarm\": 0.01, \"stream\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}]",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "shell"
-    }
-  },
-  {
-    "id": "demo-ring5",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/ring5.jpg"
-      },
-      {
-        "image/png": "demo/morphology/ring5-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "ring",
-      "#ai_confidence": "0.92",
-      "#ai_probabilities": "{\"ring\": 0.92, \"shell\": 0.04, \"longtail\": 0.01, \"onearm\": 0.01, \"twoarm\": 0.01, \"stream\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}]",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "ring"
-    }
-  },
-  {
-    "id": "demo-twoarm1",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/twoarm1.jpg"
-      },
-      {
-        "image/png": "demo/morphology/twoarm1-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "twoarm",
-      "#ai_confidence": "0.73",
-      "#ai_probabilities": "{\"twoarm\": 0.73, \"onearm\": 0.18, \"stream\": 0.05, \"ring\": 0.03, \"shell\": 0.01, \"longtail\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}]",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "twoarm"
-    }
-  },
-  {
-    "id": "demo-longtail4",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/longtail4.jpg"
-      },
-      {
-        "image/png": "demo/morphology/longtail4-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "longtail",
-      "#ai_confidence": "0.73",
-      "#ai_probabilities": "{\"longtail\": 0.73, \"onearm\": 0.19, \"stream\": 0.03, \"ring\": 0.02, \"shell\": 0.02, \"twoarm\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "longtail"
-    }
-  },
-  {
     "id": "demo-shell5",
     "locations": [
       {
@@ -134,51 +14,11 @@ export const DEMO_SUBJECTS = [
     "metadata": {
       "#ai_label": "shell",
       "#ai_confidence": "0.73",
-      "#ai_probabilities": "{\"shell\": 0.73, \"ring\": 0.2, \"longtail\": 0.02, \"onearm\": 0.02, \"stream\": 0.02, \"twoarm\": 0.01}",
+      "#ai_probabilities": "{\"shell\": 0.73, \"ring\": 0.21, \"longtail\": 0.04, \"onearm\": 0.01, \"twoarm\": 0.01, \"stream\": 0.01}",
       "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "shell"
-    }
-  },
-  {
-    "id": "demo-onearm1",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/onearm1.jpg"
-      },
-      {
-        "image/png": "demo/morphology/onearm1-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "onearm",
-      "#ai_confidence": "0.9",
-      "#ai_probabilities": "{\"onearm\": 0.9, \"longtail\": 0.08, \"stream\": 0.01, \"twoarm\": 0.0, \"ring\": 0.0, \"shell\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "onearm"
-    }
-  },
-  {
-    "id": "demo-onearm2",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/onearm2.jpg"
-      },
-      {
-        "image/png": "demo/morphology/onearm2-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "longtail",
-      "#ai_confidence": "0.53",
-      "#ai_probabilities": "{\"longtail\": 0.53, \"onearm\": 0.28, \"twoarm\": 0.12, \"stream\": 0.05, \"ring\": 0.02, \"shell\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}]",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "onearm"
     }
   },
   {
@@ -193,30 +33,30 @@ export const DEMO_SUBJECTS = [
     ],
     "metadata": {
       "#ai_label": "ring",
-      "#ai_confidence": "0.5",
-      "#ai_probabilities": "{\"ring\": 0.5, \"shell\": 0.29, \"longtail\": 0.11, \"twoarm\": 0.06, \"onearm\": 0.02, \"stream\": 0.02}",
+      "#ai_confidence": "0.44",
+      "#ai_probabilities": "{\"ring\": 0.44, \"shell\": 0.34, \"onearm\": 0.11, \"stream\": 0.06, \"longtail\": 0.05, \"twoarm\": 0.01}",
       "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "shell"
     }
   },
   {
-    "id": "demo-ring4",
+    "id": "demo-ring2",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/ring4.jpg"
+        "image/jpeg": "demo/morphology/ring2.jpg"
       },
       {
-        "image/png": "demo/morphology/ring4-saliency.png"
+        "image/png": "demo/morphology/ring2-saliency.png"
       }
     ],
     "metadata": {
-      "#ai_label": "shell",
-      "#ai_confidence": "0.44",
-      "#ai_probabilities": "{\"shell\": 0.44, \"ring\": 0.35, \"onearm\": 0.08, \"longtail\": 0.07, \"twoarm\": 0.03, \"stream\": 0.03}",
+      "#ai_label": "ring",
+      "#ai_confidence": "0.85",
+      "#ai_probabilities": "{\"ring\": 0.85, \"shell\": 0.09, \"longtail\": 0.03, \"stream\": 0.02, \"twoarm\": 0.01, \"onearm\": 0.0}",
       "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "ring"
     }
@@ -233,90 +73,90 @@ export const DEMO_SUBJECTS = [
     ],
     "metadata": {
       "#ai_label": "shell",
-      "#ai_confidence": "0.83",
-      "#ai_probabilities": "{\"shell\": 0.83, \"ring\": 0.11, \"longtail\": 0.02, \"onearm\": 0.02, \"stream\": 0.02, \"twoarm\": 0.0}",
+      "#ai_confidence": "0.8",
+      "#ai_probabilities": "{\"shell\": 0.8, \"ring\": 0.15, \"longtail\": 0.02, \"onearm\": 0.02, \"twoarm\": 0.01, \"stream\": 0.01}",
       "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "shell"
     }
   },
   {
-    "id": "demo-stream4",
+    "id": "demo-shell1",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/stream4.jpg"
+        "image/jpeg": "demo/morphology/shell1.jpg"
       },
       {
-        "image/png": "demo/morphology/stream4-saliency.png"
+        "image/png": "demo/morphology/shell1-saliency.png"
       }
     ],
     "metadata": {
-      "#ai_label": "stream",
-      "#ai_confidence": "0.75",
-      "#ai_probabilities": "{\"stream\": 0.75, \"longtail\": 0.14, \"shell\": 0.05, \"twoarm\": 0.04, \"onearm\": 0.02, \"ring\": 0.0}",
+      "#ai_label": "shell",
+      "#ai_confidence": "0.63",
+      "#ai_probabilities": "{\"shell\": 0.63, \"ring\": 0.25, \"stream\": 0.08, \"longtail\": 0.02, \"onearm\": 0.01, \"twoarm\": 0.01}",
       "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "shell"
+    }
+  },
+  {
+    "id": "demo-twoarm1",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/twoarm1.jpg"
+      },
+      {
+        "image/png": "demo/morphology/twoarm1-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "twoarm",
+      "#ai_confidence": "0.69",
+      "#ai_probabilities": "{\"twoarm\": 0.69, \"onearm\": 0.18, \"longtail\": 0.08, \"stream\": 0.04, \"ring\": 0.01, \"shell\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "twoarm"
+    }
+  },
+  {
+    "id": "demo-stream2",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/stream2.jpg"
+      },
+      {
+        "image/png": "demo/morphology/stream2-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "longtail",
+      "#ai_confidence": "0.49",
+      "#ai_probabilities": "{\"longtail\": 0.49, \"stream\": 0.35, \"onearm\": 0.05, \"twoarm\": 0.04, \"shell\": 0.04, \"ring\": 0.03}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "stream"
     }
   },
   {
-    "id": "demo-ring2",
+    "id": "demo-longtail2",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/ring2.jpg"
+        "image/jpeg": "demo/morphology/longtail2.jpg"
       },
       {
-        "image/png": "demo/morphology/ring2-saliency.png"
+        "image/png": "demo/morphology/longtail2-saliency.png"
       }
     ],
     "metadata": {
-      "#ai_label": "ring",
-      "#ai_confidence": "0.89",
-      "#ai_probabilities": "{\"ring\": 0.89, \"shell\": 0.08, \"longtail\": 0.01, \"onearm\": 0.01, \"twoarm\": 0.01, \"stream\": 0.01}",
+      "#ai_label": "longtail",
+      "#ai_confidence": "0.64",
+      "#ai_probabilities": "{\"longtail\": 0.64, \"onearm\": 0.24, \"ring\": 0.08, \"stream\": 0.02, \"twoarm\": 0.01, \"shell\": 0.01}",
       "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "ring"
-    }
-  },
-  {
-    "id": "demo-stream1",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/stream1.jpg"
-      },
-      {
-        "image/png": "demo/morphology/stream1-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "stream",
-      "#ai_confidence": "0.75",
-      "#ai_probabilities": "{\"stream\": 0.75, \"longtail\": 0.19, \"twoarm\": 0.03, \"shell\": 0.03, \"onearm\": 0.0, \"ring\": 0.0}",
-      "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
-      "#ai_model": "demo-tidal-cnn (fake predictions)",
-      "#demo_true_label": "stream"
-    }
-  },
-  {
-    "id": "demo-longtail3",
-    "locations": [
-      {
-        "image/jpeg": "demo/morphology/longtail3.jpg"
-      },
-      {
-        "image/png": "demo/morphology/longtail3-saliency.png"
-      }
-    ],
-    "metadata": {
-      "#ai_label": "onearm",
-      "#ai_confidence": "0.53",
-      "#ai_probabilities": "{\"onearm\": 0.53, \"longtail\": 0.31, \"twoarm\": 0.07, \"shell\": 0.06, \"stream\": 0.02, \"ring\": 0.01}",
-      "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "longtail"
     }
@@ -333,30 +173,30 @@ export const DEMO_SUBJECTS = [
     ],
     "metadata": {
       "#ai_label": "ring",
-      "#ai_confidence": "0.65",
-      "#ai_probabilities": "{\"ring\": 0.65, \"shell\": 0.23, \"twoarm\": 0.05, \"stream\": 0.04, \"onearm\": 0.02, \"longtail\": 0.01}",
+      "#ai_confidence": "0.87",
+      "#ai_probabilities": "{\"ring\": 0.87, \"shell\": 0.09, \"stream\": 0.02, \"onearm\": 0.01, \"twoarm\": 0.01, \"longtail\": 0.0}",
       "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "ring"
     }
   },
   {
-    "id": "demo-stream2",
+    "id": "demo-stream4",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/stream2.jpg"
+        "image/jpeg": "demo/morphology/stream4.jpg"
       },
       {
-        "image/png": "demo/morphology/stream2-saliency.png"
+        "image/png": "demo/morphology/stream4-saliency.png"
       }
     ],
     "metadata": {
-      "#ai_label": "longtail",
-      "#ai_confidence": "0.5",
-      "#ai_probabilities": "{\"longtail\": 0.5, \"stream\": 0.31, \"onearm\": 0.09, \"ring\": 0.06, \"twoarm\": 0.03, \"shell\": 0.0}",
+      "#ai_label": "stream",
+      "#ai_confidence": "0.75",
+      "#ai_probabilities": "{\"stream\": 0.75, \"longtail\": 0.16, \"twoarm\": 0.07, \"onearm\": 0.01, \"ring\": 0.01, \"shell\": 0.01}",
       "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "stream"
     }
@@ -373,12 +213,152 @@ export const DEMO_SUBJECTS = [
     ],
     "metadata": {
       "#ai_label": "ring",
-      "#ai_confidence": "0.86",
-      "#ai_probabilities": "{\"ring\": 0.86, \"shell\": 0.11, \"longtail\": 0.01, \"twoarm\": 0.01, \"onearm\": 0.0, \"stream\": 0.0}",
+      "#ai_confidence": "0.67",
+      "#ai_probabilities": "{\"ring\": 0.67, \"shell\": 0.22, \"onearm\": 0.04, \"twoarm\": 0.04, \"stream\": 0.03, \"longtail\": 0.0}",
       "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "ring"
+    }
+  },
+  {
+    "id": "demo-onearm1",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/onearm1.jpg"
+      },
+      {
+        "image/png": "demo/morphology/onearm1-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "onearm",
+      "#ai_confidence": "0.82",
+      "#ai_probabilities": "{\"onearm\": 0.82, \"longtail\": 0.12, \"twoarm\": 0.04, \"stream\": 0.01, \"ring\": 0.0, \"shell\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "onearm"
+    }
+  },
+  {
+    "id": "demo-longtail5",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/longtail5.jpg"
+      },
+      {
+        "image/png": "demo/morphology/longtail5-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "longtail",
+      "#ai_confidence": "0.67",
+      "#ai_probabilities": "{\"longtail\": 0.67, \"onearm\": 0.19, \"ring\": 0.06, \"stream\": 0.04, \"twoarm\": 0.02, \"shell\": 0.01}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "longtail"
+    }
+  },
+  {
+    "id": "demo-ring4",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/ring4.jpg"
+      },
+      {
+        "image/png": "demo/morphology/ring4-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "shell",
+      "#ai_confidence": "0.58",
+      "#ai_probabilities": "{\"shell\": 0.58, \"ring\": 0.26, \"longtail\": 0.05, \"onearm\": 0.04, \"twoarm\": 0.04, \"stream\": 0.03}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "ring"
+    }
+  },
+  {
+    "id": "demo-stream1",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/stream1.jpg"
+      },
+      {
+        "image/png": "demo/morphology/stream1-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "stream",
+      "#ai_confidence": "0.69",
+      "#ai_probabilities": "{\"stream\": 0.69, \"longtail\": 0.21, \"onearm\": 0.05, \"shell\": 0.03, \"twoarm\": 0.02, \"ring\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "stream"
+    }
+  },
+  {
+    "id": "demo-ring6",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/ring6.jpg"
+      },
+      {
+        "image/png": "demo/morphology/ring6-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "ring",
+      "#ai_confidence": "0.83",
+      "#ai_probabilities": "{\"ring\": 0.83, \"shell\": 0.14, \"longtail\": 0.01, \"twoarm\": 0.01, \"stream\": 0.01, \"onearm\": 0.0}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "ring"
+    }
+  },
+  {
+    "id": "demo-onearm2",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/onearm2.jpg"
+      },
+      {
+        "image/png": "demo/morphology/onearm2-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "longtail",
+      "#ai_confidence": "0.54",
+      "#ai_probabilities": "{\"longtail\": 0.54, \"onearm\": 0.3, \"ring\": 0.06, \"shell\": 0.04, \"twoarm\": 0.03, \"stream\": 0.03}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "onearm"
+    }
+  },
+  {
+    "id": "demo-longtail3",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/longtail3.jpg"
+      },
+      {
+        "image/png": "demo/morphology/longtail3-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "onearm",
+      "#ai_confidence": "0.5",
+      "#ai_probabilities": "{\"onearm\": 0.5, \"longtail\": 0.38, \"stream\": 0.06, \"shell\": 0.04, \"twoarm\": 0.01, \"ring\": 0.01}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "longtail"
     }
   },
   {
@@ -394,49 +374,69 @@ export const DEMO_SUBJECTS = [
     "metadata": {
       "#ai_label": "longtail",
       "#ai_confidence": "0.72",
-      "#ai_probabilities": "{\"longtail\": 0.72, \"onearm\": 0.19, \"shell\": 0.04, \"stream\": 0.03, \"ring\": 0.02, \"twoarm\": 0.0}",
+      "#ai_probabilities": "{\"longtail\": 0.72, \"onearm\": 0.16, \"twoarm\": 0.05, \"shell\": 0.04, \"stream\": 0.03, \"ring\": 0.01}",
       "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail3.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "longtail"
     }
   },
   {
-    "id": "demo-ring6",
+    "id": "demo-stream3",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/ring6.jpg"
+        "image/jpeg": "demo/morphology/stream3.jpg"
       },
       {
-        "image/png": "demo/morphology/ring6-saliency.png"
+        "image/png": "demo/morphology/stream3-saliency.png"
+      }
+    ],
+    "metadata": {
+      "#ai_label": "stream",
+      "#ai_confidence": "0.84",
+      "#ai_probabilities": "{\"stream\": 0.84, \"longtail\": 0.09, \"onearm\": 0.02, \"twoarm\": 0.02, \"ring\": 0.02, \"shell\": 0.02}",
+      "#ai_saliency": "1",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}]",
+      "#ai_model": "demo-tidal-cnn (fake predictions)",
+      "#demo_true_label": "stream"
+    }
+  },
+  {
+    "id": "demo-ring5",
+    "locations": [
+      {
+        "image/jpeg": "demo/morphology/ring5.jpg"
+      },
+      {
+        "image/png": "demo/morphology/ring5-saliency.png"
       }
     ],
     "metadata": {
       "#ai_label": "ring",
-      "#ai_confidence": "0.76",
-      "#ai_probabilities": "{\"ring\": 0.76, \"shell\": 0.17, \"longtail\": 0.02, \"twoarm\": 0.02, \"onearm\": 0.01, \"stream\": 0.01}",
+      "#ai_confidence": "0.89",
+      "#ai_probabilities": "{\"ring\": 0.89, \"shell\": 0.09, \"onearm\": 0.01, \"stream\": 0.01, \"longtail\": 0.0, \"twoarm\": 0.0}",
       "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail4.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring7.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring3.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell2.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream5.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "ring"
     }
   },
   {
-    "id": "demo-longtail2",
+    "id": "demo-longtail4",
     "locations": [
       {
-        "image/jpeg": "demo/morphology/longtail2.jpg"
+        "image/jpeg": "demo/morphology/longtail4.jpg"
       },
       {
-        "image/png": "demo/morphology/longtail2-saliency.png"
+        "image/png": "demo/morphology/longtail4-saliency.png"
       }
     ],
     "metadata": {
       "#ai_label": "longtail",
-      "#ai_confidence": "0.81",
-      "#ai_probabilities": "{\"longtail\": 0.81, \"onearm\": 0.13, \"shell\": 0.03, \"stream\": 0.02, \"twoarm\": 0.01, \"ring\": 0.0}",
+      "#ai_confidence": "0.8",
+      "#ai_probabilities": "{\"longtail\": 0.8, \"onearm\": 0.13, \"twoarm\": 0.03, \"shell\": 0.03, \"stream\": 0.01, \"ring\": 0.0}",
       "#ai_saliency": "1",
-      "#ai_examples": "[{\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail6.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring2.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring5.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell3.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream3.jpg\", \"label\": \"stream\"}]",
+      "#ai_examples": "[{\"url\": \"demo/morphology/longtail5.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail2.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/longtail1.jpg\", \"label\": \"longtail\"}, {\"url\": \"demo/morphology/onearm1.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm3.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/onearm2.jpg\", \"label\": \"onearm\"}, {\"url\": \"demo/morphology/twoarm2.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/twoarm1.jpg\", \"label\": \"twoarm\"}, {\"url\": \"demo/morphology/ring6.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring1.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/ring4.jpg\", \"label\": \"ring\"}, {\"url\": \"demo/morphology/shell5.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell4.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/shell1.jpg\", \"label\": \"shell\"}, {\"url\": \"demo/morphology/stream1.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream2.jpg\", \"label\": \"stream\"}, {\"url\": \"demo/morphology/stream4.jpg\", \"label\": \"stream\"}]",
       "#ai_model": "demo-tidal-cnn (fake predictions)",
       "#demo_true_label": "longtail"
     }

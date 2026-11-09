@@ -187,6 +187,11 @@ the branch). `.nojekyll` is already in place.
         "option_ai_labels": ["ring", "stream", "shell", "onearm"], // AI's top class for each option
         "correct_index": 2, "chosen_index": 2, "correct": true, "answer_changes": 0,
         "events": [{ "type": "select", "t_ms": 3900, "detail": 2 }], "started_at": "…", "completed_at": "…", "duration_ms": 5200
+      },
+      "counterfactual": {
+        "type": "counterfactual", "subject_id": "410", "contrast_label": "shell", // "Why not Shell?"
+        "option_subject_ids": ["410", "33", "702", "81"],
+        "correct_index": 0, "chosen_index": 3, "correct": false, "answer_changes": 1, "events": [ … ], …
       }
     }
   },
@@ -233,14 +238,24 @@ There is no feedback on whether they were right.
 - **Class confidences.** Each option is a full confidence breakdown, highest
   class first. No two options share a top class, so the real breakdown is the
   only one topped by the AI's answer for this galaxy.
+- **Counterfactual ("Why not …?").** Each option is a set of training
+  galaxies from the same class the AI didn't pick (its runner-up where
+  possible): the set it found most similar to this galaxy, and the sets it
+  found most similar to three other galaxies. Every set differs, none contains
+  the galaxy itself, and decoys that overlap least with the others are
+  preferred. Telling them apart takes judging resemblance, not naming a class.
 
 Each question's galaxy is one still waiting in the volunteer's queue, so they
 have not seen its explanation before; it is then removed from their queue so
 they don't classify it afterwards. The questions at one check-in use different
 galaxies. If too few galaxies have been loaded to build a question, it is
 skipped and recorded as skipped. `CONFIG.surveys.quiz` lists which questions
-run, in order; the counterfactual examples will join `heatmap` and
-`probabilities` there.
+run, in order.
+
+In the demo, "most similar" is crude image similarity
+(`scripts/make_demo_subjects.py`), and each class has only a handful of
+images, so the counterfactual sets for different galaxies often share images.
+With a real model's training set they rarely will.
 
 **Where the answers go.** A static page can only send data to Zooniverse as
 classifications, so answers travel in classification metadata (see above).
@@ -281,7 +296,7 @@ python3 scripts/make_demo_subjects.py path/to/images   # rebuild the demo from <
 | `src/classification.js` | Decision/explanation timing and the Panoptes payload |
 | `src/panoptes.js` | Panoptes API client and OAuth sign-in |
 | `src/surveys.js`, `src/survey-view.js` | Questionnaire items, scoring and form |
-| `src/quiz.js`, `src/quiz-view.js` | Check-in explanation questions (heat map, class confidences) |
+| `src/quiz.js`, `src/quiz-view.js` | Check-in explanation questions (heat map, class confidences, counterfactual) |
 | `src/participant.js` | Anonymous participant ID, answers and classification count |
 | `src/demo.js`, `src/demo-data.js`, `demo/morphology/` | Offline demo subjects (images and made-up predictions) |
 | `assets/classes/` | Class silhouettes (made by `scripts/silhouette.py`) |

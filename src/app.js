@@ -6,8 +6,8 @@ import { DEMO_PROJECT, DEMO_WORKFLOW, DEMO_SUBJECTS } from './demo.js';
 import { Participant } from './participant.js';
 import { SKEPTICISM_SURVEY, NEEDS_SURVEY } from './surveys.js';
 import { runSurvey } from './survey-view.js';
-import { buildHeatmapQuestion, buildProbabilityQuestion } from './quiz.js';
-import { runHeatmapQuestion, runProbabilityQuestion } from './quiz-view.js';
+import { buildHeatmapQuestion, buildProbabilityQuestion, buildCounterfactualQuestion } from './quiz.js';
+import { runHeatmapQuestion, runProbabilityQuestion, runCounterfactualQuestion } from './quiz-view.js';
 
 const EXPLANATION_MODES = ['on-request', 'always', 'never'];
 const ADVANCE_DELAY_MS = 900;
@@ -46,7 +46,7 @@ const state = {
   seen: new Set(),
   // Every galaxy fetched so far with an AI prediction: the pool for the
   // check-in explanation questions.
-  // id -> { id, imageUrl, saliencyUrl, label, probabilities }
+  // id -> { id, imageUrl, saliencyUrl, label, probabilities, examples }
   known: new Map(),
   current: null, // { subject, prediction, tracker }
   busy: false,
@@ -120,6 +120,8 @@ function remember(subjects) {
       saliencyUrl: prediction.saliencyUrl,
       label: prediction.label,
       probabilities: prediction.probabilities,
+      examples: Object.fromEntries(Object.entries(prediction.examplesByLabel)
+        .map(([label, items]) => [label, items.map(item => item.url)])),
     });
   }
 }
@@ -127,6 +129,7 @@ function remember(subjects) {
 const QUESTIONS = {
   heatmap: { build: buildHeatmapQuestion, run: runHeatmapQuestion, skipped: 'not_enough_heatmaps' },
   probabilities: { build: buildProbabilityQuestion, run: runProbabilityQuestion, skipped: 'not_enough_other_classes' },
+  counterfactual: { build: buildCounterfactualQuestion, run: runCounterfactualQuestion, skipped: 'not_enough_example_sets' },
 };
 
 /**

@@ -308,6 +308,31 @@ async function answerProbabilities(page) {
   return { subjectId: subject.id, index };
 }
 
+/** Answers the check-in counterfactual question, picking the real set. */
+async function answerCounterfactual(page) {
+  const form = page.locator('form.quiz[data-quiz="counterfactual"]');
+  await form.waitFor();
+  assert.equal(await form.locator('button[type=submit]').isDisabled(), true, 'cannot continue before choosing');
+  const galaxy = await form.locator('.quiz-galaxy img').getAttribute('src');
+  const subject = DEMO_SUBJECTS.find(s => s.locations[0]['image/jpeg'] === galaxy);
+  const title = await form.locator('h2').textContent();
+  const contrast = Object.keys(LABEL_NAMES).find(label => title === `Why not ${LABEL_NAMES[label]}?`);
+  assert.ok(contrast, `title names a class: ${title}`);
+  assert.notEqual(contrast, subject.metadata['#ai_label'], 'a class the AI did not pick');
+  const realSet = JSON.parse(subject.metadata['#ai_examples']).filter(e => e.label === contrast).map(e => e.url);
+  const sets = [];
+  for (const option of await form.locator('.quiz-option').all()) {
+    sets.push(await option.locator('.quiz-examples img').evaluateAll(imgs => imgs.map(i => i.getAttribute('src'))));
+  }
+  assert.equal(sets.length, 4);
+  assert.equal(new Set(sets.map(set => set.join())).size, 4, 'all four sets differ');
+  const index = sets.findIndex(set => set.join() === realSet.join());
+  assert.ok(index >= 0, 'the real set is one of the options');
+  await form.locator('.quiz-option').nth(index).click();
+  await form.locator('button[type=submit]').click();
+  return { subjectId: subject.id, contrast, index };
+}
+
 async function classifyDirect(page, times) {
   for (let i = 0; i < times; i += 1) {
     const before = await page.evaluate(() => window.__secondLook.participant.classificationCount);
@@ -347,6 +372,7 @@ test('surveys: skepticism once on first visit, needs check-in after every 5th cl
   const fifthSubject = await page.evaluate(() => window.__secondLook.state.current.subject.id);
   const answered = await answerHeatmap(page);
   const answeredProbs = await answerProbabilities(page);
+  const answeredCf = await answerCounterfactual(page);
   await page.waitForFunction(() => window.__secondLook.participant.classificationCount === 5);
   const fifth = await lastPayload(page);
   const quiz = fifth.metadata.xai_quiz.heatmap;
@@ -362,6 +388,13 @@ test('surveys: skepticism once on first visit, needs check-in after every 5th cl
   assert.notEqual(probs.subject_id, quiz.subject_id, 'the two questions use different galaxies');
   assert.notEqual(probs.subject_id, fifthSubject);
   assert.equal(new Set(probs.option_ai_labels).size, 4);
+  const cf = fifth.metadata.xai_quiz.counterfactual;
+  assert.equal(cf.correct, true);
+  assert.equal(cf.subject_id, answeredCf.subjectId);
+  assert.equal(cf.contrast_label, answeredCf.contrast);
+  assert.equal(cf.chosen_index, answeredCf.index);
+  assert.equal(new Set([quiz.subject_id, probs.subject_id, cf.subject_id, fifthSubject]).size, 4,
+    'each question uses its own galaxy');
   assert.equal(quiz.option_subject_ids.length, 4);
   assert.ok(answered.galaxy.includes(quiz.subject_id.replace('demo-', '')));
   assert.notEqual(quiz.subject_id, fifthSubject, 'not the galaxy just classified');
@@ -399,6 +432,7 @@ test('surveys: a failed submission after the check-in does not ask it again', as
   assert.deepEqual(mock.posted[0].metadata.xai_quiz, {
     heatmap: { type: 'heatmap', skipped: 'not_enough_heatmaps' },
     probabilities: { type: 'probabilities', skipped: 'not_enough_other_classes' },
+    counterfactual: { type: 'counterfactual', skipped: 'not_enough_example_sets' },
   });
 
   await page.click('#submit-button');
